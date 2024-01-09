@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace VeresiyeDefteri
 {
-    public partial class ClientPageForm : Form
+    public partial class ProductPageForm : Form
     {
-        public ClientPageForm()
+        public ProductPageForm()
         {
             InitializeComponent();
         }
