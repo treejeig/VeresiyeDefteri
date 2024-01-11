@@ -60,7 +60,7 @@
             GoToReceiptsPageButton.Name = "GoToReceiptsPageButton";
             GoToReceiptsPageButton.Size = new Size(100, 56);
             GoToReceiptsPageButton.TabIndex = 2;
-            GoToReceiptsPageButton.Text = "Fişler Listesi";
+            GoToReceiptsPageButton.Text = " Fişler Listesi";
             GoToReceiptsPageButton.UseVisualStyleBackColor = true;
             GoToReceiptsPageButton.Click += GoToReceiptsPageButton_Click;
             // 
