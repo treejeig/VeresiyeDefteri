@@ -43,10 +43,8 @@ namespace VeresiyeDefteri.Pages.ListPages
             // disable autogenerate, reset dataGridView
             PersonsDataGridView.DataSource = null;
             PersonsDataGridView.AutoGenerateColumns = false;
-            // PersonsDataGridView.ReadOnly = true;
             // set column count
             PersonsDataGridView.ColumnCount = 9;
-            PersonsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             // set id column
             PersonsDataGridView.Columns[0].Name = "PersonId";
             PersonsDataGridView.Columns[0].HeaderText = "PersonId";
