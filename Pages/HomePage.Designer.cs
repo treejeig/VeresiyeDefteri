@@ -68,11 +68,12 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 461);
+            ClientSize = new Size(984, 711);
             Controls.Add(GoToReceiptsPageButton);
             Controls.Add(GoToProductsPageButton);
             Controls.Add(GoToPersonsPageButton);
             Name = "HomePageForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Veresiye Defteri";
             Load += HomePageForm_Load;
             ResumeLayout(false);

@@ -29,34 +29,32 @@
         private void InitializeComponent()
         {
             ProductsDataGridView = new DataGridView();
-            AddProductButton = new Button();
+            ProductIdColumn = new DataGridViewTextBoxColumn();
             ProductStockCodeColumn = new DataGridViewTextBoxColumn();
             ProductNameColumn = new DataGridViewTextBoxColumn();
             ProductPrice = new DataGridViewTextBoxColumn();
-            ProductQuantityColumn = new DataGridViewTextBoxColumn();
+            ProductDescriptionColumn = new DataGridViewTextBoxColumn();
             GoToProductDetailButtonColumn = new DataGridViewButtonColumn();
+            AddProductButton = new Button();
             ((System.ComponentModel.ISupportInitialize)ProductsDataGridView).BeginInit();
             SuspendLayout();
             // 
             // ProductsDataGridView
             // 
             ProductsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ProductsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ProductStockCodeColumn, ProductNameColumn, ProductPrice, ProductQuantityColumn, GoToProductDetailButtonColumn });
+            ProductsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ProductIdColumn, ProductStockCodeColumn, ProductNameColumn, ProductPrice, ProductDescriptionColumn, GoToProductDetailButtonColumn });
             ProductsDataGridView.Location = new Point(10, 10);
             ProductsDataGridView.Name = "ProductsDataGridView";
             ProductsDataGridView.RowTemplate.Height = 25;
-            ProductsDataGridView.Size = new Size(760, 375);
+            ProductsDataGridView.Size = new Size(850, 690);
             ProductsDataGridView.TabIndex = 0;
+            ProductsDataGridView.CellContentClick += ProductsDataGridView_CellClick;
             // 
-            // AddProductButton
+            // ProductIdColumn
             // 
-            AddProductButton.Location = new Point(10, 395);
-            AddProductButton.Name = "AddProductButton";
-            AddProductButton.Size = new Size(100, 56);
-            AddProductButton.TabIndex = 1;
-            AddProductButton.Text = "Yeni Ürün Ekle";
-            AddProductButton.UseVisualStyleBackColor = true;
-            AddProductButton.Click += AddProductButton_Click;
+            ProductIdColumn.HeaderText = "ProductId";
+            ProductIdColumn.Name = "ProductIdColumn";
+            ProductIdColumn.Visible = false;
             // 
             // ProductStockCodeColumn
             // 
@@ -73,10 +71,10 @@
             ProductPrice.HeaderText = "Fiyatı";
             ProductPrice.Name = "ProductPrice";
             // 
-            // ProductQuantityColumn
+            // ProductDescriptionColumn
             // 
-            ProductQuantityColumn.HeaderText = "Stok Adedi";
-            ProductQuantityColumn.Name = "ProductQuantityColumn";
+            ProductDescriptionColumn.HeaderText = "Açıklama";
+            ProductDescriptionColumn.Name = "ProductDescriptionColumn";
             // 
             // GoToProductDetailButtonColumn
             // 
@@ -85,14 +83,25 @@
             GoToProductDetailButtonColumn.Resizable = DataGridViewTriState.True;
             GoToProductDetailButtonColumn.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
+            // AddProductButton
+            // 
+            AddProductButton.Location = new Point(875, 10);
+            AddProductButton.Name = "AddProductButton";
+            AddProductButton.Size = new Size(100, 56);
+            AddProductButton.TabIndex = 1;
+            AddProductButton.Text = "Yeni Ürün Ekle";
+            AddProductButton.UseVisualStyleBackColor = true;
+            AddProductButton.Click += AddProductButton_Click;
+            // 
             // ProductsPageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 461);
+            ClientSize = new Size(984, 711);
             Controls.Add(AddProductButton);
             Controls.Add(ProductsDataGridView);
             Name = "ProductsPageForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Ürünler";
             ((System.ComponentModel.ISupportInitialize)ProductsDataGridView).EndInit();
             ResumeLayout(false);
@@ -102,10 +111,11 @@
 
         private DataGridView ProductsDataGridView;
         private Button AddProductButton;
+        private DataGridViewTextBoxColumn ProductIdColumn;
         private DataGridViewTextBoxColumn ProductStockCodeColumn;
         private DataGridViewTextBoxColumn ProductNameColumn;
         private DataGridViewTextBoxColumn ProductPrice;
-        private DataGridViewTextBoxColumn ProductQuantityColumn;
+        private DataGridViewTextBoxColumn ProductDescriptionColumn;
         private DataGridViewButtonColumn GoToProductDetailButtonColumn;
     }
 }

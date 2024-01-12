@@ -101,10 +101,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 461);
+            ClientSize = new Size(984, 711);
             Controls.Add(AddReceiptButton);
             Controls.Add(ReceiptsDataGridView);
             Name = "ReceiptsPageForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Fişler";
             ((System.ComponentModel.ISupportInitialize)ReceiptsDataGridView).EndInit();
             ResumeLayout(false);

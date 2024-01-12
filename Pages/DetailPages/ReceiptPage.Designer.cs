@@ -41,7 +41,6 @@
             label4 = new Label();
             DeleteProductButton = new Button();
             SaveProductButton = new Button();
-            EnableEditProductButton = new Button();
             button1 = new Button();
             SelectReceiptPersonComboBox = new ComboBox();
             SelectReceiptPersonLabel = new Label();
@@ -67,7 +66,7 @@
             ReceiptProductsDataGridView.Location = new Point(12, 187);
             ReceiptProductsDataGridView.Name = "ReceiptProductsDataGridView";
             ReceiptProductsDataGridView.RowTemplate.Height = 25;
-            ReceiptProductsDataGridView.Size = new Size(628, 251);
+            ReceiptProductsDataGridView.Size = new Size(850, 500);
             ReceiptProductsDataGridView.TabIndex = 1;
             // 
             // ReceiptProductName
@@ -142,7 +141,7 @@
             // 
             // DeleteProductButton
             // 
-            DeleteProductButton.Location = new Point(670, 10);
+            DeleteProductButton.Location = new Point(875, 10);
             DeleteProductButton.Name = "DeleteProductButton";
             DeleteProductButton.Size = new Size(100, 56);
             DeleteProductButton.TabIndex = 10;
@@ -151,21 +150,12 @@
             // 
             // SaveProductButton
             // 
-            SaveProductButton.Location = new Point(670, 142);
+            SaveProductButton.Location = new Point(875, 76);
             SaveProductButton.Name = "SaveProductButton";
             SaveProductButton.Size = new Size(100, 56);
             SaveProductButton.TabIndex = 8;
             SaveProductButton.Text = "Kaydet";
             SaveProductButton.UseVisualStyleBackColor = true;
-            // 
-            // EnableEditProductButton
-            // 
-            EnableEditProductButton.Location = new Point(670, 76);
-            EnableEditProductButton.Name = "EnableEditProductButton";
-            EnableEditProductButton.Size = new Size(100, 56);
-            EnableEditProductButton.TabIndex = 9;
-            EnableEditProductButton.Text = "Düzenlemeyi Aç";
-            EnableEditProductButton.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -232,7 +222,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 461);
+            ClientSize = new Size(984, 711);
             Controls.Add(textBox4);
             Controls.Add(textBox3);
             Controls.Add(textBox2);
@@ -242,7 +232,6 @@
             Controls.Add(button1);
             Controls.Add(DeleteProductButton);
             Controls.Add(SaveProductButton);
-            Controls.Add(EnableEditProductButton);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -251,6 +240,7 @@
             Controls.Add(ReceiptPersonNameSurnameTextBox);
             Controls.Add(ReceiptPersonNameSurnameLabel);
             Name = "ReceiptPageForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Fiş Detayı";
             ((System.ComponentModel.ISupportInitialize)ReceiptProductsDataGridView).EndInit();
             ResumeLayout(false);
@@ -272,7 +262,6 @@
         private Label label4;
         private Button DeleteProductButton;
         private Button SaveProductButton;
-        private Button EnableEditProductButton;
         private Button button1;
         private ComboBox SelectReceiptPersonComboBox;
         private Label SelectReceiptPersonLabel;

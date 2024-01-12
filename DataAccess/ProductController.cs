@@ -1,0 +1,135 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VeresiyeDefteri.DataObjects;
+using VeresiyeDefteri.Helpers;
+
+namespace VeresiyeDefteri.DataAccess
+{
+    public class ProductController
+    {
+        DataAccessHelpers dataAccessHelper = new DataAccessHelpers();
+        SQLiteConnection sqliteConnection = new SQLiteConnection(@"data source =|DataDirectory|\TrySQlite.db");
+        public List<Product> GetProducts()
+        {
+            var products = new List<Product>();
+            string query = "select * from products";
+
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        products.Add(ReadProductFromReader(reader));
+                    }
+                }
+            }
+            return products;
+        }
+
+        public Product GetProduct(long productId)
+        {
+            Product product = new Product();
+            string query = $"select * from products where product_id = $productId";
+
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$productId", productId);
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        product = ReadProductFromReader(reader);
+                    }
+                }
+            }
+            return product;
+        }
+
+        public bool AddProduct(Product product)
+        {
+            string query = "insert into products " +
+                "(stock_code, name, price, description)" +
+                "values($stockCode, $name, $price, $description)";
+
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$stockCode", product.StockCode);
+            cmd.Parameters.AddWithValue("$name", product.Name);
+            cmd.Parameters.AddWithValue("$price", product.Price);
+            cmd.Parameters.AddWithValue("$description", product.Description);
+            int result = cmd.ExecuteNonQuery();
+            if (result == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool DeleteProduct(long productId)
+        {
+            string query = "delete from products where product_id = $productId";
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$productId", productId);
+            int result = cmd.ExecuteNonQuery();
+            if (result == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool UpdateProduct(Product product)
+        {
+            string query = "update products set " +
+                "stock_code = $stockCode, name = $name, price = $price, description = $description " +
+                "where product_id = $productId";
+
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$stockCode", product.StockCode);
+            cmd.Parameters.AddWithValue("$name", product.Name);
+            cmd.Parameters.AddWithValue("$price", product.Price);
+            cmd.Parameters.AddWithValue("$description", product.Description);
+            cmd.Parameters.AddWithValue("$productId", product.ProductId);
+            int result = cmd.ExecuteNonQuery();
+            if (result == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+
+        private Product ReadProductFromReader(SQLiteDataReader reader)
+        {
+            return new Product
+            {
+                ProductId = dataAccessHelper.GetLongFromReader(reader, "product_id"),
+                StockCode = dataAccessHelper.GetNullableStringFromReader(reader, "stock_code"),
+                Name = dataAccessHelper.GetStringFromReader(reader, "name"),
+                Price = dataAccessHelper.GetNullableDoubleFromReader(reader, "price"),
+                Description = dataAccessHelper.GetNullableStringFromReader(reader, "description"),
+            };
+        }
+
+        private void CheckConnectionState()
+        {
+            if (sqliteConnection.State != ConnectionState.Open)
+            {
+                sqliteConnection.Open();
+            }
+        }
+    }
+}

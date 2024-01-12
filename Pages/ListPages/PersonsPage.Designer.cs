@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             PersonsDataGridView = new DataGridView();
-            AddPersonButton = new Button();
             PersonIdColumn = new DataGridViewTextBoxColumn();
             NameColumn = new DataGridViewTextBoxColumn();
             SurnameColumn = new DataGridViewTextBoxColumn();
@@ -37,6 +36,7 @@
             OutgoingBalanceColumn = new DataGridViewTextBoxColumn();
             TotalBalanceColumn = new DataGridViewTextBoxColumn();
             GoToPersonDetailButtonColumn = new DataGridViewButtonColumn();
+            AddPersonButton = new Button();
             ((System.ComponentModel.ISupportInitialize)PersonsDataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -47,19 +47,9 @@
             PersonsDataGridView.Location = new Point(10, 10);
             PersonsDataGridView.Name = "PersonsDataGridView";
             PersonsDataGridView.RowTemplate.Height = 25;
-            PersonsDataGridView.Size = new Size(760, 375);
+            PersonsDataGridView.Size = new Size(850, 690);
             PersonsDataGridView.TabIndex = 1;
             PersonsDataGridView.CellClick += PersonsDataGridView_CellClick;
-            // 
-            // AddPersonButton
-            // 
-            AddPersonButton.Location = new Point(10, 395);
-            AddPersonButton.Name = "AddPersonButton";
-            AddPersonButton.Size = new Size(100, 56);
-            AddPersonButton.TabIndex = 0;
-            AddPersonButton.Text = "Yeni Kişi Ekle";
-            AddPersonButton.UseVisualStyleBackColor = true;
-            AddPersonButton.Click += AddPersonButton_Click;
             // 
             // PersonIdColumn
             // 
@@ -97,14 +87,25 @@
             GoToPersonDetailButtonColumn.HeaderText = "Kişi Detayı";
             GoToPersonDetailButtonColumn.Name = "GoToPersonDetailButtonColumn";
             // 
+            // AddPersonButton
+            // 
+            AddPersonButton.Location = new Point(875, 10);
+            AddPersonButton.Name = "AddPersonButton";
+            AddPersonButton.Size = new Size(100, 56);
+            AddPersonButton.TabIndex = 0;
+            AddPersonButton.Text = "Yeni Kişi Ekle";
+            AddPersonButton.UseVisualStyleBackColor = true;
+            AddPersonButton.Click += AddPersonButton_Click;
+            // 
             // PersonsPageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 461);
+            ClientSize = new Size(984, 711);
             Controls.Add(PersonsDataGridView);
             Controls.Add(AddPersonButton);
             Name = "PersonsPageForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Kişiler";
             ((System.ComponentModel.ISupportInitialize)PersonsDataGridView).EndInit();
             ResumeLayout(false);

@@ -46,11 +46,12 @@
             PersonAddressTextBox = new TextBox();
             PersonDescriptionTextBox = new TextBox();
             PersonIncomingBalanceTextBox = new TextBox();
-            EnableEditPersonButton = new Button();
             SavePersonButton = new Button();
             DeletePersonButton = new Button();
             PersonOutgoingBalanceLabel = new Label();
             PersonOutgoingBalanceTextBox = new TextBox();
+            PersonTotalBalanceLabel = new Label();
+            PersonTotalBalanceTextBox = new TextBox();
             SuspendLayout();
             // 
             // PersonNameLabel
@@ -217,19 +218,9 @@
             PersonIncomingBalanceTextBox.Size = new Size(200, 23);
             PersonIncomingBalanceTextBox.TabIndex = 8;
             // 
-            // EnableEditPersonButton
-            // 
-            EnableEditPersonButton.Location = new Point(670, 76);
-            EnableEditPersonButton.Name = "EnableEditPersonButton";
-            EnableEditPersonButton.Size = new Size(100, 56);
-            EnableEditPersonButton.TabIndex = 11;
-            EnableEditPersonButton.Text = "Düzenlemeyi Aç";
-            EnableEditPersonButton.UseVisualStyleBackColor = true;
-            EnableEditPersonButton.Click += EnableEditPersonButton_Click;
-            // 
             // SavePersonButton
             // 
-            SavePersonButton.Location = new Point(670, 142);
+            SavePersonButton.Location = new Point(875, 76);
             SavePersonButton.Name = "SavePersonButton";
             SavePersonButton.Size = new Size(100, 56);
             SavePersonButton.TabIndex = 10;
@@ -239,7 +230,7 @@
             // 
             // DeletePersonButton
             // 
-            DeletePersonButton.Location = new Point(670, 10);
+            DeletePersonButton.Location = new Point(875, 10);
             DeletePersonButton.Name = "DeletePersonButton";
             DeletePersonButton.Size = new Size(100, 56);
             DeletePersonButton.TabIndex = 12;
@@ -265,16 +256,35 @@
             PersonOutgoingBalanceTextBox.Size = new Size(200, 23);
             PersonOutgoingBalanceTextBox.TabIndex = 9;
             // 
+            // PersonTotalBalanceLabel
+            // 
+            PersonTotalBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            PersonTotalBalanceLabel.Location = new Point(650, 175);
+            PersonTotalBalanceLabel.Name = "PersonTotalBalanceLabel";
+            PersonTotalBalanceLabel.Size = new Size(100, 23);
+            PersonTotalBalanceLabel.TabIndex = 23;
+            PersonTotalBalanceLabel.Text = "Toplam";
+            PersonTotalBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // PersonTotalBalanceTextBox
+            // 
+            PersonTotalBalanceTextBox.Location = new Point(760, 175);
+            PersonTotalBalanceTextBox.Name = "PersonTotalBalanceTextBox";
+            PersonTotalBalanceTextBox.PlaceholderText = "Toplam";
+            PersonTotalBalanceTextBox.Size = new Size(200, 23);
+            PersonTotalBalanceTextBox.TabIndex = 24;
+            // 
             // PersonPageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 461);
+            ClientSize = new Size(984, 711);
+            Controls.Add(PersonTotalBalanceTextBox);
+            Controls.Add(PersonTotalBalanceLabel);
             Controls.Add(PersonOutgoingBalanceTextBox);
             Controls.Add(PersonOutgoingBalanceLabel);
             Controls.Add(DeletePersonButton);
             Controls.Add(SavePersonButton);
-            Controls.Add(EnableEditPersonButton);
             Controls.Add(PersonIncomingBalanceTextBox);
             Controls.Add(PersonDescriptionTextBox);
             Controls.Add(PersonAddressTextBox);
@@ -294,6 +304,7 @@
             Controls.Add(PersonSurnameLabel);
             Controls.Add(PersonNameLabel);
             Name = "PersonPageForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Kişi Detayı";
             ResumeLayout(false);
             PerformLayout();
@@ -319,10 +330,11 @@
         private TextBox PersonAddressTextBox;
         private TextBox PersonDescriptionTextBox;
         private TextBox PersonIncomingBalanceTextBox;
-        private Button EnableEditPersonButton;
         private Button SavePersonButton;
         private Button DeletePersonButton;
         private Label PersonOutgoingBalanceLabel;
         private TextBox PersonOutgoingBalanceTextBox;
+        private Label PersonTotalBalanceLabel;
+        private TextBox PersonTotalBalanceTextBox;
     }
 }

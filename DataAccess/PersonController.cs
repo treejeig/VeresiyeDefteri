@@ -37,10 +37,11 @@ namespace VeresiyeDefteri.DataAccess
         public Person GetPerson(long personId)
         {
             Person person = new Person();
-            string query = $"select * from persons where person_id = {personId}";
+            string query = $"select * from persons where person_id = $personId";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$personId", personId);
             using (var reader = cmd.ExecuteReader())
             {
                 if (reader.HasRows)
@@ -72,7 +73,11 @@ namespace VeresiyeDefteri.DataAccess
             cmd.Parameters.AddWithValue("$description", person.Description);
             cmd.Parameters.AddWithValue("$incomingBalance", person.IncomingBalance);
             cmd.Parameters.AddWithValue("$outgoingBalance", person.OutgoingBalance);
-            cmd.ExecuteNonQuery();
+            int result = cmd.ExecuteNonQuery();
+            if(result == 0)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -82,7 +87,11 @@ namespace VeresiyeDefteri.DataAccess
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             cmd.Parameters.AddWithValue("$personId", personId);
-            cmd.ExecuteNonQuery();
+            int result = cmd.ExecuteNonQuery();
+            if (result == 0)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -106,7 +115,11 @@ namespace VeresiyeDefteri.DataAccess
             cmd.Parameters.AddWithValue("$incomingBalance", person.IncomingBalance);
             cmd.Parameters.AddWithValue("$outgoingBalance", person.OutgoingBalance);
             cmd.Parameters.AddWithValue("$personId", person.PersonId);
-            cmd.ExecuteNonQuery();
+            int result = cmd.ExecuteNonQuery();
+            if (result == 0)
+            {
+                return false;
+            }
             return true;
         }
 

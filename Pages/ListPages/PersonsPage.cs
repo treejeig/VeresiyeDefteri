@@ -15,7 +15,6 @@ namespace VeresiyeDefteri.Pages.ListPages
 {
     public partial class PersonsPageForm : Form
     {
-        DataAccessHelpers dataAccessHelpers = new DataAccessHelpers();
         PersonController personController = new PersonController();
         List<Person> persons = new List<Person>();
         long selectedPersonId = 0;
@@ -27,21 +26,21 @@ namespace VeresiyeDefteri.Pages.ListPages
 
         private void AddPersonButton_Click(object sender, EventArgs e)
         {
-            PersonPageForm personPageForm = new PersonPageForm(0);
+            PersonPageForm personPageForm = new PersonPageForm();
+            personPageForm.FormClosed += new FormClosedEventHandler(PersonPageForm_FormClosed);
             personPageForm.ShowDialog();
         }
 
         private void PreparePersonsPage()
         {
             PreparePersonsDataGridView();
-
         }
 
         private void PreparePersonsDataGridView()
         {
             persons = personController.GetPersons();
-            var top = persons.FirstOrDefault().TotalBalance;
-            // disable autogenerate
+            // disable autogenerate, reset dataGridView
+            PersonsDataGridView.DataSource = null;
             PersonsDataGridView.AutoGenerateColumns = false;
             PersonsDataGridView.ReadOnly = true;
             // set column count
@@ -77,20 +76,26 @@ namespace VeresiyeDefteri.Pages.ListPages
             goToPersonDetailButtonColumn.Name = "GoToPersonDetail";
             goToPersonDetailButtonColumn.HeaderText = "Kişi Detayı";
             goToPersonDetailButtonColumn.Text = "Detaya Git";
+            PersonsDataGridView.Columns.RemoveAt(6);
             PersonsDataGridView.Columns.Insert(6, goToPersonDetailButtonColumn);
-            PersonsDataGridView.Columns.RemoveAt(7);
 
             PersonsDataGridView.DataSource = persons;
         }
 
         private void PersonsDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (PersonsDataGridView.Columns[e.ColumnIndex].Name == "GoToPersonDetail")
+            if (e.ColumnIndex != -1 && PersonsDataGridView.Columns[e.ColumnIndex].Name == "GoToPersonDetail")
             {
                 selectedPersonId = (long)PersonsDataGridView.Rows[e.RowIndex].Cells[0].Value;
                 PersonPageForm personPageForm = new PersonPageForm(selectedPersonId);
+                personPageForm.FormClosed += new FormClosedEventHandler(PersonPageForm_FormClosed);
                 personPageForm.ShowDialog();
             }
+        }
+
+        private void PersonPageForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            PreparePersonsPage();
         }
     }
 }
