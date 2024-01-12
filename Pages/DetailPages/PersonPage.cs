@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SQLite;
-using System.Data.SqlClient;
 using VeresiyeDefteri.DataAccess;
 using VeresiyeDefteri.DataObjects;
 using VeresiyeDefteri.Helpers;
@@ -116,7 +114,7 @@ namespace VeresiyeDefteri
                     infoMessageBoxMessage = $"{oldName} {oldSurname} silinemedi.";
                     
                 }
-                messageBoxes.InformationMessageBox(infoMessageBoxTitle, infoMessageBoxMessage);
+                ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox(infoMessageBoxTitle, infoMessageBoxMessage));
             }
         }
 

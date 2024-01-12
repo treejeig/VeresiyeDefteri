@@ -17,8 +17,12 @@ namespace VeresiyeDefteri
     {
         ProductController productController = new ProductController();
         InputHelpers inputHelper = new InputHelpers();
+        MessageBoxes messageBoxes = new MessageBoxes();
         Product product = new Product();
         long selectedProductId = 0;
+        string? oldStockCode;
+        string? oldName;
+        string? oldPrice;
         public ProductPageForm(long productId)
         {
             selectedProductId = productId;
@@ -35,52 +39,77 @@ namespace VeresiyeDefteri
 
         private void SaveProductButton_Click(object sender, EventArgs e)
         {
-            Product product = new Product
-            {
-                StockCode = string.IsNullOrEmpty(ProductStockCodeTextBox.Text) ? null : ProductStockCodeTextBox.Text,
-                Name = ProductNameTextBox.Text,
-                Price = string.IsNullOrEmpty(ProductPriceTextBox.Text) ? null : (long)Convert.ToDouble(ProductPriceTextBox.Text),
-                Description = string.IsNullOrEmpty(ProductDescriptionTextBox.Text) ? null : ProductDescriptionTextBox.Text,
-            };
+            string messageBoxTitle;
+            string messageBoxMessage;
             if (selectedProductId == 0)
             {
-                if (productController.AddProduct(product))
-                {
-                    ShowMessageBoxAndClosePage("Başarılı", "Yeni ürün eklendi.");
-
-                }
-                else
-                {
-                    ShowMessageBoxAndClosePage("Başarısız", "Yeni Ürün eklenemedi.");
-                }
+                messageBoxTitle = "Ürün eklensin mi?";
+                messageBoxMessage = $"Stok Kodu: {ProductStockCodeTextBox.Text}\nAdı: {ProductNameTextBox.Text}\nFiyatı: {ProductPriceTextBox.Text}";
             }
             else
             {
-                product.ProductId = selectedProductId;
-                if (productController.UpdateProduct(product))
-                {
-                    ShowMessageBoxAndClosePage("Başarılı", "Ürün değişikleri kaydedildi.");
+                messageBoxTitle = "Ürün güncellensin mi?";
+                messageBoxMessage = $"Stok Kodu: {oldStockCode} -> {ProductStockCodeTextBox.Text}\nAdı: {oldName} -> {ProductNameTextBox.Text}\nFiyatı: {oldPrice} -> {ProductPriceTextBox.Text}";
+            }
 
+            if (messageBoxes.YesNoMessageBox(messageBoxTitle, messageBoxMessage))
+            {
+                Product product = new Product
+                {
+                    StockCode = string.IsNullOrEmpty(ProductStockCodeTextBox.Text) ? null : ProductStockCodeTextBox.Text,
+                    Name = ProductNameTextBox.Text,
+                    Price = string.IsNullOrEmpty(ProductPriceTextBox.Text) ? null : (long)Convert.ToDouble(ProductPriceTextBox.Text),
+                    Description = string.IsNullOrEmpty(ProductDescriptionTextBox.Text) ? null : ProductDescriptionTextBox.Text,
+                };
+                if (selectedProductId == 0)
+                {
+                    if (productController.AddProduct(product))
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Yeni Ürün eklendi."));
+
+                    }
+                    else
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Yeni Ürün eklenemedi."));
+                    }
                 }
                 else
                 {
-                    ShowMessageBoxAndClosePage("Başarısız", "Ürün değişiklikleri kaydedilemedi.");
+                    product.ProductId = selectedProductId;
+                    if (productController.UpdateProduct(product))
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Ürün değişiklikleri kaydedildi."));
+
+                    }
+                    else
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Ürün değişiklikleri kaydedilemedi."));
+                    }
                 }
             }
-
-
         }
 
         private void DeleteProductButton_Click(object sender, EventArgs e)
         {
-            if (productController.DeleteProduct(selectedProductId))
-            {
-                ShowMessageBoxAndClosePage("Başarılı", "Ürün silindi.");
+            var yesNoMessageBoxTitle = "Ürün silinsin mi?";
+            var yesNomessageBoxMessage = $"Stok Kodu: {oldStockCode}\nAdı: {oldName}\nFiyatı: {oldPrice}";
 
-            }
-            else
+            if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNomessageBoxMessage))
             {
-                ShowMessageBoxAndClosePage("Başarısız", "Ürün silinemedi.");
+                string infoMessageBoxTitle;
+                string infoMessageBoxMessage;
+                if (productController.DeleteProduct(selectedProductId))
+                {
+                    infoMessageBoxTitle = "Başarılı";
+                    infoMessageBoxMessage = $"{oldStockCode} - {oldName} - {oldPrice} silindi.";
+                }
+                else
+                {
+                    infoMessageBoxTitle = "Başarısız";
+                    infoMessageBoxMessage = $"{oldStockCode} - {oldName} - {oldPrice} silinemedi.";
+
+                }
+                ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox(infoMessageBoxTitle, infoMessageBoxMessage));
             }
         }
 
@@ -89,7 +118,10 @@ namespace VeresiyeDefteri
             if (selectedProductId != 0)
             {
                 product = productController.GetProduct(selectedProductId);
-
+            }
+            else
+            {
+                DeleteProductButton.Visible = false;
             }
             if (product != null)
             {
@@ -97,13 +129,15 @@ namespace VeresiyeDefteri
                 ProductNameTextBox.Text = product.Name;
                 ProductPriceTextBox.Text = product.Price.ToString();
                 ProductDescriptionTextBox.Text = product.Description;
+                oldStockCode = product.StockCode;
+                oldName = product.Name;
+                oldPrice = product.Price.ToString();
             }
         }
 
-        private void ShowMessageBoxAndClosePage(string title, string message)
+        private void ShowInfoMessageBoxAndClosePage(bool res)
         {
-            var res = MessageBox.Show(message, title);
-            if (res == DialogResult.OK)
+            if (res)
             {
                 Close();
             }
