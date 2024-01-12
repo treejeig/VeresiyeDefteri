@@ -58,7 +58,7 @@ namespace VeresiyeDefteri
                 {
                     StockCode = string.IsNullOrEmpty(ProductStockCodeTextBox.Text) ? null : ProductStockCodeTextBox.Text,
                     Name = ProductNameTextBox.Text,
-                    Price = string.IsNullOrEmpty(ProductPriceTextBox.Text) ? null : (long)Convert.ToDouble(ProductPriceTextBox.Text),
+                    Price = string.IsNullOrEmpty(ProductPriceTextBox.Text) ? null : Convert.ToDouble(ProductPriceTextBox.Text),
                     Description = string.IsNullOrEmpty(ProductDescriptionTextBox.Text) ? null : ProductDescriptionTextBox.Text,
                 };
                 if (selectedProductId == 0)

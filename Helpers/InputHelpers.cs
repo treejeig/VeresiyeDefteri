@@ -22,16 +22,11 @@ namespace VeresiyeDefteri.Helpers
             {
                 e.Handled = true;
             }
-
-            if(Regex.IsMatch((sender as TextBox).Text, @"\.\d\d"))
-            {
-                e.Handled |= true;
-            }
         }
 
         public void AllowOnlyNumbers(object sender, KeyPressEventArgs e) 
         {
-            if (((sender as TextBox).Text.Length == 0 && e.KeyChar == '0'))
+            if ((sender as TextBox).Text.Length == 0 && e.KeyChar == '0')
             {
                 e.Handled = true;
             }
