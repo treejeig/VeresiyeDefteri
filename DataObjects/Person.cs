@@ -21,7 +21,5 @@ namespace VeresiyeDefteri.DataObjects
         public double? OutgoingBalance { get; set; }
         public double? TotalBalance => (double)Math.Round((decimal)((IncomingBalance ?? 0) - (OutgoingBalance ?? 0)), 2);
 
-        public string ToString() => Name + ' ' + Surname;
-
     }
 }

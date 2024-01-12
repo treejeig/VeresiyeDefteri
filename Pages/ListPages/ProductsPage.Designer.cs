@@ -29,26 +29,38 @@
         private void InitializeComponent()
         {
             ProductsDataGridView = new DataGridView();
+            AddProductButton = new Button();
             ProductIdColumn = new DataGridViewTextBoxColumn();
             ProductStockCodeColumn = new DataGridViewTextBoxColumn();
             ProductNameColumn = new DataGridViewTextBoxColumn();
             ProductPrice = new DataGridViewTextBoxColumn();
             ProductDescriptionColumn = new DataGridViewTextBoxColumn();
             GoToProductDetailButtonColumn = new DataGridViewButtonColumn();
-            AddProductButton = new Button();
+            SaveEditedProductButtonColumn = new DataGridViewButtonColumn();
+            DeleteSelectedProductButtonColumn = new DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)ProductsDataGridView).BeginInit();
             SuspendLayout();
             // 
             // ProductsDataGridView
             // 
             ProductsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            ProductsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ProductIdColumn, ProductStockCodeColumn, ProductNameColumn, ProductPrice, ProductDescriptionColumn, GoToProductDetailButtonColumn });
+            ProductsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ProductIdColumn, ProductStockCodeColumn, ProductNameColumn, ProductPrice, ProductDescriptionColumn, GoToProductDetailButtonColumn, SaveEditedProductButtonColumn, DeleteSelectedProductButtonColumn });
             ProductsDataGridView.Location = new Point(10, 10);
             ProductsDataGridView.Name = "ProductsDataGridView";
             ProductsDataGridView.RowTemplate.Height = 25;
             ProductsDataGridView.Size = new Size(850, 690);
             ProductsDataGridView.TabIndex = 0;
             ProductsDataGridView.CellContentClick += ProductsDataGridView_CellClick;
+            // 
+            // AddProductButton
+            // 
+            AddProductButton.Location = new Point(875, 10);
+            AddProductButton.Name = "AddProductButton";
+            AddProductButton.Size = new Size(100, 56);
+            AddProductButton.TabIndex = 1;
+            AddProductButton.Text = "Yeni Ürün Ekle";
+            AddProductButton.UseVisualStyleBackColor = true;
+            AddProductButton.Click += AddProductButton_Click;
             // 
             // ProductIdColumn
             // 
@@ -83,15 +95,17 @@
             GoToProductDetailButtonColumn.Resizable = DataGridViewTriState.True;
             GoToProductDetailButtonColumn.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
-            // AddProductButton
+            // SaveEditedProductButtonColumn
             // 
-            AddProductButton.Location = new Point(875, 10);
-            AddProductButton.Name = "AddProductButton";
-            AddProductButton.Size = new Size(100, 56);
-            AddProductButton.TabIndex = 1;
-            AddProductButton.Text = "Yeni Ürün Ekle";
-            AddProductButton.UseVisualStyleBackColor = true;
-            AddProductButton.Click += AddProductButton_Click;
+            SaveEditedProductButtonColumn.HeaderText = "Ürünü Kaydet";
+            SaveEditedProductButtonColumn.Name = "SaveEditedProductButtonColumn";
+            SaveEditedProductButtonColumn.Resizable = DataGridViewTriState.True;
+            SaveEditedProductButtonColumn.SortMode = DataGridViewColumnSortMode.Automatic;
+            // 
+            // DeleteSelectedProductButtonColumn
+            // 
+            DeleteSelectedProductButtonColumn.HeaderText = "Ürünü Sil";
+            DeleteSelectedProductButtonColumn.Name = "DeleteSelectedProductButtonColumn";
             // 
             // ProductsPageForm
             // 
@@ -117,5 +131,7 @@
         private DataGridViewTextBoxColumn ProductPrice;
         private DataGridViewTextBoxColumn ProductDescriptionColumn;
         private DataGridViewButtonColumn GoToProductDetailButtonColumn;
+        private DataGridViewButtonColumn SaveEditedProductButtonColumn;
+        private DataGridViewButtonColumn DeleteSelectedProductButtonColumn;
     }
 }
