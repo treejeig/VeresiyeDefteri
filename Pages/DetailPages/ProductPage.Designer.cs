@@ -47,6 +47,7 @@
             ProductPriceTextBox.PlaceholderText = "Fiyatı";
             ProductPriceTextBox.Size = new Size(200, 23);
             ProductPriceTextBox.TabIndex = 2;
+            ProductPriceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
             // ProductPriceLabel
             // 

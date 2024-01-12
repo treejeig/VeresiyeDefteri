@@ -11,12 +11,14 @@ using System.Data.SQLite;
 using System.Data.SqlClient;
 using VeresiyeDefteri.DataAccess;
 using VeresiyeDefteri.DataObjects;
+using VeresiyeDefteri.Helpers;
 
 namespace VeresiyeDefteri
 {
     public partial class PersonPageForm : Form
     {
         PersonController personController = new PersonController();
+        InputHelpers inputHelper = new InputHelpers();
         Person person = new Person();
         long selectedPersonId = 0;
         public PersonPageForm(long personId)
@@ -120,6 +122,15 @@ namespace VeresiyeDefteri
             {
                 Close();
             }
+        }
+        private void OnlyNumberTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputHelper.AllowOnlyNumbers(sender, e);
+        }
+
+        private void OnlyNumberAndOneDigitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputHelper.AllowOnlyNumbersAndOneDigit(sender, e);
         }
     }
 }

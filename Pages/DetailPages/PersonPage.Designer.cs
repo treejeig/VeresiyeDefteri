@@ -167,6 +167,7 @@
             PersonPhoneTextBox.PlaceholderText = "Telefon";
             PersonPhoneTextBox.Size = new Size(200, 23);
             PersonPhoneTextBox.TabIndex = 2;
+            PersonPhoneTextBox.KeyPress += OnlyNumberTextBox_KeyPress;
             // 
             // PersonMobilePhoneTextBox
             // 
@@ -175,6 +176,7 @@
             PersonMobilePhoneTextBox.PlaceholderText = "Cep Telefonu";
             PersonMobilePhoneTextBox.Size = new Size(200, 23);
             PersonMobilePhoneTextBox.TabIndex = 3;
+            PersonMobilePhoneTextBox.KeyPress += OnlyNumberTextBox_KeyPress;
             // 
             // PersonEmailTextBox
             // 
@@ -191,6 +193,7 @@
             PersonIdentityNumberTextBox.PlaceholderText = "TC Kimlik No";
             PersonIdentityNumberTextBox.Size = new Size(200, 23);
             PersonIdentityNumberTextBox.TabIndex = 5;
+            PersonIdentityNumberTextBox.KeyPress += OnlyNumberTextBox_KeyPress;
             // 
             // PersonAddressTextBox
             // 
@@ -217,6 +220,7 @@
             PersonIncomingBalanceTextBox.PlaceholderText = "Alacak";
             PersonIncomingBalanceTextBox.Size = new Size(200, 23);
             PersonIncomingBalanceTextBox.TabIndex = 8;
+            PersonIncomingBalanceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
             // SavePersonButton
             // 
@@ -255,6 +259,7 @@
             PersonOutgoingBalanceTextBox.PlaceholderText = "Verecek";
             PersonOutgoingBalanceTextBox.Size = new Size(200, 23);
             PersonOutgoingBalanceTextBox.TabIndex = 9;
+            PersonOutgoingBalanceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
             // PersonTotalBalanceLabel
             // 
@@ -273,6 +278,7 @@
             PersonTotalBalanceTextBox.PlaceholderText = "Toplam";
             PersonTotalBalanceTextBox.Size = new Size(200, 23);
             PersonTotalBalanceTextBox.TabIndex = 24;
+            PersonTotalBalanceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
             // PersonPageForm
             // 

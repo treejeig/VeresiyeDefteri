@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VeresiyeDefteri.DataAccess;
 using VeresiyeDefteri.DataObjects;
+using VeresiyeDefteri.Helpers;
 
 namespace VeresiyeDefteri
 {
     public partial class ProductPageForm : Form
     {
         ProductController productController = new ProductController();
+        InputHelpers inputHelper = new InputHelpers();
         Product product = new Product();
         long selectedProductId = 0;
         public ProductPageForm(long productId)
@@ -105,6 +107,15 @@ namespace VeresiyeDefteri
             {
                 Close();
             }
+        }
+
+        private void OnlyNumberTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputHelper.AllowOnlyNumbers(sender, e);
+        }
+        private void OnlyNumberAndOneDigitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputHelper.AllowOnlyNumbersAndOneDigit(sender, e);
         }
     }
 }
