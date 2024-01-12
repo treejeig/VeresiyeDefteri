@@ -56,14 +56,56 @@ namespace VeresiyeDefteri.DataAccess
 
         public bool AddPerson(Person person)
         {
-            string query = "" +
-                "insert into persons " +
+            string query = "insert into persons " +
                 "(name, surname, phone, mobile_phone, email, identity_number, address, description, incoming_balance, outgoing_balance)" +
-                $"values ('{person.Name}', '{person.Surname}', {person.Phone}, {person.MobilePhone}, '{person.Email}', {person.IdentityNumber}, " +
-                $"'{person.Address}', '{person.Description}', {person.IncomingBalance}, {person.OutgoingBalance})";
-           
+                "values($name, $surname, $phone, $mobilePhone, $email, $identityNumber, $address, $description, $incomingBalance, $outgoingBalance)";
+
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$name", person.Name);
+            cmd.Parameters.AddWithValue("$surname", person.Surname);
+            cmd.Parameters.AddWithValue("$phone", person.Phone);
+            cmd.Parameters.AddWithValue("$mobilePhone", person.MobilePhone);
+            cmd.Parameters.AddWithValue("$email", person.Email);
+            cmd.Parameters.AddWithValue("$identityNumber", person.IdentityNumber);
+            cmd.Parameters.AddWithValue("$address", person.Address);
+            cmd.Parameters.AddWithValue("$description", person.Description);
+            cmd.Parameters.AddWithValue("$incomingBalance", person.IncomingBalance);
+            cmd.Parameters.AddWithValue("$outgoingBalance", person.OutgoingBalance);
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+
+        public bool DeletePerson(long personId)
+        {
+            string query = "delete from persons where person_id = $personId";
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$personId", personId);
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+
+        public bool UpdatePerson(Person person)
+        {
+            string query = "update persons set " +
+                "name = $name, surname = $surname, phone = $phone, mobile_phone = $mobilePhone, email = $email, identity_number = $identityNumber, " +
+                "address = $address, description = $description, incoming_balance = $incomingBalance, outgoing_balance = $outgoingBalance " +
+                "where person_id = $personId";
+
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$name", person.Name);
+            cmd.Parameters.AddWithValue("$surname", person.Surname);
+            cmd.Parameters.AddWithValue("$phone", person.Phone);
+            cmd.Parameters.AddWithValue("$mobilePhone", person.MobilePhone);
+            cmd.Parameters.AddWithValue("$email", person.Email);
+            cmd.Parameters.AddWithValue("$identityNumber", person.IdentityNumber);
+            cmd.Parameters.AddWithValue("$address", person.Address);
+            cmd.Parameters.AddWithValue("$description", person.Description);
+            cmd.Parameters.AddWithValue("$incomingBalance", person.IncomingBalance);
+            cmd.Parameters.AddWithValue("$outgoingBalance", person.OutgoingBalance);
+            cmd.Parameters.AddWithValue("$personId", person.PersonId);
             cmd.ExecuteNonQuery();
             return true;
         }

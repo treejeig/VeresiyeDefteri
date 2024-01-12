@@ -17,11 +17,63 @@ namespace VeresiyeDefteri
     public partial class PersonPageForm : Form
     {
         PersonController personController = new PersonController();
-        public PersonPageForm()
+        Person person = new Person();
+        long selectedPersonId = 0;
+        public PersonPageForm(long personId)
         {
+            selectedPersonId = personId;
             InitializeComponent();
+            PreparePersonPage();
+        }
 
-            var person = personController.GetPersons().FirstOrDefault();
+        private void SavePersonButton_Click(object sender, EventArgs e)
+        {
+            Person person = new Person {
+                Name = PersonNameTextBox.Text,
+                Surname = PersonSurnameTextBox.Text,
+                Phone = string.IsNullOrEmpty(PersonPhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonPhoneTextBox.Text),
+                MobilePhone = string.IsNullOrEmpty(PersonMobilePhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonMobilePhoneTextBox.Text),
+                Email = string.IsNullOrEmpty(PersonEmailTextBox.Text) ? null : PersonEmailTextBox.Text,
+                IdentityNumber = string.IsNullOrEmpty(PersonIdentityNumberTextBox.Text) ? null : (long)Convert.ToDouble(PersonIdentityNumberTextBox.Text),
+                Address = string.IsNullOrEmpty(PersonAddressTextBox.Text) ? null : PersonAddressTextBox.Text,
+                Description = string.IsNullOrEmpty(PersonDescriptionTextBox.Text) ? null : PersonDescriptionTextBox.Text,
+                IncomingBalance = string.IsNullOrEmpty(PersonIncomingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
+                OutgoingBalance = string.IsNullOrEmpty(PersonOutgoingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
+            };
+            personController.AddPerson(person);
+        }
+
+        private void EnableEditPersonButton_Click(object sender, EventArgs e)
+        {
+            Person person = new Person
+            {
+                Name = PersonNameTextBox.Text,
+                Surname = PersonSurnameTextBox.Text,
+                Phone = string.IsNullOrEmpty(PersonPhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonPhoneTextBox.Text),
+                MobilePhone = string.IsNullOrEmpty(PersonMobilePhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonMobilePhoneTextBox.Text),
+                Email = string.IsNullOrEmpty(PersonEmailTextBox.Text) ? null : PersonEmailTextBox.Text,
+                IdentityNumber = string.IsNullOrEmpty(PersonIdentityNumberTextBox.Text) ? null : (long)Convert.ToDouble(PersonIdentityNumberTextBox.Text),
+                Address = string.IsNullOrEmpty(PersonAddressTextBox.Text) ? null : PersonAddressTextBox.Text,
+                Description = string.IsNullOrEmpty(PersonDescriptionTextBox.Text) ? null : PersonDescriptionTextBox.Text,
+                IncomingBalance = string.IsNullOrEmpty(PersonIncomingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
+                OutgoingBalance = string.IsNullOrEmpty(PersonOutgoingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
+            };
+            person.PersonId = selectedPersonId;
+            personController.UpdatePerson(person);
+        }
+
+        private void DeletePersonButton_Click(object sender, EventArgs e)
+        {
+            personController.DeletePerson(selectedPersonId);
+        }
+
+        private void PreparePersonPage()
+        {
+            if (selectedPersonId != 0)
+            {
+                person = personController.GetPerson(selectedPersonId);
+
+            }
             if (person != null)
             {
                 PersonNameTextBox.Text = person.Name;
@@ -35,32 +87,6 @@ namespace VeresiyeDefteri
                 PersonIncomingBalanceTextBox.Text = person.IncomingBalance.ToString();
                 PersonOutgoingBalanceTextBox.Text = person.OutgoingBalance.ToString();
             }
-        }
-
-        private void SavePersonButton_Click(object sender, EventArgs e)
-        {
-            Person person = new Person {
-                Name = PersonNameTextBox.Text,
-                Surname = PersonSurnameTextBox.Text,
-                Phone = (long)Convert.ToDouble(PersonPhoneTextBox.Text),
-                MobilePhone = (long)Convert.ToDouble(PersonMobilePhoneTextBox.Text),
-                Email = PersonEmailTextBox.Text,
-                IdentityNumber = (long)Convert.ToDouble(PersonIdentityNumberTextBox.Text),
-                Address = PersonAddressTextBox.Text,
-                Description = PersonDescriptionTextBox.Text,
-                IncomingBalance = Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
-                OutgoingBalance = Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
-            };
-        }
-
-        private void EnableEditPersonButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void DeletePersonButton_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -12,19 +12,19 @@ namespace VeresiyeDefteri
         private void GoToPersonsPageButton_Click(object sender, EventArgs e)
         {
             PersonsPageForm personsPageForm = new PersonsPageForm();
-            personsPageForm.Show();
+            personsPageForm.ShowDialog();
         }
 
         private void GoToProductsPageButton_Click(object sender, EventArgs e)
         {
             ProductsPageForm productsPageForm = new ProductsPageForm();
-            productsPageForm.Show();
+            productsPageForm.ShowDialog();
         }
 
         private void GoToReceiptsPageButton_Click(object sender, EventArgs e)
         {
             ReceiptsPageForm receiptsPageForm = new ReceiptsPageForm();
-            receiptsPageForm.Show();
+            receiptsPageForm.ShowDialog();
         }
 
         private void HomePageForm_Load(object sender, EventArgs e)

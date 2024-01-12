@@ -28,16 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            AddPersonButton = new Button();
             PersonsDataGridView = new DataGridView();
+            AddPersonButton = new Button();
+            PersonIdColumn = new DataGridViewTextBoxColumn();
             NameColumn = new DataGridViewTextBoxColumn();
             SurnameColumn = new DataGridViewTextBoxColumn();
-            IncomingBalance = new DataGridViewTextBoxColumn();
-            OutgoingBalance = new DataGridViewTextBoxColumn();
+            IncomingBalanceColumn = new DataGridViewTextBoxColumn();
+            OutgoingBalanceColumn = new DataGridViewTextBoxColumn();
             TotalBalanceColumn = new DataGridViewTextBoxColumn();
             GoToPersonDetailButtonColumn = new DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)PersonsDataGridView).BeginInit();
             SuspendLayout();
+            // 
+            // PersonsDataGridView
+            // 
+            PersonsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            PersonsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PersonIdColumn, NameColumn, SurnameColumn, IncomingBalanceColumn, OutgoingBalanceColumn, TotalBalanceColumn, GoToPersonDetailButtonColumn });
+            PersonsDataGridView.Location = new Point(10, 10);
+            PersonsDataGridView.Name = "PersonsDataGridView";
+            PersonsDataGridView.RowTemplate.Height = 25;
+            PersonsDataGridView.Size = new Size(760, 375);
+            PersonsDataGridView.TabIndex = 1;
+            PersonsDataGridView.CellClick += PersonsDataGridView_CellClick;
             // 
             // AddPersonButton
             // 
@@ -49,15 +61,11 @@
             AddPersonButton.UseVisualStyleBackColor = true;
             AddPersonButton.Click += AddPersonButton_Click;
             // 
-            // PersonsDataGridView
+            // PersonIdColumn
             // 
-            PersonsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            PersonsDataGridView.Columns.AddRange(new DataGridViewColumn[] { NameColumn, SurnameColumn, IncomingBalance, OutgoingBalance, TotalBalanceColumn, GoToPersonDetailButtonColumn });
-            PersonsDataGridView.Location = new Point(10, 10);
-            PersonsDataGridView.Name = "PersonsDataGridView";
-            PersonsDataGridView.RowTemplate.Height = 25;
-            PersonsDataGridView.Size = new Size(760, 375);
-            PersonsDataGridView.TabIndex = 1;
+            PersonIdColumn.HeaderText = "PersonId";
+            PersonIdColumn.Name = "PersonIdColumn";
+            PersonIdColumn.Visible = false;
             // 
             // NameColumn
             // 
@@ -69,15 +77,15 @@
             SurnameColumn.HeaderText = "Soyadı";
             SurnameColumn.Name = "SurnameColumn";
             // 
-            // IncomingBalance
+            // IncomingBalanceColumn
             // 
-            IncomingBalance.HeaderText = "Alacak";
-            IncomingBalance.Name = "IncomingBalance";
+            IncomingBalanceColumn.HeaderText = "Alacak";
+            IncomingBalanceColumn.Name = "IncomingBalanceColumn";
             // 
-            // OutgoingBalance
+            // OutgoingBalanceColumn
             // 
-            OutgoingBalance.HeaderText = "Verecek";
-            OutgoingBalance.Name = "OutgoingBalance";
+            OutgoingBalanceColumn.HeaderText = "Verecek";
+            OutgoingBalanceColumn.Name = "OutgoingBalanceColumn";
             // 
             // TotalBalanceColumn
             // 
@@ -106,10 +114,11 @@
 
         private Button AddPersonButton;
         private DataGridView PersonsDataGridView;
+        private DataGridViewTextBoxColumn PersonIdColumn;
         private DataGridViewTextBoxColumn NameColumn;
         private DataGridViewTextBoxColumn SurnameColumn;
-        private DataGridViewTextBoxColumn IncomingBalance;
-        private DataGridViewTextBoxColumn OutgoingBalance;
+        private DataGridViewTextBoxColumn IncomingBalanceColumn;
+        private DataGridViewTextBoxColumn OutgoingBalanceColumn;
         private DataGridViewTextBoxColumn TotalBalanceColumn;
         private DataGridViewButtonColumn GoToPersonDetailButtonColumn;
     }
