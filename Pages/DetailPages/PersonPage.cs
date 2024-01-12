@@ -19,8 +19,11 @@ namespace VeresiyeDefteri
     {
         PersonController personController = new PersonController();
         InputHelpers inputHelper = new InputHelpers();
+        MessageBoxes messageBoxes = new MessageBoxes();
         Person person = new Person();
         long selectedPersonId = 0;
+        string? oldName;
+        string? oldSurname;
         public PersonPageForm(long personId)
         {
             selectedPersonId = personId;
@@ -37,58 +40,83 @@ namespace VeresiyeDefteri
 
         private void SavePersonButton_Click(object sender, EventArgs e)
         {
-            Person person = new Person
+            string messageBoxTitle;
+            string messageBoxMessage;
+            if(selectedPersonId == 0)
             {
-                Name = PersonNameTextBox.Text,
-                Surname = PersonSurnameTextBox.Text,
-                Phone = string.IsNullOrEmpty(PersonPhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonPhoneTextBox.Text),
-                MobilePhone = string.IsNullOrEmpty(PersonMobilePhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonMobilePhoneTextBox.Text),
-                Email = string.IsNullOrEmpty(PersonEmailTextBox.Text) ? null : PersonEmailTextBox.Text,
-                IdentityNumber = string.IsNullOrEmpty(PersonIdentityNumberTextBox.Text) ? null : (long)Convert.ToDouble(PersonIdentityNumberTextBox.Text),
-                Address = string.IsNullOrEmpty(PersonAddressTextBox.Text) ? null : PersonAddressTextBox.Text,
-                Description = string.IsNullOrEmpty(PersonDescriptionTextBox.Text) ? null : PersonDescriptionTextBox.Text,
-                IncomingBalance = string.IsNullOrEmpty(PersonIncomingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
-                OutgoingBalance = string.IsNullOrEmpty(PersonOutgoingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
-            };
-            if (selectedPersonId == 0)
-            {
-                if (personController.AddPerson(person))
-                {
-                    ShowMessageBoxAndClosePage("Başarılı", "Yeni Kişi eklendi.");
-
-                }
-                else
-                {
-                    ShowMessageBoxAndClosePage("Başarısız", "Yeni Kişi eklenemedi.");
-                }
+                messageBoxTitle = "Kişi eklensin mi?";
+                messageBoxMessage = $"Ad Soyad: {PersonNameTextBox.Text} {PersonSurnameTextBox.Text}";
             }
             else
             {
-                person.PersonId = selectedPersonId;
-                if (personController.UpdatePerson(person))
-                {
-                    ShowMessageBoxAndClosePage("Başarılı", "Kişi değişikleri kaydedildi.");
+                messageBoxTitle = "Kişi güncellensin mi?";
+                messageBoxMessage = $"Eski Ad Soyad: {oldName} {oldSurname}\nYeni Ad Soyad: {PersonNameTextBox.Text} {PersonSurnameTextBox.Text}";
+            }
 
+            if(messageBoxes.YesNoMessageBox(messageBoxTitle, messageBoxMessage))
+            {
+                Person person = new Person
+                {
+                    Name = PersonNameTextBox.Text,
+                    Surname = PersonSurnameTextBox.Text,
+                    Phone = string.IsNullOrEmpty(PersonPhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonPhoneTextBox.Text),
+                    MobilePhone = string.IsNullOrEmpty(PersonMobilePhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonMobilePhoneTextBox.Text),
+                    Email = string.IsNullOrEmpty(PersonEmailTextBox.Text) ? null : PersonEmailTextBox.Text,
+                    IdentityNumber = string.IsNullOrEmpty(PersonIdentityNumberTextBox.Text) ? null : (long)Convert.ToDouble(PersonIdentityNumberTextBox.Text),
+                    Address = string.IsNullOrEmpty(PersonAddressTextBox.Text) ? null : PersonAddressTextBox.Text,
+                    Description = string.IsNullOrEmpty(PersonDescriptionTextBox.Text) ? null : PersonDescriptionTextBox.Text,
+                    IncomingBalance = string.IsNullOrEmpty(PersonIncomingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
+                    OutgoingBalance = string.IsNullOrEmpty(PersonOutgoingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
+                };
+                if (selectedPersonId == 0)
+                {
+                    if (personController.AddPerson(person))
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Yeni Kişi eklendi."));
+
+                    }
+                    else
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Yeni Kişi eklenemedi."));
+                    }
                 }
                 else
                 {
-                    ShowMessageBoxAndClosePage("Başarısız", "Kişi değişiklikleri kaydedilemedi.");
+                    person.PersonId = selectedPersonId;
+                    if (personController.UpdatePerson(person))
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Kişi değişiklikleri kaydedildi."));
+
+                    }
+                    else
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Kişi değişiklikleri kaydedilemedi."));
+                    }
                 }
             }
-
-
         }
 
         private void DeletePersonButton_Click(object sender, EventArgs e)
         {
-            if (personController.DeletePerson(selectedPersonId))
-            {
-                ShowMessageBoxAndClosePage("Başarılı", "Kişi silindi.");
+            var yesNoMessageBoxTitle = "Kişi silinsin mi?";
+            var yesNomessageBoxMessage = $"Ad Soyad: {oldName} {oldSurname}";
 
-            }
-            else
+            if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNomessageBoxMessage))
             {
-                ShowMessageBoxAndClosePage("Başarısız", "Kişi silinemedi.");
+                string infoMessageBoxTitle;
+                string infoMessageBoxMessage;
+                if (personController.DeletePerson(selectedPersonId))
+                {
+                    infoMessageBoxTitle = "Başarılı";
+                    infoMessageBoxMessage = $"{oldName} {oldSurname} silindi.";
+                }
+                else
+                {
+                    infoMessageBoxTitle = "Başarısız";
+                    infoMessageBoxMessage = $"{oldName} {oldSurname} silinemedi.";
+                    
+                }
+                messageBoxes.InformationMessageBox(infoMessageBoxTitle, infoMessageBoxMessage);
             }
         }
 
@@ -98,6 +126,10 @@ namespace VeresiyeDefteri
             {
                 person = personController.GetPerson(selectedPersonId);
 
+            }
+            else
+            {
+                DeletePersonButton.Visible = false;
             }
             if (person != null)
             {
@@ -112,13 +144,14 @@ namespace VeresiyeDefteri
                 PersonIncomingBalanceTextBox.Text = person.IncomingBalance.ToString();
                 PersonOutgoingBalanceTextBox.Text = person.OutgoingBalance.ToString();
                 PersonTotalBalanceTextBox.Text = person.TotalBalance.ToString();
+                oldName = person.Name;
+                oldSurname = person.Surname;
             }
         }
 
-        private void ShowMessageBoxAndClosePage(string title, string message)
+        private void ShowInfoMessageBoxAndClosePage(bool res)
         {
-            var res = MessageBox.Show(message, title);
-            if (res == DialogResult.OK)
+            if (res)
             {
                 Close();
             }

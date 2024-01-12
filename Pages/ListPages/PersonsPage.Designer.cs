@@ -36,14 +36,16 @@
             OutgoingBalanceColumn = new DataGridViewTextBoxColumn();
             TotalBalanceColumn = new DataGridViewTextBoxColumn();
             GoToPersonDetailButtonColumn = new DataGridViewButtonColumn();
+            SaveEditedPersonButtonColumn = new DataGridViewButtonColumn();
             AddPersonButton = new Button();
+            DeletePersonButtonColumn = new DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)PersonsDataGridView).BeginInit();
             SuspendLayout();
             // 
             // PersonsDataGridView
             // 
             PersonsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            PersonsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PersonIdColumn, NameColumn, SurnameColumn, IncomingBalanceColumn, OutgoingBalanceColumn, TotalBalanceColumn, GoToPersonDetailButtonColumn });
+            PersonsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PersonIdColumn, NameColumn, SurnameColumn, IncomingBalanceColumn, OutgoingBalanceColumn, TotalBalanceColumn, GoToPersonDetailButtonColumn, SaveEditedPersonButtonColumn, DeletePersonButtonColumn });
             PersonsDataGridView.Location = new Point(10, 10);
             PersonsDataGridView.Name = "PersonsDataGridView";
             PersonsDataGridView.RowTemplate.Height = 25;
@@ -87,6 +89,11 @@
             GoToPersonDetailButtonColumn.HeaderText = "Kişi Detayı";
             GoToPersonDetailButtonColumn.Name = "GoToPersonDetailButtonColumn";
             // 
+            // SaveEditedPersonButtonColumn
+            // 
+            SaveEditedPersonButtonColumn.HeaderText = "Kişiyi Kaydet";
+            SaveEditedPersonButtonColumn.Name = "SaveEditedPersonButtonColumn";
+            // 
             // AddPersonButton
             // 
             AddPersonButton.Location = new Point(875, 10);
@@ -96,6 +103,11 @@
             AddPersonButton.Text = "Yeni Kişi Ekle";
             AddPersonButton.UseVisualStyleBackColor = true;
             AddPersonButton.Click += AddPersonButton_Click;
+            // 
+            // DeletePersonButtonColumn
+            // 
+            DeletePersonButtonColumn.HeaderText = "Kişiyi Sil";
+            DeletePersonButtonColumn.Name = "DeletePersonButtonColumn";
             // 
             // PersonsPageForm
             // 
@@ -122,5 +134,7 @@
         private DataGridViewTextBoxColumn OutgoingBalanceColumn;
         private DataGridViewTextBoxColumn TotalBalanceColumn;
         private DataGridViewButtonColumn GoToPersonDetailButtonColumn;
+        private DataGridViewButtonColumn SaveEditedPersonButtonColumn;
+        private DataGridViewButtonColumn DeletePersonButtonColumn;
     }
 }
