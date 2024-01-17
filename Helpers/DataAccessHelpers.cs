@@ -39,20 +39,17 @@ namespace VeresiyeDefteri.Helpers
             var ordinal = reader.GetOrdinal(ordinalName);
             return CheckAndGetNullDouble(reader, ordinal);
         }
-
         public DateTime? GetNullableDateTimeFromReader(SQLiteDataReader reader, string ordinalName)
         {
             var ordinal = reader.GetOrdinal(ordinalName);
             return CheckAndGetNullDateTime(reader, ordinal);
         }
-
         public bool? GetNullableBoolFromReader(SQLiteDataReader reader, string ordinalName)
         {
             var ordinal = reader.GetOrdinal(ordinalName);
             return CheckAndGetNullBool(reader, ordinal);
 
         }
-
         public string? CheckAndGetNullString(SQLiteDataReader reader, int ordinal)
         {
             return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
