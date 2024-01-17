@@ -15,6 +15,7 @@ namespace VeresiyeDefteri
 {
     public partial class PersonPageForm : Form
     {
+        #region Constants
         PersonController personController = new PersonController();
         ReceiptItemController receiptItemController = new ReceiptItemController();
         InputHelpers inputHelper = new InputHelpers();
@@ -34,6 +35,9 @@ namespace VeresiyeDefteri
         int productQuantityColumnIndex = 11;
         int productTotalPriceColumnIndex = 12;
         int paymentAmountColumnIndex = 13;
+        #endregion
+
+        #region Constructors
         public PersonPageForm(long personId)
         {
             selectedPersonId = personId;
@@ -46,7 +50,8 @@ namespace VeresiyeDefteri
             InitializeComponent();
             PreparePersonPage();
         }
-        
+        #endregion
+
         #region PreparePage
         private void PreparePersonPage()
         {

@@ -15,6 +15,8 @@ namespace VeresiyeDefteri
 {
     public partial class ReceiptItemAddingPageForm : Form
     {
+
+        #region Constants
         Person person = new Person();
         ProductController productController = new ProductController();
         ReceiptItemController receiptItemController = new ReceiptItemController();
@@ -23,20 +25,24 @@ namespace VeresiyeDefteri
         List<Product> products = new List<Product>();
         Product selectedProduct = new Product();
         MessageBoxes messageBoxes = new MessageBoxes();
+        #endregion
+
+        #region Constructors
         public ReceiptItemAddingPageForm(Person selectedPerson)
         {
             person = selectedPerson;
             InitializeComponent();
             PrepareReceiptItemAddingPage();
         }
+        #endregion
 
+        #region PreparePage
         private void PrepareReceiptItemAddingPage()
         {
             PreparePersonInformation();
             PrepareProductsComboBox();
 
         }
-
         private void PreparePersonInformation()
         {
             ReceiptPersonNameSurnameTextBox.Text = person.Name + " " + person.Surname;
@@ -45,7 +51,6 @@ namespace VeresiyeDefteri
             ReceiptPersonOutgoingBalanceTextBox.Text = person.OutgoingBalance.ToString();
             ReceiptPersonTotalBalanceTextBox.Text = person.TotalBalance.ToString();
         }
-
         private void PrepareProductsComboBox()
         {
             products = productController.GetProducts();
@@ -53,47 +58,26 @@ namespace VeresiyeDefteri
             SelectReceiptItemComboBox.ValueMember = "ProductId";
             SelectReceiptItemComboBox.DataSource = products;
         }
+        #endregion
 
+        #region TextBoxComBoxChanges
         private void SelectReceiptItemComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedProduct = (Product)SelectReceiptItemComboBox.SelectedItem;
             ReceiptItemSpecialPriceTextBox.Text = null;
             CalculateReceiptItemPrices();
         }
-
-        private void CalculateReceiptItemPrices()
-        {
-            ReceiptItemPriceTextBox.Text = selectedProduct.Price.ToString();
-            var hasQuantity = !string.IsNullOrEmpty(ReceiptItemQuantityTextBox.Text) && ReceiptItemQuantityTextBox.Text != "0";
-            var hasSpecialPrice = !string.IsNullOrEmpty(ReceiptItemSpecialPriceTextBox.Text) && ReceiptItemSpecialPriceTextBox.Text != "0";
-            double quantity;
-            if (hasQuantity)
-            {
-                quantity = double.Parse(ReceiptItemQuantityTextBox.Text);
-            }
-            else
-            {
-                quantity = 1;
-                ReceiptItemQuantityTextBox.Text = quantity.ToString();
-            }
-            var currentPrice = hasSpecialPrice ? double.Parse(ReceiptItemSpecialPriceTextBox.Text) : selectedProduct.Price;
-            var totalPrice = inputHelper.RoundNullableTwoDigit(quantity * currentPrice, 2);
-            ReceiptItemTotalPriceTextBox.Text = totalPrice.ToString();
-        }
-        private void OnlyNumberAndOneDigitTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            inputHelper.AllowOnlyNumbersAndOneDigit(sender, e);
-        }
         private void ReceiptItemQuantityTextBox_TextChanged(object sender, EventArgs e)
         {
             CalculateReceiptItemPrices();
         }
-
         private void ReceiptItemSpecialPriceTextBox_TextChanged(object sender, EventArgs e)
         {
             CalculateReceiptItemPrices();
         }
+        #endregion
 
+        #region ButtonClick
         private void SaveReceiptItemButton_Click(object sender, EventArgs e)
         {
             double? specialPrice = null;
@@ -104,13 +88,13 @@ namespace VeresiyeDefteri
             string yesNoMessageBoxMessage = $"Ürün Adı: {selectedProduct.ProductName}\nÜrün Fiyatı: {selectedProduct.Price}\n";
 
             var hasSpecialPrice = !string.IsNullOrEmpty(ReceiptItemSpecialPriceTextBox.Text) && ReceiptItemSpecialPriceTextBox.Text != "0";
-            
-            if(hasSpecialPrice)
+
+            if (hasSpecialPrice)
             {
                 specialPrice = inputHelper.RoundNullableTwoDigit(double.Parse(ReceiptItemSpecialPriceTextBox.Text), 2);
                 yesNoMessageBoxMessage += $"Kişiye Özel Fiyat: {specialPrice}\n";
             }
-            
+
             yesNoMessageBoxMessage += $"Ürün Adedi: {productQuantity}\nÜrün Toplam Tutarı: {productTotalPrice}";
 
             if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
@@ -137,6 +121,34 @@ namespace VeresiyeDefteri
                 }
             }
         }
+        #endregion
+
+        #region Calculations
+        private void CalculateReceiptItemPrices()
+        {
+            ReceiptItemPriceTextBox.Text = selectedProduct.Price.ToString();
+            var hasQuantity = !string.IsNullOrEmpty(ReceiptItemQuantityTextBox.Text) && ReceiptItemQuantityTextBox.Text != "0";
+            var hasSpecialPrice = !string.IsNullOrEmpty(ReceiptItemSpecialPriceTextBox.Text) && ReceiptItemSpecialPriceTextBox.Text != "0";
+            double quantity;
+            if (hasQuantity)
+            {
+                quantity = double.Parse(ReceiptItemQuantityTextBox.Text);
+            }
+            else
+            {
+                quantity = 1;
+                ReceiptItemQuantityTextBox.Text = quantity.ToString();
+            }
+            var currentPrice = hasSpecialPrice ? double.Parse(ReceiptItemSpecialPriceTextBox.Text) : selectedProduct.Price;
+            var totalPrice = inputHelper.RoundNullableTwoDigit(quantity * currentPrice, 2);
+            ReceiptItemTotalPriceTextBox.Text = totalPrice.ToString();
+        }
+        #endregion
+
+        #region FormCloseCallBack
+        #endregion
+
+        #region MessageBoxes
         private void ShowInfoMessageBoxAndClosePage(bool res)
         {
             if (res)
@@ -144,6 +156,13 @@ namespace VeresiyeDefteri
                 Close();
             }
         }
-    }
+        #endregion
 
+        #region KeyPress
+        private void OnlyNumberAndOneDigitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputHelper.AllowOnlyNumbersAndOneDigit(sender, e);
+        }
+        #endregion
+    }
 }

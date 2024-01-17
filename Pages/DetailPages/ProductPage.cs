@@ -15,6 +15,7 @@ namespace VeresiyeDefteri
 {
     public partial class ProductPageForm : Form
     {
+        #region Constants
         ProductController productController = new ProductController();
         InputHelpers inputHelper = new InputHelpers();
         MessageBoxes messageBoxes = new MessageBoxes();
@@ -23,20 +24,48 @@ namespace VeresiyeDefteri
         string? oldStockCode;
         string? oldName;
         string? oldPrice;
+        #endregion
+
+        #region Constructors
         public ProductPageForm(long productId)
         {
             selectedProductId = productId;
             InitializeComponent();
             PrepareProductPage();
         }
-
         public ProductPageForm()
         {
             selectedProductId = 0;
             InitializeComponent();
             PrepareProductPage();
         }
+        #endregion
 
+        #region PreparePage
+        private void PrepareProductPage()
+        {
+            if (selectedProductId != 0)
+            {
+                product = productController.GetProduct(selectedProductId);
+            }
+            else
+            {
+                DeleteProductButton.Visible = false;
+            }
+            if (product != null)
+            {
+                ProductStockCodeTextBox.Text = product.StockCode;
+                ProductNameTextBox.Text = product.ProductName;
+                ProductPriceTextBox.Text = product.Price.ToString();
+                ProductDescriptionTextBox.Text = product.ProductDescription;
+                oldStockCode = product.StockCode;
+                oldName = product.ProductName;
+                oldPrice = product.Price.ToString();
+            }
+        }
+        #endregion
+
+        #region ButtonClick
         private void SaveProductButton_Click(object sender, EventArgs e)
         {
             string messageBoxTitle;
@@ -88,7 +117,6 @@ namespace VeresiyeDefteri
                 }
             }
         }
-
         private void DeleteProductButton_Click(object sender, EventArgs e)
         {
             var yesNoMessageBoxTitle = "Ürün silinsin mi?";
@@ -112,29 +140,9 @@ namespace VeresiyeDefteri
                 ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox(infoMessageBoxTitle, infoMessageBoxMessage));
             }
         }
+        #endregion
 
-        private void PrepareProductPage()
-        {
-            if (selectedProductId != 0)
-            {
-                product = productController.GetProduct(selectedProductId);
-            }
-            else
-            {
-                DeleteProductButton.Visible = false;
-            }
-            if (product != null)
-            {
-                ProductStockCodeTextBox.Text = product.StockCode;
-                ProductNameTextBox.Text = product.ProductName;
-                ProductPriceTextBox.Text = product.Price.ToString();
-                ProductDescriptionTextBox.Text = product.ProductDescription;
-                oldStockCode = product.StockCode;
-                oldName = product.ProductName;
-                oldPrice = product.Price.ToString();
-            }
-        }
-
+        #region MessageBoxes
         private void ShowInfoMessageBoxAndClosePage(bool res)
         {
             if (res)
@@ -142,14 +150,13 @@ namespace VeresiyeDefteri
                 Close();
             }
         }
+        #endregion
 
-        private void OnlyNumberTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            inputHelper.AllowOnlyNumbers(sender, e);
-        }
+        #region KeyPress
         private void OnlyNumberAndOneDigitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             inputHelper.AllowOnlyNumbersAndOneDigit(sender, e);
         }
+        #endregion
     }
 }
