@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             ProductsDataGridView = new DataGridView();
-            AddProductButton = new Button();
             ProductIdColumn = new DataGridViewTextBoxColumn();
             ProductStockCodeColumn = new DataGridViewTextBoxColumn();
             ProductNameColumn = new DataGridViewTextBoxColumn();
@@ -38,6 +37,7 @@
             GoToProductDetailButtonColumn = new DataGridViewButtonColumn();
             SaveEditedProductButtonColumn = new DataGridViewButtonColumn();
             DeleteSelectedProductButtonColumn = new DataGridViewButtonColumn();
+            AddProductButton = new Button();
             ((System.ComponentModel.ISupportInitialize)ProductsDataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -51,16 +51,7 @@
             ProductsDataGridView.Size = new Size(850, 690);
             ProductsDataGridView.TabIndex = 0;
             ProductsDataGridView.CellContentClick += ProductsDataGridView_CellClick;
-            // 
-            // AddProductButton
-            // 
-            AddProductButton.Location = new Point(875, 10);
-            AddProductButton.Name = "AddProductButton";
-            AddProductButton.Size = new Size(100, 56);
-            AddProductButton.TabIndex = 1;
-            AddProductButton.Text = "Yeni Ürün Ekle";
-            AddProductButton.UseVisualStyleBackColor = true;
-            AddProductButton.Click += AddProductButton_Click;
+            ProductsDataGridView.EditingControlShowing += ProductsDataGridView_EditingControlShowing;
             // 
             // ProductIdColumn
             // 
@@ -106,6 +97,16 @@
             // 
             DeleteSelectedProductButtonColumn.HeaderText = "Ürünü Sil";
             DeleteSelectedProductButtonColumn.Name = "DeleteSelectedProductButtonColumn";
+            // 
+            // AddProductButton
+            // 
+            AddProductButton.Location = new Point(875, 10);
+            AddProductButton.Name = "AddProductButton";
+            AddProductButton.Size = new Size(100, 56);
+            AddProductButton.TabIndex = 1;
+            AddProductButton.Text = "Yeni Ürün Ekle";
+            AddProductButton.UseVisualStyleBackColor = true;
+            AddProductButton.Click += AddProductButton_Click;
             // 
             // ProductsPageForm
             // 

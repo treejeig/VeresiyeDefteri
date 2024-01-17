@@ -17,6 +17,7 @@ namespace VeresiyeDefteri.Pages.ListPages
     {
         #region Constants
         ProductController productController = new ProductController();
+        InputHelpers inputHelper = new InputHelpers();
         MessageBoxes messageBoxes = new MessageBoxes();
         List<Product> products = new List<Product>();
         long selectedProductId = 0;
@@ -61,7 +62,6 @@ namespace VeresiyeDefteri.Pages.ListPages
             ProductsDataGridView.Columns[3].Name = "Price";
             ProductsDataGridView.Columns[3].HeaderText = "Fiyatı";
             ProductsDataGridView.Columns[3].DataPropertyName = "Price";
-            ProductsDataGridView.Columns[3].ReadOnly = true;
             //set description column
             ProductsDataGridView.Columns[4].Name = "ProductDescription";
             ProductsDataGridView.Columns[4].HeaderText = "Açıklama";
@@ -117,16 +117,19 @@ namespace VeresiyeDefteri.Pages.ListPages
                 {
                     string oldStockCode = selectedProduct.StockCode ?? "";
                     string oldName = selectedProduct.ProductName;
+                    double? oldPrice = selectedProduct.Price ?? 0;
                     string oldDescription = selectedProduct.ProductDescription ?? "";
                     string newStockCode = (string)ProductsDataGridView.Rows[e.RowIndex].Cells[1].Value;
                     string newName = (string)ProductsDataGridView.Rows[e.RowIndex].Cells[2].Value;
+                    double? newPrice = inputHelper.RoundNullableTwoDigit(ProductsDataGridView.Rows[e.RowIndex].Cells[3].Value, 2) ?? 0;
                     string newDescription = (string)ProductsDataGridView.Rows[e.RowIndex].Cells[4].Value;
                     yesNoMessageBoxTitle = "Ürün güncellensin mi?";
-                    yesNoMessageBoxMessage = $"Stok Kodu: {oldStockCode} -> {newStockCode}\nAdı: {oldName} -> {newName}\nAçıklama: {oldDescription} -> {newDescription}";
+                    yesNoMessageBoxMessage = $"Stok Kodu: {oldStockCode} -> {newStockCode}\nAdı: {oldName} -> {newName}\nFiyatı: {oldPrice} -> {newPrice}\nAçıklama: {oldDescription} -> {newDescription}";
                     if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                     {
                         selectedProduct.StockCode = newStockCode;
                         selectedProduct.ProductName = newName;
+                        selectedProduct.Price = newPrice;
                         selectedProduct.ProductDescription = newDescription;
                         if (productController.UpdateProduct(selectedProduct))
                         {
@@ -154,6 +157,18 @@ namespace VeresiyeDefteri.Pages.ListPages
                             ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarısız", "Ürün silinemedi."));
                         }
                     }
+                }
+            }
+        }
+        private void ProductsDataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(OnlyNumberAndOneDigitTextBox_KeyPress);
+            if (ProductsDataGridView.CurrentCell.ColumnIndex != -1)
+            {
+                TextBox textBox = e.Control as TextBox;
+                if (ProductsDataGridView.CurrentCell.ColumnIndex == 3)
+                {
+                    textBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
                 }
             }
         }
@@ -186,6 +201,10 @@ namespace VeresiyeDefteri.Pages.ListPages
         #endregion
 
         #region KeyPress
+        private void OnlyNumberAndOneDigitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            inputHelper.AllowOnlyNumbersAndOneDigit(sender, e);
+        }
         #endregion
     }
 }

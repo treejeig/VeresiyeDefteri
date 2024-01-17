@@ -67,6 +67,7 @@ namespace VeresiyeDefteri
             else
             {
                 DeletePersonButton.Visible = false;
+                AddReceiptItemButton.Visible = false;
             }
             if (person != null)
             {

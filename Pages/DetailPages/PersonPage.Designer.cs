@@ -79,7 +79,7 @@
             PersonNameLabel.Location = new Point(10, 10);
             PersonNameLabel.Name = "PersonNameLabel";
             PersonNameLabel.Size = new Size(100, 23);
-            PersonNameLabel.TabIndex = 13;
+            PersonNameLabel.TabIndex = 11;
             PersonNameLabel.Text = "Adı";
             PersonNameLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -89,7 +89,7 @@
             PersonSurnameLabel.Location = new Point(10, 43);
             PersonSurnameLabel.Name = "PersonSurnameLabel";
             PersonSurnameLabel.Size = new Size(100, 23);
-            PersonSurnameLabel.TabIndex = 14;
+            PersonSurnameLabel.TabIndex = 12;
             PersonSurnameLabel.Text = "Soyadı";
             PersonSurnameLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -99,7 +99,7 @@
             PersonPhoneLabel.Location = new Point(10, 76);
             PersonPhoneLabel.Name = "PersonPhoneLabel";
             PersonPhoneLabel.Size = new Size(100, 23);
-            PersonPhoneLabel.TabIndex = 15;
+            PersonPhoneLabel.TabIndex = 13;
             PersonPhoneLabel.Text = "Telefon";
             PersonPhoneLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -109,7 +109,7 @@
             PersonMobilePhoneLabel.Location = new Point(10, 109);
             PersonMobilePhoneLabel.Name = "PersonMobilePhoneLabel";
             PersonMobilePhoneLabel.Size = new Size(100, 23);
-            PersonMobilePhoneLabel.TabIndex = 16;
+            PersonMobilePhoneLabel.TabIndex = 14;
             PersonMobilePhoneLabel.Text = "Cep Telefonu";
             PersonMobilePhoneLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -119,7 +119,7 @@
             PersonMailLabel.Location = new Point(10, 142);
             PersonMailLabel.Name = "PersonMailLabel";
             PersonMailLabel.Size = new Size(100, 23);
-            PersonMailLabel.TabIndex = 17;
+            PersonMailLabel.TabIndex = 15;
             PersonMailLabel.Text = "Email";
             PersonMailLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -129,7 +129,7 @@
             PersonIdentityNumberLabel.Location = new Point(10, 175);
             PersonIdentityNumberLabel.Name = "PersonIdentityNumberLabel";
             PersonIdentityNumberLabel.Size = new Size(100, 23);
-            PersonIdentityNumberLabel.TabIndex = 18;
+            PersonIdentityNumberLabel.TabIndex = 16;
             PersonIdentityNumberLabel.Text = "TC Kimlik No";
             PersonIdentityNumberLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -139,7 +139,7 @@
             PersonAddressLabel.Location = new Point(330, 10);
             PersonAddressLabel.Name = "PersonAddressLabel";
             PersonAddressLabel.Size = new Size(100, 23);
-            PersonAddressLabel.TabIndex = 19;
+            PersonAddressLabel.TabIndex = 17;
             PersonAddressLabel.Text = "Adres";
             PersonAddressLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -149,7 +149,7 @@
             PersonDescriptionLabel.Location = new Point(330, 109);
             PersonDescriptionLabel.Name = "PersonDescriptionLabel";
             PersonDescriptionLabel.Size = new Size(100, 23);
-            PersonDescriptionLabel.TabIndex = 20;
+            PersonDescriptionLabel.TabIndex = 18;
             PersonDescriptionLabel.Text = "Açıklama";
             PersonDescriptionLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -159,7 +159,7 @@
             PersonIncomingBalanceLabel.Location = new Point(650, 10);
             PersonIncomingBalanceLabel.Name = "PersonIncomingBalanceLabel";
             PersonIncomingBalanceLabel.Size = new Size(100, 23);
-            PersonIncomingBalanceLabel.TabIndex = 21;
+            PersonIncomingBalanceLabel.TabIndex = 19;
             PersonIncomingBalanceLabel.Text = "Alacak";
             PersonIncomingBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -234,11 +234,13 @@
             // 
             // PersonIncomingBalanceTextBox
             // 
+            PersonIncomingBalanceTextBox.Enabled = false;
             PersonIncomingBalanceTextBox.Location = new Point(760, 10);
             PersonIncomingBalanceTextBox.Name = "PersonIncomingBalanceTextBox";
             PersonIncomingBalanceTextBox.PlaceholderText = "Alacak";
+            PersonIncomingBalanceTextBox.ReadOnly = true;
             PersonIncomingBalanceTextBox.Size = new Size(200, 23);
-            PersonIncomingBalanceTextBox.TabIndex = 8;
+            PersonIncomingBalanceTextBox.TabIndex = 22;
             PersonIncomingBalanceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
             // SavePersonButton
@@ -246,7 +248,7 @@
             SavePersonButton.Location = new Point(1075, 76);
             SavePersonButton.Name = "SavePersonButton";
             SavePersonButton.Size = new Size(100, 56);
-            SavePersonButton.TabIndex = 10;
+            SavePersonButton.TabIndex = 8;
             SavePersonButton.Text = "Kişiyi Kaydet";
             SavePersonButton.UseVisualStyleBackColor = true;
             SavePersonButton.Click += SavePersonButton_Click;
@@ -256,7 +258,7 @@
             DeletePersonButton.Location = new Point(1075, 10);
             DeletePersonButton.Name = "DeletePersonButton";
             DeletePersonButton.Size = new Size(100, 56);
-            DeletePersonButton.TabIndex = 12;
+            DeletePersonButton.TabIndex = 9;
             DeletePersonButton.Text = "Kişiyi Sil";
             DeletePersonButton.UseVisualStyleBackColor = true;
             DeletePersonButton.Click += DeletePersonButton_Click;
@@ -267,17 +269,19 @@
             PersonOutgoingBalanceLabel.Location = new Point(650, 43);
             PersonOutgoingBalanceLabel.Name = "PersonOutgoingBalanceLabel";
             PersonOutgoingBalanceLabel.Size = new Size(100, 23);
-            PersonOutgoingBalanceLabel.TabIndex = 22;
+            PersonOutgoingBalanceLabel.TabIndex = 20;
             PersonOutgoingBalanceLabel.Text = "Verecek";
             PersonOutgoingBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // PersonOutgoingBalanceTextBox
             // 
+            PersonOutgoingBalanceTextBox.Enabled = false;
             PersonOutgoingBalanceTextBox.Location = new Point(760, 43);
             PersonOutgoingBalanceTextBox.Name = "PersonOutgoingBalanceTextBox";
             PersonOutgoingBalanceTextBox.PlaceholderText = "Verecek";
+            PersonOutgoingBalanceTextBox.ReadOnly = true;
             PersonOutgoingBalanceTextBox.Size = new Size(200, 23);
-            PersonOutgoingBalanceTextBox.TabIndex = 9;
+            PersonOutgoingBalanceTextBox.TabIndex = 23;
             PersonOutgoingBalanceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
             // PersonTotalBalanceLabel
@@ -286,15 +290,17 @@
             PersonTotalBalanceLabel.Location = new Point(650, 76);
             PersonTotalBalanceLabel.Name = "PersonTotalBalanceLabel";
             PersonTotalBalanceLabel.Size = new Size(100, 23);
-            PersonTotalBalanceLabel.TabIndex = 23;
+            PersonTotalBalanceLabel.TabIndex = 21;
             PersonTotalBalanceLabel.Text = "Toplam";
             PersonTotalBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // PersonTotalBalanceTextBox
             // 
+            PersonTotalBalanceTextBox.Enabled = false;
             PersonTotalBalanceTextBox.Location = new Point(760, 76);
             PersonTotalBalanceTextBox.Name = "PersonTotalBalanceTextBox";
             PersonTotalBalanceTextBox.PlaceholderText = "Toplam";
+            PersonTotalBalanceTextBox.ReadOnly = true;
             PersonTotalBalanceTextBox.Size = new Size(200, 23);
             PersonTotalBalanceTextBox.TabIndex = 24;
             PersonTotalBalanceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
@@ -398,7 +404,7 @@
             AddReceiptItemButton.Location = new Point(650, 142);
             AddReceiptItemButton.Name = "AddReceiptItemButton";
             AddReceiptItemButton.Size = new Size(100, 56);
-            AddReceiptItemButton.TabIndex = 26;
+            AddReceiptItemButton.TabIndex = 10;
             AddReceiptItemButton.Text = "Yeni Fiş Ekle";
             AddReceiptItemButton.UseVisualStyleBackColor = true;
             AddReceiptItemButton.Click += AddReceiptItemButton_Click;

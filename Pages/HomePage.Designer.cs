@@ -71,6 +71,7 @@
             // 
             // TotalIncomingBalanceTextBox
             // 
+            TotalIncomingBalanceTextBox.Enabled = false;
             TotalIncomingBalanceTextBox.Location = new Point(120, 76);
             TotalIncomingBalanceTextBox.Name = "TotalIncomingBalanceTextBox";
             TotalIncomingBalanceTextBox.PlaceholderText = "Toplam Alacak";
@@ -90,6 +91,7 @@
             // 
             // TotalOutgoingBalanceTextBox
             // 
+            TotalOutgoingBalanceTextBox.Enabled = false;
             TotalOutgoingBalanceTextBox.Location = new Point(120, 109);
             TotalOutgoingBalanceTextBox.Name = "TotalOutgoingBalanceTextBox";
             TotalOutgoingBalanceTextBox.PlaceholderText = "Toplam Verecek";
@@ -109,6 +111,7 @@
             // 
             // TotalBalanceTextBox
             // 
+            TotalBalanceTextBox.Enabled = false;
             TotalBalanceTextBox.Location = new Point(120, 142);
             TotalBalanceTextBox.Name = "TotalBalanceTextBox";
             TotalBalanceTextBox.PlaceholderText = "Toplam";

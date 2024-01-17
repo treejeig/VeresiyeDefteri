@@ -61,21 +61,21 @@
             // 
             // DeleteProductButton
             // 
-            DeleteProductButton.Location = new Point(875, 10);
+            DeleteProductButton.Location = new Point(330, 10);
             DeleteProductButton.Name = "DeleteProductButton";
             DeleteProductButton.Size = new Size(100, 56);
             DeleteProductButton.TabIndex = 7;
-            DeleteProductButton.Text = "Sil";
+            DeleteProductButton.Text = "Ürünü Sil";
             DeleteProductButton.UseVisualStyleBackColor = true;
             DeleteProductButton.Click += DeleteProductButton_Click;
             // 
             // SaveProductButton
             // 
-            SaveProductButton.Location = new Point(875, 76);
+            SaveProductButton.Location = new Point(330, 76);
             SaveProductButton.Name = "SaveProductButton";
             SaveProductButton.Size = new Size(100, 56);
             SaveProductButton.TabIndex = 5;
-            SaveProductButton.Text = "Kaydet";
+            SaveProductButton.Text = "Ürünü Kaydet";
             SaveProductButton.UseVisualStyleBackColor = true;
             SaveProductButton.Click += SaveProductButton_Click;
             // 
@@ -89,7 +89,7 @@
             // 
             // ProductDescriptionTextBox
             // 
-            ProductDescriptionTextBox.Location = new Point(440, 10);
+            ProductDescriptionTextBox.Location = new Point(120, 109);
             ProductDescriptionTextBox.Multiline = true;
             ProductDescriptionTextBox.Name = "ProductDescriptionTextBox";
             ProductDescriptionTextBox.PlaceholderText = "Açıklama";
@@ -117,7 +117,7 @@
             // ProductDescriptionLabel
             // 
             ProductDescriptionLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            ProductDescriptionLabel.Location = new Point(330, 10);
+            ProductDescriptionLabel.Location = new Point(10, 109);
             ProductDescriptionLabel.Name = "ProductDescriptionLabel";
             ProductDescriptionLabel.Size = new Size(100, 23);
             ProductDescriptionLabel.TabIndex = 11;
@@ -138,7 +138,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 711);
+            ClientSize = new Size(444, 176);
             Controls.Add(ProductPriceTextBox);
             Controls.Add(ProductPriceLabel);
             Controls.Add(DeleteProductButton);
