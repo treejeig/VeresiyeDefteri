@@ -12,9 +12,12 @@ namespace VeresiyeDefteri.DataAccess
 {
     public class ReceiptItemController
     {
+        #region Constants
         DataAccessHelpers dataAccessHelper = new DataAccessHelpers();
         SQLiteConnection sqliteConnection = new SQLiteConnection(@"data source =|DataDirectory|\TrySQlite.db");
+        #endregion
 
+        #region Public Methods
         public List<ReceiptItem> GetReceiptItemsByPersonId(long personId)
         {
             var receiptItems = new List<ReceiptItem>();
@@ -38,7 +41,6 @@ namespace VeresiyeDefteri.DataAccess
             }
             return receiptItems;
         }
-
         public ReceiptItem GetReceiptItem(long receiptItemId)
         {
             ReceiptItem receiptItem = new ReceiptItem();
@@ -92,19 +94,6 @@ namespace VeresiyeDefteri.DataAccess
             }
             return true;
         }
-        public bool DeleteReceiptItem(long receiptItemId)
-        {
-            string query = "delete from receipt_items where receipt_item_id = $receiptItemId";
-            CheckConnectionState();
-            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
-            cmd.Parameters.AddWithValue("$receiptItemId", receiptItemId);
-            int result = cmd.ExecuteNonQuery();
-            if (result == 0)
-            {
-                return false;
-            }
-            return true;
-        }
         public bool UpdateReceiptItem(ReceiptItem receiptItem)
         {
             string query = "update receipt_items set " +
@@ -136,6 +125,22 @@ namespace VeresiyeDefteri.DataAccess
             }
             return true;
         }
+        public bool DeleteReceiptItem(long receiptItemId)
+        {
+            string query = "delete from receipt_items where receipt_item_id = $receiptItemId";
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$receiptItemId", receiptItemId);
+            int result = cmd.ExecuteNonQuery();
+            if (result == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
+
+        #region Private Methods
         private ReceiptItem ReadReceiptItemFromReader(SQLiteDataReader reader)
         {
             return new ReceiptItem
@@ -165,5 +170,6 @@ namespace VeresiyeDefteri.DataAccess
                 sqliteConnection.Open();
             }
         }
+        #endregion
     }
 }

@@ -12,6 +12,15 @@ namespace VeresiyeDefteri.DataAccess
 {
     public class ProductController
     {
+        #region Constants
+        #endregion
+
+        #region Public Methods
+        #endregion
+
+        #region Private Methods
+        #endregion
+
         DataAccessHelpers dataAccessHelper = new DataAccessHelpers();
         SQLiteConnection sqliteConnection = new SQLiteConnection(@"data source =|DataDirectory|\TrySQlite.db");
         public List<Product> GetProducts()
@@ -112,7 +121,7 @@ namespace VeresiyeDefteri.DataAccess
 
 
 
-        public Product ReadProductFromReader(SQLiteDataReader reader)
+        private Product ReadProductFromReader(SQLiteDataReader reader)
         {
             return new Product
             {

@@ -12,8 +12,12 @@ namespace VeresiyeDefteri.DataAccess
 {
     public class PersonController
     {
+        #region Constants
         DataAccessHelpers dataAccessHelper = new DataAccessHelpers();
         SQLiteConnection sqliteConnection = new SQLiteConnection(@"data source =|DataDirectory|\TrySQlite.db");
+        #endregion
+
+        #region Public Methods
         public List<Person> GetPersons()
         {
             var persons = new List<Person>();
@@ -33,7 +37,6 @@ namespace VeresiyeDefteri.DataAccess
             }
             return persons;
         }
-
         public Person GetPerson(long personId)
         {
             Person person = new Person();
@@ -54,7 +57,6 @@ namespace VeresiyeDefteri.DataAccess
             }
             return person;
         }
-
         public bool AddPerson(Person person)
         {
             string query = "insert into persons " +
@@ -74,27 +76,12 @@ namespace VeresiyeDefteri.DataAccess
             cmd.Parameters.AddWithValue("$incomingBalance", person.IncomingBalance ?? 0);
             cmd.Parameters.AddWithValue("$outgoingBalance", person.OutgoingBalance ?? 0);
             int result = cmd.ExecuteNonQuery();
-            if(result == 0)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool DeletePerson(long personId)
-        {
-            string query = "delete from persons where person_id = $personId";
-            CheckConnectionState();
-            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
-            cmd.Parameters.AddWithValue("$personId", personId);
-            int result = cmd.ExecuteNonQuery();
             if (result == 0)
             {
                 return false;
             }
             return true;
         }
-
         public bool UpdatePerson(Person person)
         {
             string query = "update persons set " +
@@ -122,8 +109,23 @@ namespace VeresiyeDefteri.DataAccess
             }
             return true;
         }
+        public bool DeletePerson(long personId)
+        {
+            string query = "delete from persons where person_id = $personId";
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$personId", personId);
+            int result = cmd.ExecuteNonQuery();
+            if (result == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
 
-        public Person ReadPersonFromReader(SQLiteDataReader reader)
+        #region Private Methods
+        private Person ReadPersonFromReader(SQLiteDataReader reader)
         {
             return new Person
             {
@@ -140,7 +142,6 @@ namespace VeresiyeDefteri.DataAccess
                 OutgoingBalance = dataAccessHelper.GetNullableDoubleFromReader(reader, "outgoing_balance")
             };
         }
-
         private void CheckConnectionState()
         {
             if (sqliteConnection.State != ConnectionState.Open)
@@ -148,5 +149,6 @@ namespace VeresiyeDefteri.DataAccess
                 sqliteConnection.Open();
             }
         }
+        #endregion
     }
 }

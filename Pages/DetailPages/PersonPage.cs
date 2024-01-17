@@ -46,86 +46,8 @@ namespace VeresiyeDefteri
             InitializeComponent();
             PreparePersonPage();
         }
-        private void SavePersonButton_Click(object sender, EventArgs e)
-        {
-            string messageBoxTitle;
-            string messageBoxMessage;
-            if (selectedPersonId == 0)
-            {
-                messageBoxTitle = "Kişi eklensin mi?";
-                messageBoxMessage = $"Ad Soyad: {PersonNameTextBox.Text} {PersonSurnameTextBox.Text}";
-            }
-            else
-            {
-                messageBoxTitle = "Kişi güncellensin mi?";
-                messageBoxMessage = $"Eski Ad Soyad: {oldName} {oldSurname}\nYeni Ad Soyad: {PersonNameTextBox.Text} {PersonSurnameTextBox.Text}";
-            }
-
-            if (messageBoxes.YesNoMessageBox(messageBoxTitle, messageBoxMessage))
-            {
-                Person person = new Person
-                {
-                    Name = PersonNameTextBox.Text,
-                    Surname = PersonSurnameTextBox.Text,
-                    Phone = string.IsNullOrEmpty(PersonPhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonPhoneTextBox.Text),
-                    MobilePhone = string.IsNullOrEmpty(PersonMobilePhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonMobilePhoneTextBox.Text),
-                    Email = string.IsNullOrEmpty(PersonEmailTextBox.Text) ? null : PersonEmailTextBox.Text,
-                    IdentityNumber = string.IsNullOrEmpty(PersonIdentityNumberTextBox.Text) ? null : (long)Convert.ToDouble(PersonIdentityNumberTextBox.Text),
-                    Address = string.IsNullOrEmpty(PersonAddressTextBox.Text) ? null : PersonAddressTextBox.Text,
-                    Description = string.IsNullOrEmpty(PersonDescriptionTextBox.Text) ? null : PersonDescriptionTextBox.Text,
-                    IncomingBalance = string.IsNullOrEmpty(PersonIncomingBalanceTextBox.Text) ? 0 : Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
-                    OutgoingBalance = string.IsNullOrEmpty(PersonOutgoingBalanceTextBox.Text) ? 0 : Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
-                };
-                if (selectedPersonId == 0)
-                {
-                    if (personController.AddPerson(person))
-                    {
-                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Yeni Kişi eklendi."));
-
-                    }
-                    else
-                    {
-                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Yeni Kişi eklenemedi."));
-                    }
-                }
-                else
-                {
-                    person.PersonId = selectedPersonId;
-                    if (personController.UpdatePerson(person))
-                    {
-                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Kişi değişiklikleri kaydedildi."));
-
-                    }
-                    else
-                    {
-                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Kişi değişiklikleri kaydedilemedi."));
-                    }
-                }
-            }
-        }
-        private void DeletePersonButton_Click(object sender, EventArgs e)
-        {
-            var yesNoMessageBoxTitle = "Kişi silinsin mi?";
-            var yesNomessageBoxMessage = $"Ad Soyad: {oldName} {oldSurname}";
-
-            if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNomessageBoxMessage))
-            {
-                string infoMessageBoxTitle;
-                string infoMessageBoxMessage;
-                if (personController.DeletePerson(selectedPersonId))
-                {
-                    infoMessageBoxTitle = "Başarılı";
-                    infoMessageBoxMessage = $"{oldName} {oldSurname} silindi.";
-                }
-                else
-                {
-                    infoMessageBoxTitle = "Başarısız";
-                    infoMessageBoxMessage = $"{oldName} {oldSurname} silinemedi.";
-
-                }
-                ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox(infoMessageBoxTitle, infoMessageBoxMessage));
-            }
-        }
+        
+        #region PreparePage
         private void PreparePersonPage()
         {
             PreparePersonInformation();
@@ -265,22 +187,30 @@ namespace VeresiyeDefteri
 
             }
         }
-        private void ShowInfoMessageBoxAndClosePage(bool res)
-        {
-            if (res)
-            {
-                Close();
-            }
-        }
-        private void OnlyNumberTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            inputHelper.AllowOnlyNumbers(sender, e);
-        }
-        private void OnlyNumberAndOneDigitTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            inputHelper.AllowOnlyNumbersAndOneDigit(sender, e);
-        }
+        #endregion
 
+        #region DataGridViewOperations
+        private bool UpdateReceiptItem(ReceiptItem receiptItem, int rowIndex)
+        {
+            var hasPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2) != null
+                                    && inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2) != 0;
+            var isFirstPayment = receiptItem.PaymentDate == null;
+            if (hasPaymentAmount)
+            {
+                if (isFirstPayment)
+                {
+                    receiptItem.PaymentDate = DateTime.Now;
+                    receiptItem.ProductPriceOnPaymentDate = receiptItem.ProductPrice;
+                }
+                receiptItem.PaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2);
+            }
+            receiptItem.SpecialPriceForPerson = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2);
+            receiptItem.ProductDiscountPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2);
+            receiptItem.ProductDiscountRatio = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountRatioColumnIndex].Value, 2);
+            receiptItem.ProductQuantity = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productQuantityColumnIndex].Value, 2);
+            receiptItem.ProductTotalPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productTotalPriceColumnIndex].Value, 2);
+            return receiptItemController.UpdateReceiptItem(receiptItem);
+        }
         private void PersonReceiptsDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex != -1 && e.RowIndex != -1)
@@ -319,7 +249,7 @@ namespace VeresiyeDefteri
                     yesNoMessageBoxTitle = "Fiş silinsin mi?";
                     yesNoMessageBoxMessage = $"Toplam Alacak: {productTotalPrice}\nToplam Alınan: {paymentAmount}";
                     person.IncomingBalance -= productTotalPrice;
-                    person.OutgoingBalance -= paymentAmount; 
+                    person.OutgoingBalance -= paymentAmount;
                     if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                     {
                         if (receiptItemController.DeleteReceiptItem(selectedReceiptItemId) && personController.UpdatePerson(person))
@@ -334,28 +264,6 @@ namespace VeresiyeDefteri
                 }
 
             }
-        }
-
-        private bool UpdateReceiptItem(ReceiptItem receiptItem, int rowIndex)
-        {
-            var hasPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2) != null
-                                    && inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2) != 0;
-            var isFirstPayment = receiptItem.PaymentDate == null;
-            if (hasPaymentAmount)
-            {
-                if (isFirstPayment)
-                {
-                    receiptItem.PaymentDate = DateTime.Now;
-                    receiptItem.ProductPriceOnPaymentDate = receiptItem.ProductPrice;
-                }
-                receiptItem.PaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2);
-            }
-            receiptItem.SpecialPriceForPerson = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2);
-            receiptItem.ProductDiscountPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2);
-            receiptItem.ProductDiscountRatio = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountRatioColumnIndex].Value, 2);
-            receiptItem.ProductQuantity = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productQuantityColumnIndex].Value, 2);
-            receiptItem.ProductTotalPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productTotalPriceColumnIndex].Value, 2);
-            return receiptItemController.UpdateReceiptItem(receiptItem);
         }
         private void PersonReceiptsDataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
@@ -463,6 +371,113 @@ namespace VeresiyeDefteri
                 PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = productDiscountRatio;
             }
         }
+
+        #endregion
+
+        #region ButtonClick
+        private void SavePersonButton_Click(object sender, EventArgs e)
+        {
+            string messageBoxTitle;
+            string messageBoxMessage;
+            if (selectedPersonId == 0)
+            {
+                messageBoxTitle = "Kişi eklensin mi?";
+                messageBoxMessage = $"Ad Soyad: {PersonNameTextBox.Text} {PersonSurnameTextBox.Text}";
+            }
+            else
+            {
+                messageBoxTitle = "Kişi güncellensin mi?";
+                messageBoxMessage = $"Eski Ad Soyad: {oldName} {oldSurname}\nYeni Ad Soyad: {PersonNameTextBox.Text} {PersonSurnameTextBox.Text}";
+            }
+
+            if (messageBoxes.YesNoMessageBox(messageBoxTitle, messageBoxMessage))
+            {
+                Person person = new Person
+                {
+                    Name = PersonNameTextBox.Text,
+                    Surname = PersonSurnameTextBox.Text,
+                    Phone = string.IsNullOrEmpty(PersonPhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonPhoneTextBox.Text),
+                    MobilePhone = string.IsNullOrEmpty(PersonMobilePhoneTextBox.Text) ? null : (long)Convert.ToDouble(PersonMobilePhoneTextBox.Text),
+                    Email = string.IsNullOrEmpty(PersonEmailTextBox.Text) ? null : PersonEmailTextBox.Text,
+                    IdentityNumber = string.IsNullOrEmpty(PersonIdentityNumberTextBox.Text) ? null : (long)Convert.ToDouble(PersonIdentityNumberTextBox.Text),
+                    Address = string.IsNullOrEmpty(PersonAddressTextBox.Text) ? null : PersonAddressTextBox.Text,
+                    Description = string.IsNullOrEmpty(PersonDescriptionTextBox.Text) ? null : PersonDescriptionTextBox.Text,
+                    IncomingBalance = string.IsNullOrEmpty(PersonIncomingBalanceTextBox.Text) ? 0 : Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
+                    OutgoingBalance = string.IsNullOrEmpty(PersonOutgoingBalanceTextBox.Text) ? 0 : Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
+                };
+                if (selectedPersonId == 0)
+                {
+                    if (personController.AddPerson(person))
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Yeni Kişi eklendi."));
+
+                    }
+                    else
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Yeni Kişi eklenemedi."));
+                    }
+                }
+                else
+                {
+                    person.PersonId = selectedPersonId;
+                    if (personController.UpdatePerson(person))
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Kişi değişiklikleri kaydedildi."));
+
+                    }
+                    else
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Kişi değişiklikleri kaydedilemedi."));
+                    }
+                }
+            }
+        }
+        private void DeletePersonButton_Click(object sender, EventArgs e)
+        {
+            var yesNoMessageBoxTitle = "Kişi silinsin mi?";
+            var yesNomessageBoxMessage = $"Ad Soyad: {oldName} {oldSurname}";
+
+            if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNomessageBoxMessage))
+            {
+                string infoMessageBoxTitle;
+                string infoMessageBoxMessage;
+                if (personController.DeletePerson(selectedPersonId))
+                {
+                    infoMessageBoxTitle = "Başarılı";
+                    infoMessageBoxMessage = $"{oldName} {oldSurname} silindi.";
+                }
+                else
+                {
+                    infoMessageBoxTitle = "Başarısız";
+                    infoMessageBoxMessage = $"{oldName} {oldSurname} silinemedi.";
+
+                }
+                ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox(infoMessageBoxTitle, infoMessageBoxMessage));
+            }
+        }
+        private void AddReceiptItemButton_Click(object sender, EventArgs e)
+        {
+            ReceiptItemAddingPageForm receiptPageForm = new ReceiptItemAddingPageForm(person);
+            receiptPageForm.FormClosed += new FormClosedEventHandler(ReceiptPageForm_FormClosed);
+            receiptPageForm.ShowDialog();
+        }
+        #endregion
+
+        #region FormCloseCallBack
+        private void ReceiptPageForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            PreparePersonPage();
+        }
+        #endregion
+
+        #region MessageBoxes
+        private void ShowInfoMessageBoxAndClosePage(bool res)
+        {
+            if (res)
+            {
+                Close();
+            }
+        }
         private void ShowInfoMessageBoxAndRefreshPage(bool res, bool updatePerson = false)
         {
             if (res && updatePerson)
@@ -474,17 +489,17 @@ namespace VeresiyeDefteri
                 PreparePersonReceiptItemInformation();
             }
         }
+        #endregion
 
-        private void AddReceiptItemButton_Click(object sender, EventArgs e)
+        #region KeyPress
+        private void OnlyNumberTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ReceiptItemAddingPageForm receiptPageForm = new ReceiptItemAddingPageForm(person);
-            receiptPageForm.FormClosed += new FormClosedEventHandler(ReceiptPageForm_FormClosed);
-            receiptPageForm.ShowDialog();
+            inputHelper.AllowOnlyNumbers(sender, e);
         }
-
-        private void ReceiptPageForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void OnlyNumberAndOneDigitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            PreparePersonPage();
+            inputHelper.AllowOnlyNumbersAndOneDigit(sender, e);
         }
+        #endregion
     }
 }
