@@ -57,9 +57,9 @@ namespace VeresiyeDefteri
                 Product product = new Product
                 {
                     StockCode = string.IsNullOrEmpty(ProductStockCodeTextBox.Text) ? null : ProductStockCodeTextBox.Text,
-                    Name = ProductNameTextBox.Text,
+                    ProductName = ProductNameTextBox.Text,
                     Price = string.IsNullOrEmpty(ProductPriceTextBox.Text) ? null : Convert.ToDouble(ProductPriceTextBox.Text),
-                    Description = string.IsNullOrEmpty(ProductDescriptionTextBox.Text) ? null : ProductDescriptionTextBox.Text,
+                    ProductDescription = string.IsNullOrEmpty(ProductDescriptionTextBox.Text) ? null : ProductDescriptionTextBox.Text,
                 };
                 if (selectedProductId == 0)
                 {
@@ -126,11 +126,11 @@ namespace VeresiyeDefteri
             if (product != null)
             {
                 ProductStockCodeTextBox.Text = product.StockCode;
-                ProductNameTextBox.Text = product.Name;
+                ProductNameTextBox.Text = product.ProductName;
                 ProductPriceTextBox.Text = product.Price.ToString();
-                ProductDescriptionTextBox.Text = product.Description;
+                ProductDescriptionTextBox.Text = product.ProductDescription;
                 oldStockCode = product.StockCode;
-                oldName = product.Name;
+                oldName = product.ProductName;
                 oldPrice = product.Price.ToString();
             }
         }

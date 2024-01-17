@@ -36,5 +36,14 @@ namespace VeresiyeDefteri.Helpers
                 e.Handled = true;
             }
         }
+
+        public double? RoundNullableTwoDigit(object? value,int digit)
+        {
+            if (value != null)
+            {
+                return Math.Round((double)value, digit);
+            }
+            return null;
+        }
     }
 }

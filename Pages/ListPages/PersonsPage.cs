@@ -104,7 +104,7 @@ namespace VeresiyeDefteri.Pages.ListPages
 
         private void PersonsDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex != -1)
+            if (e.ColumnIndex != -1 && e.RowIndex != -1)
             {
                 selectedPersonId = (long)PersonsDataGridView.Rows[e.RowIndex].Cells[0].Value;
                 Person selectedPerson = personController.GetPerson(selectedPersonId);

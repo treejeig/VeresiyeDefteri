@@ -42,12 +42,13 @@
             // 
             // ReceiptsDataGridView
             // 
+            ReceiptsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ReceiptsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             ReceiptsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PersonNameColumn, PersonSurnameColumn, DateColumn, IncomingBalanceColumn, OutgoingBalanceColumn, TotalColumn, GoToReceiptDetailButtonColumn });
             ReceiptsDataGridView.Location = new Point(10, 10);
             ReceiptsDataGridView.Name = "ReceiptsDataGridView";
             ReceiptsDataGridView.RowTemplate.Height = 25;
-            ReceiptsDataGridView.Size = new Size(760, 375);
+            ReceiptsDataGridView.Size = new Size(850, 690);
             ReceiptsDataGridView.TabIndex = 0;
             // 
             // PersonNameColumn
@@ -89,7 +90,7 @@
             // 
             // AddReceiptButton
             // 
-            AddReceiptButton.Location = new Point(10, 395);
+            AddReceiptButton.Location = new Point(875, 10);
             AddReceiptButton.Name = "AddReceiptButton";
             AddReceiptButton.Size = new Size(100, 56);
             AddReceiptButton.TabIndex = 1;

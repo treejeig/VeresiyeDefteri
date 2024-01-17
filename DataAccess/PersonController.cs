@@ -71,8 +71,8 @@ namespace VeresiyeDefteri.DataAccess
             cmd.Parameters.AddWithValue("$identityNumber", person.IdentityNumber);
             cmd.Parameters.AddWithValue("$address", person.Address);
             cmd.Parameters.AddWithValue("$description", person.Description);
-            cmd.Parameters.AddWithValue("$incomingBalance", person.IncomingBalance);
-            cmd.Parameters.AddWithValue("$outgoingBalance", person.OutgoingBalance);
+            cmd.Parameters.AddWithValue("$incomingBalance", person.IncomingBalance ?? 0);
+            cmd.Parameters.AddWithValue("$outgoingBalance", person.OutgoingBalance ?? 0);
             int result = cmd.ExecuteNonQuery();
             if(result == 0)
             {
@@ -123,7 +123,7 @@ namespace VeresiyeDefteri.DataAccess
             return true;
         }
 
-        private Person ReadPersonFromReader(SQLiteDataReader reader)
+        public Person ReadPersonFromReader(SQLiteDataReader reader)
         {
             return new Person
             {

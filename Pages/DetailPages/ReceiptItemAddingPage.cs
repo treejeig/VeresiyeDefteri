@@ -7,19 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VeresiyeDefteri.DataObjects;
 
-namespace VeresiyeDefteri.Pages.ListPages
+namespace VeresiyeDefteri
 {
-    public partial class ReceiptsPageForm : Form
+    public partial class ReceiptItemAddingPageForm : Form
     {
-        public ReceiptsPageForm()
+        public ReceiptItemAddingPageForm(Person person)
         {
             InitializeComponent();
+            PrepareReceiptItemAddingPage();
         }
 
-        private void AddReceiptButton_Click(object sender, EventArgs e)
+        private void PrepareReceiptItemAddingPage()
         {
-            
+
         }
     }
+
 }

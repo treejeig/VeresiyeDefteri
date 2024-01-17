@@ -56,18 +56,18 @@ namespace VeresiyeDefteri.Pages.ListPages
             ProductsDataGridView.Columns[1].HeaderText = "Stok Kodu";
             ProductsDataGridView.Columns[1].DataPropertyName = "StockCode";
             //set name column
-            ProductsDataGridView.Columns[2].Name = "Name";
+            ProductsDataGridView.Columns[2].Name = "ProductName";
             ProductsDataGridView.Columns[2].HeaderText = "Adı";
-            ProductsDataGridView.Columns[2].DataPropertyName = "Name";
+            ProductsDataGridView.Columns[2].DataPropertyName = "ProductName";
             //set price column
             ProductsDataGridView.Columns[3].Name = "Price";
             ProductsDataGridView.Columns[3].HeaderText = "Fiyatı";
             ProductsDataGridView.Columns[3].DataPropertyName = "Price";
             ProductsDataGridView.Columns[3].ReadOnly = true;
             //set description column
-            ProductsDataGridView.Columns[4].Name = "Description";
+            ProductsDataGridView.Columns[4].Name = "ProductDescription";
             ProductsDataGridView.Columns[4].HeaderText = "Açıklama";
-            ProductsDataGridView.Columns[4].DataPropertyName = "Description";
+            ProductsDataGridView.Columns[4].DataPropertyName = "ProductDescription";
             //set go_to_product_detail column
             DataGridViewButtonColumn goToProductDetailButtonColumn = new DataGridViewButtonColumn();
             goToProductDetailButtonColumn.UseColumnTextForButtonValue = true;
@@ -98,7 +98,7 @@ namespace VeresiyeDefteri.Pages.ListPages
 
         private void ProductsDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex != -1)
+            if (e.ColumnIndex != -1 && e.RowIndex != -1)
             {
                 selectedProductId = (long)ProductsDataGridView.Rows[e.RowIndex].Cells[0].Value;
                 Product selectedProduct = productController.GetProduct(selectedProductId);
@@ -116,8 +116,8 @@ namespace VeresiyeDefteri.Pages.ListPages
                 if (ProductsDataGridView.Columns[e.ColumnIndex].Name == "SaveEditedProduct")
                 {
                     string oldStockCode = selectedProduct.StockCode ?? "";
-                    string oldName = selectedProduct.Name;
-                    string oldDescription = selectedProduct.Description ?? "";
+                    string oldName = selectedProduct.ProductName;
+                    string oldDescription = selectedProduct.ProductDescription ?? "";
                     string newStockCode = (string)ProductsDataGridView.Rows[e.RowIndex].Cells[1].Value;
                     string newName = (string)ProductsDataGridView.Rows[e.RowIndex].Cells[2].Value;
                     string newDescription = (string)ProductsDataGridView.Rows[e.RowIndex].Cells[4].Value;
@@ -126,8 +126,8 @@ namespace VeresiyeDefteri.Pages.ListPages
                     if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                     {
                         selectedProduct.StockCode = newStockCode;
-                        selectedProduct.Name = newName;
-                        selectedProduct.Description = newDescription;
+                        selectedProduct.ProductName = newName;
+                        selectedProduct.ProductDescription = newDescription;
                         if (productController.UpdateProduct(selectedProduct))
                         {
                             ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Ürün değişikleri kaydedildi."));
@@ -142,7 +142,7 @@ namespace VeresiyeDefteri.Pages.ListPages
                 if (ProductsDataGridView.Columns[e.ColumnIndex].Name == "DeleteSelectedProduct")
                 {
                     yesNoMessageBoxTitle = "Ürün silinsin mi?";
-                    yesNoMessageBoxMessage = $"Stok Kodu: {selectedProduct.StockCode}\nAdı: {selectedProduct.Name}\nAçıklama: {selectedProduct.Description}";
+                    yesNoMessageBoxMessage = $"Stok Kodu: {selectedProduct.StockCode}\nAdı: {selectedProduct.ProductName}\nAçıklama: {selectedProduct.ProductDescription}";
                     if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                     {
                         if (productController.DeleteProduct(selectedProductId))

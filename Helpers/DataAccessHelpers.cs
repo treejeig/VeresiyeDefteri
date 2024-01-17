@@ -40,6 +40,19 @@ namespace VeresiyeDefteri.Helpers
             return CheckAndGetNullDouble(reader, ordinal);
         }
 
+        public DateTime? GetNullableDateTimeFromReader(SQLiteDataReader reader, string ordinalName)
+        {
+            var ordinal = reader.GetOrdinal(ordinalName);
+            return CheckAndGetNullDateTime(reader, ordinal);
+        }
+
+        public bool? GetNullableBoolFromReader(SQLiteDataReader reader, string ordinalName)
+        {
+            var ordinal = reader.GetOrdinal(ordinalName);
+            return CheckAndGetNullBool(reader, ordinal);
+
+        }
+
         public string? CheckAndGetNullString(SQLiteDataReader reader, int ordinal)
         {
             return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
@@ -51,6 +64,14 @@ namespace VeresiyeDefteri.Helpers
         public double? CheckAndGetNullDouble(SQLiteDataReader reader, int ordinal)
         {
             return reader.IsDBNull(ordinal) ? null : reader.GetDouble(ordinal);
+        }
+        public DateTime? CheckAndGetNullDateTime(SQLiteDataReader reader, int ordinal)
+        {
+            return reader.IsDBNull(ordinal) ? null : DateTime.Parse(reader.GetString(ordinal));
+        }
+        public bool? CheckAndGetNullBool(SQLiteDataReader reader, int ordinal)
+        {
+            return reader.IsDBNull(ordinal) ? null : (reader.GetInt64(ordinal) == 1);
         }
     }
 }

@@ -58,15 +58,15 @@ namespace VeresiyeDefteri.DataAccess
         public bool AddProduct(Product product)
         {
             string query = "insert into products " +
-                "(stock_code, name, price, description)" +
-                "values($stockCode, $name, $price, $description)";
+                "(stock_code, product_name, price, product_description)" +
+                "values($stockCode, $productName, $price, $productDescription)";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             cmd.Parameters.AddWithValue("$stockCode", product.StockCode);
-            cmd.Parameters.AddWithValue("$name", product.Name);
+            cmd.Parameters.AddWithValue("$productName", product.ProductName);
             cmd.Parameters.AddWithValue("$price", product.Price);
-            cmd.Parameters.AddWithValue("$description", product.Description);
+            cmd.Parameters.AddWithValue("$productDescription", product.ProductDescription);
             int result = cmd.ExecuteNonQuery();
             if (result == 0)
             {
@@ -92,15 +92,15 @@ namespace VeresiyeDefteri.DataAccess
         public bool UpdateProduct(Product product)
         {
             string query = "update products set " +
-                "stock_code = $stockCode, name = $name, price = $price, description = $description " +
+                "stock_code = $stockCode, product_name = $productName, price = $price, product_description = $productDescription " +
                 "where product_id = $productId";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             cmd.Parameters.AddWithValue("$stockCode", product.StockCode);
-            cmd.Parameters.AddWithValue("$name", product.Name);
+            cmd.Parameters.AddWithValue("$productName", product.ProductName);
             cmd.Parameters.AddWithValue("$price", product.Price);
-            cmd.Parameters.AddWithValue("$description", product.Description);
+            cmd.Parameters.AddWithValue("$productDescription", product.ProductDescription);
             cmd.Parameters.AddWithValue("$productId", product.ProductId);
             int result = cmd.ExecuteNonQuery();
             if (result == 0)
@@ -112,15 +112,15 @@ namespace VeresiyeDefteri.DataAccess
 
 
 
-        private Product ReadProductFromReader(SQLiteDataReader reader)
+        public Product ReadProductFromReader(SQLiteDataReader reader)
         {
             return new Product
             {
                 ProductId = dataAccessHelper.GetLongFromReader(reader, "product_id"),
                 StockCode = dataAccessHelper.GetNullableStringFromReader(reader, "stock_code"),
-                Name = dataAccessHelper.GetStringFromReader(reader, "name"),
+                ProductName = dataAccessHelper.GetStringFromReader(reader, "product_name"),
                 Price = dataAccessHelper.GetNullableDoubleFromReader(reader, "price"),
-                Description = dataAccessHelper.GetNullableStringFromReader(reader, "description"),
+                ProductDescription = dataAccessHelper.GetNullableStringFromReader(reader, "product_description"),
             };
         }
 

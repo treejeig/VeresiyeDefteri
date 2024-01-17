@@ -52,6 +52,25 @@
             PersonOutgoingBalanceTextBox = new TextBox();
             PersonTotalBalanceLabel = new Label();
             PersonTotalBalanceTextBox = new TextBox();
+            PersonReceiptsDataGridView = new DataGridView();
+            ReceiptItemIdColumn = new DataGridViewTextBoxColumn();
+            ReceiptDateColumn = new DataGridViewTextBoxColumn();
+            PaymentDateColumn = new DataGridViewTextBoxColumn();
+            ProductStockCodeColumn = new DataGridViewTextBoxColumn();
+            ProductNameColumn = new DataGridViewTextBoxColumn();
+            ProductPriceColumn = new DataGridViewTextBoxColumn();
+            ProductPriceOnReceiptDateColumn = new DataGridViewTextBoxColumn();
+            ProductPriceOnPaymentDateColumn = new DataGridViewTextBoxColumn();
+            SpecialPriceForPersonColumn = new DataGridViewTextBoxColumn();
+            ProductDiscountPriceColumn = new DataGridViewTextBoxColumn();
+            ProductDiscountRatioColumn = new DataGridViewTextBoxColumn();
+            ProductQuantityColumn = new DataGridViewTextBoxColumn();
+            ProductTotalPriceColumn = new DataGridViewTextBoxColumn();
+            PaymentAmountColumn = new DataGridViewTextBoxColumn();
+            SaveEditedReceiptItemButtonColumn = new DataGridViewButtonColumn();
+            DeleteSelectedReceiptItemButtonColumn = new DataGridViewButtonColumn();
+            AddReceiptItemButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)PersonReceiptsDataGridView).BeginInit();
             SuspendLayout();
             // 
             // PersonNameLabel
@@ -127,7 +146,7 @@
             // PersonDescriptionLabel
             // 
             PersonDescriptionLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            PersonDescriptionLabel.Location = new Point(330, 76);
+            PersonDescriptionLabel.Location = new Point(330, 109);
             PersonDescriptionLabel.Name = "PersonDescriptionLabel";
             PersonDescriptionLabel.Size = new Size(100, 23);
             PersonDescriptionLabel.TabIndex = 20;
@@ -137,7 +156,7 @@
             // PersonIncomingBalanceLabel
             // 
             PersonIncomingBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            PersonIncomingBalanceLabel.Location = new Point(330, 142);
+            PersonIncomingBalanceLabel.Location = new Point(650, 10);
             PersonIncomingBalanceLabel.Name = "PersonIncomingBalanceLabel";
             PersonIncomingBalanceLabel.Size = new Size(100, 23);
             PersonIncomingBalanceLabel.TabIndex = 21;
@@ -201,21 +220,21 @@
             PersonAddressTextBox.Multiline = true;
             PersonAddressTextBox.Name = "PersonAddressTextBox";
             PersonAddressTextBox.PlaceholderText = "Adres";
-            PersonAddressTextBox.Size = new Size(200, 56);
+            PersonAddressTextBox.Size = new Size(200, 89);
             PersonAddressTextBox.TabIndex = 6;
             // 
             // PersonDescriptionTextBox
             // 
-            PersonDescriptionTextBox.Location = new Point(440, 76);
+            PersonDescriptionTextBox.Location = new Point(440, 109);
             PersonDescriptionTextBox.Multiline = true;
             PersonDescriptionTextBox.Name = "PersonDescriptionTextBox";
             PersonDescriptionTextBox.PlaceholderText = "Açıklama";
-            PersonDescriptionTextBox.Size = new Size(200, 56);
+            PersonDescriptionTextBox.Size = new Size(200, 89);
             PersonDescriptionTextBox.TabIndex = 7;
             // 
             // PersonIncomingBalanceTextBox
             // 
-            PersonIncomingBalanceTextBox.Location = new Point(440, 142);
+            PersonIncomingBalanceTextBox.Location = new Point(760, 10);
             PersonIncomingBalanceTextBox.Name = "PersonIncomingBalanceTextBox";
             PersonIncomingBalanceTextBox.PlaceholderText = "Alacak";
             PersonIncomingBalanceTextBox.Size = new Size(200, 23);
@@ -224,28 +243,28 @@
             // 
             // SavePersonButton
             // 
-            SavePersonButton.Location = new Point(875, 76);
+            SavePersonButton.Location = new Point(1075, 76);
             SavePersonButton.Name = "SavePersonButton";
             SavePersonButton.Size = new Size(100, 56);
             SavePersonButton.TabIndex = 10;
-            SavePersonButton.Text = "Kaydet";
+            SavePersonButton.Text = "Kişiyi Kaydet";
             SavePersonButton.UseVisualStyleBackColor = true;
             SavePersonButton.Click += SavePersonButton_Click;
             // 
             // DeletePersonButton
             // 
-            DeletePersonButton.Location = new Point(875, 10);
+            DeletePersonButton.Location = new Point(1075, 10);
             DeletePersonButton.Name = "DeletePersonButton";
             DeletePersonButton.Size = new Size(100, 56);
             DeletePersonButton.TabIndex = 12;
-            DeletePersonButton.Text = "Sil";
+            DeletePersonButton.Text = "Kişiyi Sil";
             DeletePersonButton.UseVisualStyleBackColor = true;
             DeletePersonButton.Click += DeletePersonButton_Click;
             // 
             // PersonOutgoingBalanceLabel
             // 
             PersonOutgoingBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            PersonOutgoingBalanceLabel.Location = new Point(330, 175);
+            PersonOutgoingBalanceLabel.Location = new Point(650, 43);
             PersonOutgoingBalanceLabel.Name = "PersonOutgoingBalanceLabel";
             PersonOutgoingBalanceLabel.Size = new Size(100, 23);
             PersonOutgoingBalanceLabel.TabIndex = 22;
@@ -254,7 +273,7 @@
             // 
             // PersonOutgoingBalanceTextBox
             // 
-            PersonOutgoingBalanceTextBox.Location = new Point(440, 175);
+            PersonOutgoingBalanceTextBox.Location = new Point(760, 43);
             PersonOutgoingBalanceTextBox.Name = "PersonOutgoingBalanceTextBox";
             PersonOutgoingBalanceTextBox.PlaceholderText = "Verecek";
             PersonOutgoingBalanceTextBox.Size = new Size(200, 23);
@@ -264,7 +283,7 @@
             // PersonTotalBalanceLabel
             // 
             PersonTotalBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            PersonTotalBalanceLabel.Location = new Point(650, 175);
+            PersonTotalBalanceLabel.Location = new Point(650, 76);
             PersonTotalBalanceLabel.Name = "PersonTotalBalanceLabel";
             PersonTotalBalanceLabel.Size = new Size(100, 23);
             PersonTotalBalanceLabel.TabIndex = 23;
@@ -273,18 +292,124 @@
             // 
             // PersonTotalBalanceTextBox
             // 
-            PersonTotalBalanceTextBox.Location = new Point(760, 175);
+            PersonTotalBalanceTextBox.Location = new Point(760, 76);
             PersonTotalBalanceTextBox.Name = "PersonTotalBalanceTextBox";
             PersonTotalBalanceTextBox.PlaceholderText = "Toplam";
             PersonTotalBalanceTextBox.Size = new Size(200, 23);
             PersonTotalBalanceTextBox.TabIndex = 24;
             PersonTotalBalanceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
+            // PersonReceiptsDataGridView
+            // 
+            PersonReceiptsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            PersonReceiptsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ReceiptItemIdColumn, ReceiptDateColumn, PaymentDateColumn, ProductStockCodeColumn, ProductNameColumn, ProductPriceColumn, ProductPriceOnReceiptDateColumn, ProductPriceOnPaymentDateColumn, SpecialPriceForPersonColumn, ProductDiscountPriceColumn, ProductDiscountRatioColumn, ProductQuantityColumn, ProductTotalPriceColumn, PaymentAmountColumn, SaveEditedReceiptItemButtonColumn, DeleteSelectedReceiptItemButtonColumn });
+            PersonReceiptsDataGridView.Location = new Point(10, 236);
+            PersonReceiptsDataGridView.Name = "PersonReceiptsDataGridView";
+            PersonReceiptsDataGridView.RowTemplate.Height = 25;
+            PersonReceiptsDataGridView.Size = new Size(1160, 460);
+            PersonReceiptsDataGridView.TabIndex = 25;
+            PersonReceiptsDataGridView.CellClick += PersonReceiptsDataGridView_CellClick;
+            PersonReceiptsDataGridView.CellEndEdit += PersonReceiptsDataGridView_CellEndEdit;
+            PersonReceiptsDataGridView.EditingControlShowing += PersonReceiptsDataGridView_EditingControlShowing;
+            // 
+            // ReceiptItemIdColumn
+            // 
+            ReceiptItemIdColumn.HeaderText = "ReceiptItemId";
+            ReceiptItemIdColumn.Name = "ReceiptItemIdColumn";
+            ReceiptItemIdColumn.Visible = false;
+            // 
+            // ReceiptDateColumn
+            // 
+            ReceiptDateColumn.HeaderText = "Sipariş Tarihi";
+            ReceiptDateColumn.Name = "ReceiptDateColumn";
+            // 
+            // PaymentDateColumn
+            // 
+            PaymentDateColumn.HeaderText = "Ödeme Tarihi";
+            PaymentDateColumn.Name = "PaymentDateColumn";
+            // 
+            // ProductStockCodeColumn
+            // 
+            ProductStockCodeColumn.HeaderText = "Ürün Stok Kodu";
+            ProductStockCodeColumn.Name = "ProductStockCodeColumn";
+            // 
+            // ProductNameColumn
+            // 
+            ProductNameColumn.HeaderText = "Ürün Adı";
+            ProductNameColumn.Name = "ProductNameColumn";
+            // 
+            // ProductPriceColumn
+            // 
+            ProductPriceColumn.HeaderText = "Ürün Güncel Fiyatı";
+            ProductPriceColumn.Name = "ProductPriceColumn";
+            // 
+            // ProductPriceOnReceiptDateColumn
+            // 
+            ProductPriceOnReceiptDateColumn.HeaderText = "Sipariş Tarihi Fiyatı";
+            ProductPriceOnReceiptDateColumn.Name = "ProductPriceOnReceiptDateColumn";
+            // 
+            // ProductPriceOnPaymentDateColumn
+            // 
+            ProductPriceOnPaymentDateColumn.HeaderText = "Ödeme Zamanı Fiyatı";
+            ProductPriceOnPaymentDateColumn.Name = "ProductPriceOnPaymentDateColumn";
+            // 
+            // SpecialPriceForPersonColumn
+            // 
+            SpecialPriceForPersonColumn.HeaderText = "Kişiye Özel Fiyat";
+            SpecialPriceForPersonColumn.Name = "SpecialPriceForPersonColumn";
+            // 
+            // ProductDiscountPriceColumn
+            // 
+            ProductDiscountPriceColumn.HeaderText = "İndirimli Fiyat";
+            ProductDiscountPriceColumn.Name = "ProductDiscountPriceColumn";
+            // 
+            // ProductDiscountRatioColumn
+            // 
+            ProductDiscountRatioColumn.HeaderText = "İndirim Oranı(%)";
+            ProductDiscountRatioColumn.Name = "ProductDiscountRatioColumn";
+            // 
+            // ProductQuantityColumn
+            // 
+            ProductQuantityColumn.HeaderText = "Ürün Adedi";
+            ProductQuantityColumn.Name = "ProductQuantityColumn";
+            // 
+            // ProductTotalPriceColumn
+            // 
+            ProductTotalPriceColumn.HeaderText = "Ürün Toplam Fiyatı";
+            ProductTotalPriceColumn.Name = "ProductTotalPriceColumn";
+            // 
+            // PaymentAmountColumn
+            // 
+            PaymentAmountColumn.HeaderText = "Ödeme Tutarı";
+            PaymentAmountColumn.Name = "PaymentAmountColumn";
+            // 
+            // SaveEditedReceiptItemButtonColumn
+            // 
+            SaveEditedReceiptItemButtonColumn.HeaderText = "Değişiklikleri Kaydet";
+            SaveEditedReceiptItemButtonColumn.Name = "SaveEditedReceiptItemButtonColumn";
+            // 
+            // DeleteSelectedReceiptItemButtonColumn
+            // 
+            DeleteSelectedReceiptItemButtonColumn.HeaderText = "Sil";
+            DeleteSelectedReceiptItemButtonColumn.Name = "DeleteSelectedReceiptItemButtonColumn";
+            // 
+            // AddReceiptItemButton
+            // 
+            AddReceiptItemButton.Location = new Point(650, 142);
+            AddReceiptItemButton.Name = "AddReceiptItemButton";
+            AddReceiptItemButton.Size = new Size(100, 56);
+            AddReceiptItemButton.TabIndex = 26;
+            AddReceiptItemButton.Text = "Yeni Fiş Ekle";
+            AddReceiptItemButton.UseVisualStyleBackColor = true;
+            AddReceiptItemButton.Click += AddReceiptItemButton_Click;
+            // 
             // PersonPageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 711);
+            ClientSize = new Size(1184, 711);
+            Controls.Add(AddReceiptItemButton);
+            Controls.Add(PersonReceiptsDataGridView);
             Controls.Add(PersonTotalBalanceTextBox);
             Controls.Add(PersonTotalBalanceLabel);
             Controls.Add(PersonOutgoingBalanceTextBox);
@@ -312,6 +437,7 @@
             Name = "PersonPageForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Kişi Detayı";
+            ((System.ComponentModel.ISupportInitialize)PersonReceiptsDataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -342,5 +468,23 @@
         private TextBox PersonOutgoingBalanceTextBox;
         private Label PersonTotalBalanceLabel;
         private TextBox PersonTotalBalanceTextBox;
+        private DataGridView PersonReceiptsDataGridView;
+        private DataGridViewTextBoxColumn ReceiptItemIdColumn;
+        private DataGridViewTextBoxColumn ReceiptDateColumn;
+        private DataGridViewTextBoxColumn PaymentDateColumn;
+        private DataGridViewTextBoxColumn ProductStockCodeColumn;
+        private DataGridViewTextBoxColumn ProductNameColumn;
+        private DataGridViewTextBoxColumn ProductPriceColumn;
+        private DataGridViewTextBoxColumn ProductPriceOnReceiptDateColumn;
+        private DataGridViewTextBoxColumn ProductPriceOnPaymentDateColumn;
+        private DataGridViewTextBoxColumn SpecialPriceForPersonColumn;
+        private DataGridViewTextBoxColumn ProductDiscountPriceColumn;
+        private DataGridViewTextBoxColumn ProductDiscountRatioColumn;
+        private DataGridViewTextBoxColumn ProductQuantityColumn;
+        private DataGridViewTextBoxColumn ProductTotalPriceColumn;
+        private DataGridViewTextBoxColumn PaymentAmountColumn;
+        private DataGridViewButtonColumn SaveEditedReceiptItemButtonColumn;
+        private DataGridViewButtonColumn DeleteSelectedReceiptItemButtonColumn;
+        private Button AddReceiptItemButton;
     }
 }

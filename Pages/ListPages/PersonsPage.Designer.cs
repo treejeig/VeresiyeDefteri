@@ -37,8 +37,8 @@
             TotalBalanceColumn = new DataGridViewTextBoxColumn();
             GoToPersonDetailButtonColumn = new DataGridViewButtonColumn();
             SaveEditedPersonButtonColumn = new DataGridViewButtonColumn();
-            AddPersonButton = new Button();
             DeletePersonButtonColumn = new DataGridViewButtonColumn();
+            AddPersonButton = new Button();
             ((System.ComponentModel.ISupportInitialize)PersonsDataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -94,6 +94,11 @@
             SaveEditedPersonButtonColumn.HeaderText = "Kişiyi Kaydet";
             SaveEditedPersonButtonColumn.Name = "SaveEditedPersonButtonColumn";
             // 
+            // DeletePersonButtonColumn
+            // 
+            DeletePersonButtonColumn.HeaderText = "Kişiyi Sil";
+            DeletePersonButtonColumn.Name = "DeletePersonButtonColumn";
+            // 
             // AddPersonButton
             // 
             AddPersonButton.Location = new Point(875, 10);
@@ -103,11 +108,6 @@
             AddPersonButton.Text = "Yeni Kişi Ekle";
             AddPersonButton.UseVisualStyleBackColor = true;
             AddPersonButton.Click += AddPersonButton_Click;
-            // 
-            // DeletePersonButtonColumn
-            // 
-            DeletePersonButtonColumn.HeaderText = "Kişiyi Sil";
-            DeletePersonButtonColumn.Name = "DeletePersonButtonColumn";
             // 
             // PersonsPageForm
             // 
