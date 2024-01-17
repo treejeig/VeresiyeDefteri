@@ -30,7 +30,6 @@
         {
             GoToPersonsPageButton = new Button();
             GoToProductsPageButton = new Button();
-            GoToReceiptsPageButton = new Button();
             SuspendLayout();
             // 
             // GoToPersonsPageButton
@@ -54,28 +53,16 @@
             GoToProductsPageButton.UseVisualStyleBackColor = true;
             GoToProductsPageButton.Click += GoToProductsPageButton_Click;
             // 
-            // GoToReceiptsPageButton
-            // 
-            GoToReceiptsPageButton.Location = new Point(230, 10);
-            GoToReceiptsPageButton.Name = "GoToReceiptsPageButton";
-            GoToReceiptsPageButton.Size = new Size(100, 56);
-            GoToReceiptsPageButton.TabIndex = 2;
-            GoToReceiptsPageButton.Text = " Fişler Listesi";
-            GoToReceiptsPageButton.UseVisualStyleBackColor = true;
-            GoToReceiptsPageButton.Click += GoToReceiptsPageButton_Click;
-            // 
             // HomePageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(984, 711);
-            Controls.Add(GoToReceiptsPageButton);
             Controls.Add(GoToProductsPageButton);
             Controls.Add(GoToPersonsPageButton);
             Name = "HomePageForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Veresiye Defteri";
-            Load += HomePageForm_Load;
             ResumeLayout(false);
         }
 
@@ -83,6 +70,5 @@
 
         private Button GoToPersonsPageButton;
         private Button GoToProductsPageButton;
-        private Button GoToReceiptsPageButton;
     }
 }

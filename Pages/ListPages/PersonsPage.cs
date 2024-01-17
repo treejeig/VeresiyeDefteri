@@ -15,28 +15,26 @@ namespace VeresiyeDefteri.Pages.ListPages
 {
     public partial class PersonsPageForm : Form
     {
+        #region Constants
         PersonController personController = new PersonController();
         MessageBoxes messageBoxes = new MessageBoxes();
         List<Person> persons = new List<Person>();
         long selectedPersonId = 0;
+        #endregion
+
+        #region Constructors
         public PersonsPageForm()
         {
             InitializeComponent();
             PreparePersonsPage();
         }
+        #endregion
 
-        private void AddPersonButton_Click(object sender, EventArgs e)
-        {
-            PersonPageForm personPageForm = new PersonPageForm();
-            personPageForm.FormClosed += new FormClosedEventHandler(PersonPageForm_FormClosed);
-            personPageForm.ShowDialog();
-        }
-
+        #region PreparePage
         private void PreparePersonsPage()
         {
             PreparePersonsDataGridView();
         }
-
         private void PreparePersonsDataGridView()
         {
             persons = personController.GetPersons();
@@ -101,7 +99,9 @@ namespace VeresiyeDefteri.Pages.ListPages
 
             PersonsDataGridView.DataSource = persons;
         }
+        #endregion
 
+        #region DataGridViewOperations
         private void PersonsDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex != -1 && e.RowIndex != -1)
@@ -160,12 +160,25 @@ namespace VeresiyeDefteri.Pages.ListPages
                 }
             }
         }
+        #endregion
 
+        #region ButtonClick
+        private void AddPersonButton_Click(object sender, EventArgs e)
+        {
+            PersonPageForm personPageForm = new PersonPageForm();
+            personPageForm.FormClosed += new FormClosedEventHandler(PersonPageForm_FormClosed);
+            personPageForm.ShowDialog();
+        }
+        #endregion
+
+        #region FormCloseCallBack
         private void PersonPageForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             PreparePersonsPage();
         }
+        #endregion
 
+        #region MessageBoxes
         private void ShowInfoMessageBoxAndRefreshPage(bool res)
         {
             if (res)
@@ -173,5 +186,6 @@ namespace VeresiyeDefteri.Pages.ListPages
                 PreparePersonsPage();
             }
         }
+        #endregion
     }
 }

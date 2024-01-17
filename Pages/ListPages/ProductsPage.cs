@@ -15,28 +15,26 @@ namespace VeresiyeDefteri.Pages.ListPages
 {
     public partial class ProductsPageForm : Form
     {
+        #region Constants
         ProductController productController = new ProductController();
         MessageBoxes messageBoxes = new MessageBoxes();
         List<Product> products = new List<Product>();
         long selectedProductId = 0;
+        #endregion
+
+        #region Constructors
         public ProductsPageForm()
         {
             InitializeComponent();
             PrepareProductsPage();
         }
+        #endregion
 
-        private void AddProductButton_Click(object sender, EventArgs e)
-        {
-            ProductPageForm productPageForm = new ProductPageForm();
-            productPageForm.FormClosed += new FormClosedEventHandler(ProductPageForm_FormClosed);
-            productPageForm.ShowDialog();
-        }
-
+        #region PreparePage
         private void PrepareProductsPage()
         {
             PrepareProductsDataGridView();
         }
-
         private void PrepareProductsDataGridView()
         {
             products = productController.GetProducts();
@@ -95,7 +93,9 @@ namespace VeresiyeDefteri.Pages.ListPages
 
             ProductsDataGridView.DataSource = products;
         }
+        #endregion
 
+        #region DataGridViewOperations
         private void ProductsDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex != -1 && e.RowIndex != -1)
@@ -157,11 +157,25 @@ namespace VeresiyeDefteri.Pages.ListPages
                 }
             }
         }
+        #endregion
+
+        #region ButtonClick
+        private void AddProductButton_Click(object sender, EventArgs e)
+        {
+            ProductPageForm productPageForm = new ProductPageForm();
+            productPageForm.FormClosed += new FormClosedEventHandler(ProductPageForm_FormClosed);
+            productPageForm.ShowDialog();
+        }
+        #endregion
+
+        #region FormCloseCallBack
         private void ProductPageForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             PrepareProductsPage();
         }
+        #endregion
 
+        #region MessageBoxes
         private void ShowInfoMessageBoxAndRefreshPage(bool res)
         {
             if (res)
@@ -169,5 +183,9 @@ namespace VeresiyeDefteri.Pages.ListPages
                 PrepareProductsPage();
             }
         }
+        #endregion
+
+        #region KeyPress
+        #endregion
     }
 }

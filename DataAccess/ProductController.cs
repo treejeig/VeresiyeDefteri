@@ -13,16 +13,11 @@ namespace VeresiyeDefteri.DataAccess
     public class ProductController
     {
         #region Constants
+        DataAccessHelpers dataAccessHelper = new DataAccessHelpers();
+        SQLiteConnection sqliteConnection = new SQLiteConnection(@"data source =|DataDirectory|\TrySQlite.db");
         #endregion
 
         #region Public Methods
-        #endregion
-
-        #region Private Methods
-        #endregion
-
-        DataAccessHelpers dataAccessHelper = new DataAccessHelpers();
-        SQLiteConnection sqliteConnection = new SQLiteConnection(@"data source =|DataDirectory|\TrySQlite.db");
         public List<Product> GetProducts()
         {
             var products = new List<Product>();
@@ -42,7 +37,6 @@ namespace VeresiyeDefteri.DataAccess
             }
             return products;
         }
-
         public Product GetProduct(long productId)
         {
             Product product = new Product();
@@ -63,7 +57,6 @@ namespace VeresiyeDefteri.DataAccess
             }
             return product;
         }
-
         public bool AddProduct(Product product)
         {
             string query = "insert into products " +
@@ -83,21 +76,6 @@ namespace VeresiyeDefteri.DataAccess
             }
             return true;
         }
-
-        public bool DeleteProduct(long productId)
-        {
-            string query = "delete from products where product_id = $productId";
-            CheckConnectionState();
-            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
-            cmd.Parameters.AddWithValue("$productId", productId);
-            int result = cmd.ExecuteNonQuery();
-            if (result == 0)
-            {
-                return false;
-            }
-            return true;
-        }
-
         public bool UpdateProduct(Product product)
         {
             string query = "update products set " +
@@ -118,9 +96,22 @@ namespace VeresiyeDefteri.DataAccess
             }
             return true;
         }
+        public bool DeleteProduct(long productId)
+        {
+            string query = "delete from products where product_id = $productId";
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            cmd.Parameters.AddWithValue("$productId", productId);
+            int result = cmd.ExecuteNonQuery();
+            if (result == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
 
-
-
+        #region Private Methods
         private Product ReadProductFromReader(SQLiteDataReader reader)
         {
             return new Product
@@ -132,7 +123,6 @@ namespace VeresiyeDefteri.DataAccess
                 ProductDescription = dataAccessHelper.GetNullableStringFromReader(reader, "product_description"),
             };
         }
-
         private void CheckConnectionState()
         {
             if (sqliteConnection.State != ConnectionState.Open)
@@ -140,5 +130,6 @@ namespace VeresiyeDefteri.DataAccess
                 sqliteConnection.Open();
             }
         }
+        #endregion
     }
 }
