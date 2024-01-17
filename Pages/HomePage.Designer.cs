@@ -30,6 +30,12 @@
         {
             GoToPersonsPageButton = new Button();
             GoToProductsPageButton = new Button();
+            TotalIncomingBalanceLabel = new Label();
+            TotalIncomingBalanceTextBox = new TextBox();
+            TotalOutgoinBalanceLabel = new Label();
+            TotalOutgoingBalanceTextBox = new TextBox();
+            TotalBalanceLabel = new Label();
+            TotalBalanceTextBox = new TextBox();
             SuspendLayout();
             // 
             // GoToPersonsPageButton
@@ -53,22 +59,92 @@
             GoToProductsPageButton.UseVisualStyleBackColor = true;
             GoToProductsPageButton.Click += GoToProductsPageButton_Click;
             // 
+            // TotalIncomingBalanceLabel
+            // 
+            TotalIncomingBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            TotalIncomingBalanceLabel.Location = new Point(10, 76);
+            TotalIncomingBalanceLabel.Name = "TotalIncomingBalanceLabel";
+            TotalIncomingBalanceLabel.Size = new Size(100, 23);
+            TotalIncomingBalanceLabel.TabIndex = 9;
+            TotalIncomingBalanceLabel.Text = "Toplam Alacak";
+            TotalIncomingBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // TotalIncomingBalanceTextBox
+            // 
+            TotalIncomingBalanceTextBox.Location = new Point(120, 76);
+            TotalIncomingBalanceTextBox.Name = "TotalIncomingBalanceTextBox";
+            TotalIncomingBalanceTextBox.PlaceholderText = "Toplam Alacak";
+            TotalIncomingBalanceTextBox.ReadOnly = true;
+            TotalIncomingBalanceTextBox.Size = new Size(100, 23);
+            TotalIncomingBalanceTextBox.TabIndex = 10;
+            // 
+            // TotalOutgoinBalanceLabel
+            // 
+            TotalOutgoinBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            TotalOutgoinBalanceLabel.Location = new Point(10, 109);
+            TotalOutgoinBalanceLabel.Name = "TotalOutgoinBalanceLabel";
+            TotalOutgoinBalanceLabel.Size = new Size(100, 23);
+            TotalOutgoinBalanceLabel.TabIndex = 11;
+            TotalOutgoinBalanceLabel.Text = "Toplam Verecek";
+            TotalOutgoinBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // TotalOutgoingBalanceTextBox
+            // 
+            TotalOutgoingBalanceTextBox.Location = new Point(120, 109);
+            TotalOutgoingBalanceTextBox.Name = "TotalOutgoingBalanceTextBox";
+            TotalOutgoingBalanceTextBox.PlaceholderText = "Toplam Verecek";
+            TotalOutgoingBalanceTextBox.ReadOnly = true;
+            TotalOutgoingBalanceTextBox.Size = new Size(100, 23);
+            TotalOutgoingBalanceTextBox.TabIndex = 12;
+            // 
+            // TotalBalanceLabel
+            // 
+            TotalBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            TotalBalanceLabel.Location = new Point(10, 142);
+            TotalBalanceLabel.Name = "TotalBalanceLabel";
+            TotalBalanceLabel.Size = new Size(100, 23);
+            TotalBalanceLabel.TabIndex = 13;
+            TotalBalanceLabel.Text = "Toplam";
+            TotalBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // TotalBalanceTextBox
+            // 
+            TotalBalanceTextBox.Location = new Point(120, 142);
+            TotalBalanceTextBox.Name = "TotalBalanceTextBox";
+            TotalBalanceTextBox.PlaceholderText = "Toplam";
+            TotalBalanceTextBox.ReadOnly = true;
+            TotalBalanceTextBox.Size = new Size(100, 23);
+            TotalBalanceTextBox.TabIndex = 14;
+            // 
             // HomePageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 711);
+            ClientSize = new Size(234, 181);
+            Controls.Add(TotalBalanceTextBox);
+            Controls.Add(TotalBalanceLabel);
+            Controls.Add(TotalOutgoingBalanceTextBox);
+            Controls.Add(TotalOutgoinBalanceLabel);
+            Controls.Add(TotalIncomingBalanceTextBox);
+            Controls.Add(TotalIncomingBalanceLabel);
             Controls.Add(GoToProductsPageButton);
             Controls.Add(GoToPersonsPageButton);
             Name = "HomePageForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Veresiye Defteri";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Button GoToPersonsPageButton;
         private Button GoToProductsPageButton;
+        private Label TotalIncomingBalanceLabel;
+        private TextBox TotalIncomingBalanceTextBox;
+        private Label TotalOutgoinBalanceLabel;
+        private TextBox TotalOutgoingBalanceTextBox;
+        private Label TotalBalanceLabel;
+        private TextBox TotalBalanceTextBox;
     }
 }

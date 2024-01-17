@@ -376,7 +376,6 @@ namespace VeresiyeDefteri
                 PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = productDiscountRatio;
             }
         }
-
         #endregion
 
         #region ButtonClick
