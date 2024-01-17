@@ -73,8 +73,8 @@ namespace VeresiyeDefteri
                     IdentityNumber = string.IsNullOrEmpty(PersonIdentityNumberTextBox.Text) ? null : (long)Convert.ToDouble(PersonIdentityNumberTextBox.Text),
                     Address = string.IsNullOrEmpty(PersonAddressTextBox.Text) ? null : PersonAddressTextBox.Text,
                     Description = string.IsNullOrEmpty(PersonDescriptionTextBox.Text) ? null : PersonDescriptionTextBox.Text,
-                    IncomingBalance = string.IsNullOrEmpty(PersonIncomingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
-                    OutgoingBalance = string.IsNullOrEmpty(PersonOutgoingBalanceTextBox.Text) ? null : Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
+                    IncomingBalance = string.IsNullOrEmpty(PersonIncomingBalanceTextBox.Text) ? 0 : Convert.ToDouble(PersonIncomingBalanceTextBox.Text),
+                    OutgoingBalance = string.IsNullOrEmpty(PersonOutgoingBalanceTextBox.Text) ? 0 : Convert.ToDouble(PersonOutgoingBalanceTextBox.Text)
                 };
                 if (selectedPersonId == 0)
                 {
@@ -293,8 +293,8 @@ namespace VeresiyeDefteri
                 {
                     double? oldTotalPrice = selectedReceiptItem.ProductTotalPrice;
                     double? newTotalPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[productTotalPriceColumnIndex].Value, 2);
-                    double? oldPaymentAmount = selectedReceiptItem.PaymentAmount;
-                    double? newPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[paymentAmountColumnIndex].Value, 2);
+                    double? oldPaymentAmount = selectedReceiptItem.PaymentAmount ?? 0;
+                    double? newPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[paymentAmountColumnIndex].Value, 2) ?? 0;
                     yesNoMessageBoxTitle = "Fiş güncellensin mi?";
                     yesNoMessageBoxMessage = $"Eski Toplam Alacak: {oldTotalPrice}\nYeni Toplam Alacak: {newTotalPrice}";
                     if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
@@ -314,13 +314,17 @@ namespace VeresiyeDefteri
 
                 if (PersonReceiptsDataGridView.Columns[e.ColumnIndex].Name == "DeleteSelectedReceiptItem")
                 {
+                    var productTotalPrice = selectedReceiptItem.ProductTotalPrice ?? 0;
+                    var paymentAmount = selectedReceiptItem.PaymentAmount ?? 0;
                     yesNoMessageBoxTitle = "Fiş silinsin mi?";
-                    yesNoMessageBoxMessage = $"Toplam Alacak: {selectedReceiptItem.ProductTotalPrice}\nToplam Alınan: {selectedReceiptItem.PaymentAmount}";
+                    yesNoMessageBoxMessage = $"Toplam Alacak: {productTotalPrice}\nToplam Alınan: {paymentAmount}";
+                    person.IncomingBalance -= productTotalPrice;
+                    person.OutgoingBalance -= paymentAmount; 
                     if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                     {
-                        if (receiptItemController.DeleteReceiptItem(selectedReceiptItemId))
+                        if (receiptItemController.DeleteReceiptItem(selectedReceiptItemId) && personController.UpdatePerson(person))
                         {
-                            ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Fiş silindi."));
+                            ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Fiş silindi."), true);
                         }
                         else
                         {

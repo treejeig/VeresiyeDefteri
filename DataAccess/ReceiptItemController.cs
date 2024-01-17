@@ -21,7 +21,7 @@ namespace VeresiyeDefteri.DataAccess
             string query = "select ri.*, p.person_id, pr.* from receipt_items ri " +
                 "inner join persons p on ri.person_id = p.person_id " +
                 "inner join products pr on ri.product_id = pr.product_id " +
-                "where ri.person_id = $personId and ri.is_paid = 0";
+                "where ri.person_id = $personId";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -66,8 +66,8 @@ namespace VeresiyeDefteri.DataAccess
         {
             string query = "insert into receipt_items " +
                 "(person_id, product_id, receipt_date, payment_date, special_price_for_person, product_price_on_receipt_date, product_price_on_payment_date, " +
-                "product_discount_price, product_discount_ratio, product_quantity, product_total_price, payment_amount)" +
-                "values($personId, $productId, $receiptDate, $paymentDate, $special_price_for_person, $productPriceOnReceiptDate, $productPriceOnPaymentDate, " +
+                "product_discount_price, product_discount_ratio, product_quantity, product_total_price, payment_amount) " +
+                "values($personId, $productId, $receiptDate, $paymentDate, $specialPriceForPerson, $productPriceOnReceiptDate, $productPriceOnPaymentDate, " +
                 "$productDiscountPrice, $productDiscountRatio, $productQuantity, $productTotalPrice, $paymentAmount)";
 
             CheckConnectionState();

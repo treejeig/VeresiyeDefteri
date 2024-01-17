@@ -30,16 +30,16 @@
         {
             ReceiptPersonNameSurnameTextBox = new TextBox();
             ReceiptPersonNameSurnameLabel = new Label();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
+            ReceiptItemDateLabel = new Label();
+            ReceiptPersonTotalBalanceLabel = new Label();
+            ReceiptPersonIncomingBalanceLabel = new Label();
+            ReceiptPersonOutgoingBalanceLabel = new Label();
             SaveReceiptItemButton = new Button();
             SelectReceiptItemLabel = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
+            ReceiptItemDateTextBox = new TextBox();
+            ReceiptPersonIncomingBalanceTextBox = new TextBox();
+            ReceiptPersonOutgoingBalanceTextBox = new TextBox();
+            ReceiptPersonTotalBalanceTextBox = new TextBox();
             ReceiptItemPriceLabel = new Label();
             ReceiptItemSpecialPriceLabel = new Label();
             SelectReceiptItemComboBox = new ComboBox();
@@ -47,6 +47,8 @@
             ReceiptItemSpecialPriceTextBox = new TextBox();
             ReceiptItemQuantityLabel = new Label();
             ReceiptItemQuantityTextBox = new TextBox();
+            ReceiptItemTotalPriceLabel = new Label();
+            ReceiptItemTotalPriceTextBox = new TextBox();
             SuspendLayout();
             // 
             // ReceiptPersonNameSurnameTextBox
@@ -54,8 +56,9 @@
             ReceiptPersonNameSurnameTextBox.Location = new Point(510, 10);
             ReceiptPersonNameSurnameTextBox.Name = "ReceiptPersonNameSurnameTextBox";
             ReceiptPersonNameSurnameTextBox.PlaceholderText = "Kişi Adı Soyadı";
+            ReceiptPersonNameSurnameTextBox.ReadOnly = true;
             ReceiptPersonNameSurnameTextBox.Size = new Size(200, 23);
-            ReceiptPersonNameSurnameTextBox.TabIndex = 0;
+            ReceiptPersonNameSurnameTextBox.TabIndex = 5;
             // 
             // ReceiptPersonNameSurnameLabel
             // 
@@ -67,54 +70,55 @@
             ReceiptPersonNameSurnameLabel.Text = "Kişi Adı Soyadı";
             ReceiptPersonNameSurnameLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // label1
+            // ReceiptItemDateLabel
             // 
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(400, 43);
-            label1.Name = "label1";
-            label1.Size = new Size(100, 23);
-            label1.TabIndex = 2;
-            label1.Text = "Tarih";
-            label1.TextAlign = ContentAlignment.MiddleLeft;
+            ReceiptItemDateLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ReceiptItemDateLabel.Location = new Point(400, 43);
+            ReceiptItemDateLabel.Name = "ReceiptItemDateLabel";
+            ReceiptItemDateLabel.Size = new Size(100, 23);
+            ReceiptItemDateLabel.TabIndex = 2;
+            ReceiptItemDateLabel.Text = "Tarih";
+            ReceiptItemDateLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // label2
+            // ReceiptPersonTotalBalanceLabel
             // 
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(400, 142);
-            label2.Name = "label2";
-            label2.Size = new Size(100, 23);
-            label2.TabIndex = 3;
-            label2.Text = "Toplam Tutar";
-            label2.TextAlign = ContentAlignment.MiddleLeft;
+            ReceiptPersonTotalBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ReceiptPersonTotalBalanceLabel.Location = new Point(400, 142);
+            ReceiptPersonTotalBalanceLabel.Name = "ReceiptPersonTotalBalanceLabel";
+            ReceiptPersonTotalBalanceLabel.Size = new Size(100, 23);
+            ReceiptPersonTotalBalanceLabel.TabIndex = 3;
+            ReceiptPersonTotalBalanceLabel.Text = "Toplam Tutar";
+            ReceiptPersonTotalBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // label3
+            // ReceiptPersonIncomingBalanceLabel
             // 
-            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(400, 76);
-            label3.Name = "label3";
-            label3.Size = new Size(100, 23);
-            label3.TabIndex = 4;
-            label3.Text = "Alacak";
-            label3.TextAlign = ContentAlignment.MiddleLeft;
+            ReceiptPersonIncomingBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ReceiptPersonIncomingBalanceLabel.Location = new Point(400, 76);
+            ReceiptPersonIncomingBalanceLabel.Name = "ReceiptPersonIncomingBalanceLabel";
+            ReceiptPersonIncomingBalanceLabel.Size = new Size(100, 23);
+            ReceiptPersonIncomingBalanceLabel.TabIndex = 4;
+            ReceiptPersonIncomingBalanceLabel.Text = "Alacak";
+            ReceiptPersonIncomingBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // label4
+            // ReceiptPersonOutgoingBalanceLabel
             // 
-            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(400, 109);
-            label4.Name = "label4";
-            label4.Size = new Size(100, 23);
-            label4.TabIndex = 5;
-            label4.Text = "Verecek";
-            label4.TextAlign = ContentAlignment.MiddleLeft;
+            ReceiptPersonOutgoingBalanceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ReceiptPersonOutgoingBalanceLabel.Location = new Point(400, 109);
+            ReceiptPersonOutgoingBalanceLabel.Name = "ReceiptPersonOutgoingBalanceLabel";
+            ReceiptPersonOutgoingBalanceLabel.Size = new Size(100, 23);
+            ReceiptPersonOutgoingBalanceLabel.TabIndex = 5;
+            ReceiptPersonOutgoingBalanceLabel.Text = "Verecek";
+            ReceiptPersonOutgoingBalanceLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // SaveReceiptItemButton
             // 
-            SaveReceiptItemButton.Location = new Point(10, 142);
+            SaveReceiptItemButton.Location = new Point(10, 175);
             SaveReceiptItemButton.Name = "SaveReceiptItemButton";
-            SaveReceiptItemButton.Size = new Size(360, 23);
-            SaveReceiptItemButton.TabIndex = 8;
+            SaveReceiptItemButton.Size = new Size(360, 56);
+            SaveReceiptItemButton.TabIndex = 4;
             SaveReceiptItemButton.Text = "Ekle";
             SaveReceiptItemButton.UseVisualStyleBackColor = true;
+            SaveReceiptItemButton.Click += SaveReceiptItemButton_Click;
             // 
             // SelectReceiptItemLabel
             // 
@@ -126,37 +130,41 @@
             SelectReceiptItemLabel.Text = "Ürün Seç";
             SelectReceiptItemLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // textBox1
+            // ReceiptItemDateTextBox
             // 
-            textBox1.Location = new Point(510, 43);
-            textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Tarih";
-            textBox1.Size = new Size(200, 23);
-            textBox1.TabIndex = 14;
+            ReceiptItemDateTextBox.Location = new Point(510, 43);
+            ReceiptItemDateTextBox.Name = "ReceiptItemDateTextBox";
+            ReceiptItemDateTextBox.PlaceholderText = "Tarih";
+            ReceiptItemDateTextBox.ReadOnly = true;
+            ReceiptItemDateTextBox.Size = new Size(200, 23);
+            ReceiptItemDateTextBox.TabIndex = 6;
             // 
-            // textBox2
+            // ReceiptPersonIncomingBalanceTextBox
             // 
-            textBox2.Location = new Point(510, 76);
-            textBox2.Name = "textBox2";
-            textBox2.PlaceholderText = "Alacak";
-            textBox2.Size = new Size(200, 23);
-            textBox2.TabIndex = 15;
+            ReceiptPersonIncomingBalanceTextBox.Location = new Point(510, 76);
+            ReceiptPersonIncomingBalanceTextBox.Name = "ReceiptPersonIncomingBalanceTextBox";
+            ReceiptPersonIncomingBalanceTextBox.PlaceholderText = "Alacak";
+            ReceiptPersonIncomingBalanceTextBox.ReadOnly = true;
+            ReceiptPersonIncomingBalanceTextBox.Size = new Size(200, 23);
+            ReceiptPersonIncomingBalanceTextBox.TabIndex = 7;
             // 
-            // textBox3
+            // ReceiptPersonOutgoingBalanceTextBox
             // 
-            textBox3.Location = new Point(510, 109);
-            textBox3.Name = "textBox3";
-            textBox3.PlaceholderText = "Verecek";
-            textBox3.Size = new Size(200, 23);
-            textBox3.TabIndex = 16;
+            ReceiptPersonOutgoingBalanceTextBox.Location = new Point(510, 109);
+            ReceiptPersonOutgoingBalanceTextBox.Name = "ReceiptPersonOutgoingBalanceTextBox";
+            ReceiptPersonOutgoingBalanceTextBox.PlaceholderText = "Verecek";
+            ReceiptPersonOutgoingBalanceTextBox.ReadOnly = true;
+            ReceiptPersonOutgoingBalanceTextBox.Size = new Size(200, 23);
+            ReceiptPersonOutgoingBalanceTextBox.TabIndex = 8;
             // 
-            // textBox4
+            // ReceiptPersonTotalBalanceTextBox
             // 
-            textBox4.Location = new Point(510, 142);
-            textBox4.Name = "textBox4";
-            textBox4.PlaceholderText = "Toplam Tutar";
-            textBox4.Size = new Size(200, 23);
-            textBox4.TabIndex = 17;
+            ReceiptPersonTotalBalanceTextBox.Location = new Point(510, 142);
+            ReceiptPersonTotalBalanceTextBox.Name = "ReceiptPersonTotalBalanceTextBox";
+            ReceiptPersonTotalBalanceTextBox.PlaceholderText = "Toplam Tutar";
+            ReceiptPersonTotalBalanceTextBox.ReadOnly = true;
+            ReceiptPersonTotalBalanceTextBox.Size = new Size(200, 23);
+            ReceiptPersonTotalBalanceTextBox.TabIndex = 9;
             // 
             // ReceiptItemPriceLabel
             // 
@@ -184,15 +192,17 @@
             SelectReceiptItemComboBox.Location = new Point(170, 10);
             SelectReceiptItemComboBox.Name = "SelectReceiptItemComboBox";
             SelectReceiptItemComboBox.Size = new Size(200, 23);
-            SelectReceiptItemComboBox.TabIndex = 20;
+            SelectReceiptItemComboBox.TabIndex = 0;
+            SelectReceiptItemComboBox.SelectedIndexChanged += SelectReceiptItemComboBox_SelectedIndexChanged;
             // 
             // ReceiptItemPriceTextBox
             // 
             ReceiptItemPriceTextBox.Location = new Point(170, 43);
             ReceiptItemPriceTextBox.Name = "ReceiptItemPriceTextBox";
             ReceiptItemPriceTextBox.PlaceholderText = "Ürün Güncel Fiyatı";
+            ReceiptItemPriceTextBox.ReadOnly = true;
             ReceiptItemPriceTextBox.Size = new Size(200, 23);
-            ReceiptItemPriceTextBox.TabIndex = 21;
+            ReceiptItemPriceTextBox.TabIndex = 1;
             // 
             // ReceiptItemSpecialPriceTextBox
             // 
@@ -200,7 +210,9 @@
             ReceiptItemSpecialPriceTextBox.Name = "ReceiptItemSpecialPriceTextBox";
             ReceiptItemSpecialPriceTextBox.PlaceholderText = "Kişiye Özel Fiyat";
             ReceiptItemSpecialPriceTextBox.Size = new Size(200, 23);
-            ReceiptItemSpecialPriceTextBox.TabIndex = 22;
+            ReceiptItemSpecialPriceTextBox.TabIndex = 2;
+            ReceiptItemSpecialPriceTextBox.TextChanged += ReceiptItemSpecialPriceTextBox_TextChanged;
+            ReceiptItemSpecialPriceTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
             // ReceiptItemQuantityLabel
             // 
@@ -218,13 +230,36 @@
             ReceiptItemQuantityTextBox.Name = "ReceiptItemQuantityTextBox";
             ReceiptItemQuantityTextBox.PlaceholderText = "Ürün Adedi";
             ReceiptItemQuantityTextBox.Size = new Size(200, 23);
-            ReceiptItemQuantityTextBox.TabIndex = 24;
+            ReceiptItemQuantityTextBox.TabIndex = 3;
+            ReceiptItemQuantityTextBox.TextChanged += ReceiptItemQuantityTextBox_TextChanged;
+            ReceiptItemQuantityTextBox.KeyPress += OnlyNumberAndOneDigitTextBox_KeyPress;
             // 
-            // ReceiptPageForm
+            // ReceiptItemTotalPriceLabel
+            // 
+            ReceiptItemTotalPriceLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ReceiptItemTotalPriceLabel.Location = new Point(10, 142);
+            ReceiptItemTotalPriceLabel.Name = "ReceiptItemTotalPriceLabel";
+            ReceiptItemTotalPriceLabel.Size = new Size(150, 23);
+            ReceiptItemTotalPriceLabel.TabIndex = 24;
+            ReceiptItemTotalPriceLabel.Text = "Ürün Toplamı";
+            ReceiptItemTotalPriceLabel.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // ReceiptItemTotalPriceTextBox
+            // 
+            ReceiptItemTotalPriceTextBox.Location = new Point(170, 142);
+            ReceiptItemTotalPriceTextBox.Name = "ReceiptItemTotalPriceTextBox";
+            ReceiptItemTotalPriceTextBox.PlaceholderText = "Ürün Toplam Tutarı";
+            ReceiptItemTotalPriceTextBox.ReadOnly = true;
+            ReceiptItemTotalPriceTextBox.Size = new Size(200, 23);
+            ReceiptItemTotalPriceTextBox.TabIndex = 25;
+            // 
+            // ReceiptItemAddingPageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(724, 181);
+            ClientSize = new Size(724, 241);
+            Controls.Add(ReceiptItemTotalPriceTextBox);
+            Controls.Add(ReceiptItemTotalPriceLabel);
             Controls.Add(ReceiptItemQuantityTextBox);
             Controls.Add(ReceiptItemQuantityLabel);
             Controls.Add(ReceiptItemSpecialPriceTextBox);
@@ -232,19 +267,19 @@
             Controls.Add(SelectReceiptItemComboBox);
             Controls.Add(ReceiptItemSpecialPriceLabel);
             Controls.Add(ReceiptItemPriceLabel);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(ReceiptPersonTotalBalanceTextBox);
+            Controls.Add(ReceiptPersonOutgoingBalanceTextBox);
+            Controls.Add(ReceiptPersonIncomingBalanceTextBox);
+            Controls.Add(ReceiptItemDateTextBox);
             Controls.Add(SelectReceiptItemLabel);
             Controls.Add(SaveReceiptItemButton);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(ReceiptPersonOutgoingBalanceLabel);
+            Controls.Add(ReceiptPersonIncomingBalanceLabel);
+            Controls.Add(ReceiptPersonTotalBalanceLabel);
+            Controls.Add(ReceiptItemDateLabel);
             Controls.Add(ReceiptPersonNameSurnameTextBox);
             Controls.Add(ReceiptPersonNameSurnameLabel);
-            Name = "ReceiptPageForm";
+            Name = "ReceiptItemAddingPageForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Fiş Ekle";
             ResumeLayout(false);
@@ -260,19 +295,19 @@
         private DataGridViewTextBoxColumn ReceiptProductPrice;
         private DataGridViewTextBoxColumn ReceiptProductTotalPrice;
         private Label ReceiptPersonNameSurnameLabel;
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
+        private Label ReceiptItemDateLabel;
+        private Label ReceiptPersonTotalBalanceLabel;
+        private Label ReceiptPersonIncomingBalanceLabel;
+        private Label ReceiptPersonOutgoingBalanceLabel;
         private Button DeleteProductButton;
         private Button SaveReceiptItemButton;
         private Button button1;
         private ComboBox SelectReceiptPersonComboBox;
         private Label SelectReceiptItemLabel;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
+        private TextBox ReceiptItemDateTextBox;
+        private TextBox ReceiptPersonIncomingBalanceTextBox;
+        private TextBox ReceiptPersonOutgoingBalanceTextBox;
+        private TextBox ReceiptPersonTotalBalanceTextBox;
         private Label ReceiptItemPriceLabel;
         private Label ReceiptItemSpecialPriceLabel;
         private ComboBox SelectReceiptItemComboBox;
@@ -280,5 +315,7 @@
         private TextBox ReceiptItemSpecialPriceTextBox;
         private Label ReceiptItemQuantityLabel;
         private TextBox ReceiptItemQuantityTextBox;
+        private Label ReceiptItemTotalPriceLabel;
+        private TextBox ReceiptItemTotalPriceTextBox;
     }
 }
