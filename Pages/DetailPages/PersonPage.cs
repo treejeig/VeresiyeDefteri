@@ -220,9 +220,9 @@ namespace VeresiyeDefteri
                 if (isFirstPayment)
                 {
                     receiptItem.PaymentDate = DateTime.Now;
-                    receiptItem.ProductPriceOnPaymentDate = hasSpecialPrice 
+                    receiptItem.ProductPriceOnPaymentDate = hasSpecialPrice
                                                                 ? inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2)
-                                                                : hasDiscountPrice 
+                                                                : hasDiscountPrice
                                                                     ? inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2)
                                                                     : receiptItem.ProductPrice;
                 }
@@ -341,7 +341,7 @@ namespace VeresiyeDefteri
 
             if (selectedColumnIndex == productDiscountPriceColumnIndex)
             {
-                if(!hasPaymentDate)
+                if (!hasPaymentDate)
                 {
                     var productDiscountPrice = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[selectedColumnIndex].Value, 2);
                     var productDiscountRatio = Math.Round((1 - (productDiscountPrice / productCurrentPrice)) * 100, 2);
@@ -353,7 +353,7 @@ namespace VeresiyeDefteri
                 {
                     PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = receiptItem?.ProductDiscountPrice;
                 }
-                
+
             }
 
             if (selectedColumnIndex == productDiscountRatioColumnIndex)
@@ -364,7 +364,7 @@ namespace VeresiyeDefteri
                 var productCurrentPriceForDiscountRatioCalculation = productCurrentPrice;
                 if (hasDiscountRatio)
                 {
-                    if(!hasPaymentDate)
+                    if (!hasPaymentDate)
                     {
                         var productDiscountRatio = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[selectedColumnIndex].Value, 2);
                         productCurrentPriceForDiscountRatioCalculation = Math.Round(productCurrentPrice * (1 - productDiscountRatio / 100), 2);

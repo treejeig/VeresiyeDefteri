@@ -146,7 +146,7 @@
             // PersonDescriptionLabel
             // 
             PersonDescriptionLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            PersonDescriptionLabel.Location = new Point(330, 109);
+            PersonDescriptionLabel.Location = new Point(330, 76);
             PersonDescriptionLabel.Name = "PersonDescriptionLabel";
             PersonDescriptionLabel.Size = new Size(100, 23);
             PersonDescriptionLabel.TabIndex = 18;
@@ -220,16 +220,16 @@
             PersonAddressTextBox.Multiline = true;
             PersonAddressTextBox.Name = "PersonAddressTextBox";
             PersonAddressTextBox.PlaceholderText = "Adres";
-            PersonAddressTextBox.Size = new Size(200, 89);
+            PersonAddressTextBox.Size = new Size(200, 56);
             PersonAddressTextBox.TabIndex = 6;
             // 
             // PersonDescriptionTextBox
             // 
-            PersonDescriptionTextBox.Location = new Point(440, 109);
+            PersonDescriptionTextBox.Location = new Point(440, 76);
             PersonDescriptionTextBox.Multiline = true;
             PersonDescriptionTextBox.Name = "PersonDescriptionTextBox";
             PersonDescriptionTextBox.PlaceholderText = "Açıklama";
-            PersonDescriptionTextBox.Size = new Size(200, 89);
+            PersonDescriptionTextBox.Size = new Size(200, 56);
             PersonDescriptionTextBox.TabIndex = 7;
             // 
             // PersonIncomingBalanceTextBox
@@ -245,6 +245,7 @@
             // 
             // SavePersonButton
             // 
+            SavePersonButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             SavePersonButton.Location = new Point(1075, 76);
             SavePersonButton.Name = "SavePersonButton";
             SavePersonButton.Size = new Size(100, 56);
@@ -255,6 +256,7 @@
             // 
             // DeletePersonButton
             // 
+            DeletePersonButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             DeletePersonButton.Location = new Point(1075, 10);
             DeletePersonButton.Name = "DeletePersonButton";
             DeletePersonButton.Size = new Size(100, 56);
@@ -307,6 +309,7 @@
             // 
             // PersonReceiptsDataGridView
             // 
+            PersonReceiptsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             PersonReceiptsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             PersonReceiptsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ReceiptItemIdColumn, ReceiptDateColumn, PaymentDateColumn, ProductStockCodeColumn, ProductNameColumn, ProductPriceColumn, ProductPriceOnReceiptDateColumn, ProductPriceOnPaymentDateColumn, SpecialPriceForPersonColumn, ProductDiscountPriceColumn, ProductDiscountRatioColumn, ProductQuantityColumn, ProductTotalPriceColumn, PaymentAmountColumn, SaveEditedReceiptItemButtonColumn, DeleteSelectedReceiptItemButtonColumn });
             PersonReceiptsDataGridView.Location = new Point(10, 236);
@@ -401,9 +404,9 @@
             // 
             // AddReceiptItemButton
             // 
-            AddReceiptItemButton.Location = new Point(650, 142);
+            AddReceiptItemButton.Location = new Point(440, 142);
             AddReceiptItemButton.Name = "AddReceiptItemButton";
-            AddReceiptItemButton.Size = new Size(100, 56);
+            AddReceiptItemButton.Size = new Size(200, 56);
             AddReceiptItemButton.TabIndex = 10;
             AddReceiptItemButton.Text = "Yeni Fiş Ekle";
             AddReceiptItemButton.UseVisualStyleBackColor = true;

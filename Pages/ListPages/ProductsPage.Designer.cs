@@ -43,6 +43,7 @@
             // 
             // ProductsDataGridView
             // 
+            ProductsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ProductsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             ProductsDataGridView.Columns.AddRange(new DataGridViewColumn[] { ProductIdColumn, ProductStockCodeColumn, ProductNameColumn, ProductPrice, ProductDescriptionColumn, GoToProductDetailButtonColumn, SaveEditedProductButtonColumn, DeleteSelectedProductButtonColumn });
             ProductsDataGridView.Location = new Point(10, 10);
@@ -100,6 +101,7 @@
             // 
             // AddProductButton
             // 
+            AddProductButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             AddProductButton.Location = new Point(875, 10);
             AddProductButton.Name = "AddProductButton";
             AddProductButton.Size = new Size(100, 56);

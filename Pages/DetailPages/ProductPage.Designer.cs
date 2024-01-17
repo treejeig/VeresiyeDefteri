@@ -61,6 +61,7 @@
             // 
             // DeleteProductButton
             // 
+            DeleteProductButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             DeleteProductButton.Location = new Point(330, 10);
             DeleteProductButton.Name = "DeleteProductButton";
             DeleteProductButton.Size = new Size(100, 56);
@@ -71,7 +72,8 @@
             // 
             // SaveProductButton
             // 
-            SaveProductButton.Location = new Point(330, 76);
+            SaveProductButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            SaveProductButton.Location = new Point(330, 109);
             SaveProductButton.Name = "SaveProductButton";
             SaveProductButton.Size = new Size(100, 56);
             SaveProductButton.TabIndex = 5;

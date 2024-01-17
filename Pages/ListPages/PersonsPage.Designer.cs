@@ -44,6 +44,7 @@
             // 
             // PersonsDataGridView
             // 
+            PersonsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             PersonsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             PersonsDataGridView.Columns.AddRange(new DataGridViewColumn[] { PersonIdColumn, NameColumn, SurnameColumn, IncomingBalanceColumn, OutgoingBalanceColumn, TotalBalanceColumn, GoToPersonDetailButtonColumn, SaveEditedPersonButtonColumn, DeletePersonButtonColumn });
             PersonsDataGridView.Location = new Point(10, 10);
@@ -101,6 +102,7 @@
             // 
             // AddPersonButton
             // 
+            AddPersonButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             AddPersonButton.Location = new Point(875, 10);
             AddPersonButton.Name = "AddPersonButton";
             AddPersonButton.Size = new Size(100, 56);

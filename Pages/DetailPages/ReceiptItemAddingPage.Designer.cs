@@ -112,6 +112,7 @@
             // 
             // SaveReceiptItemButton
             // 
+            SaveReceiptItemButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             SaveReceiptItemButton.Location = new Point(10, 175);
             SaveReceiptItemButton.Name = "SaveReceiptItemButton";
             SaveReceiptItemButton.Size = new Size(360, 56);
