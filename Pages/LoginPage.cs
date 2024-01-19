@@ -9,21 +9,26 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VeresiyeDefteri.DataAccess;
 using VeresiyeDefteri.Helpers;
-using VeresiyeDefteri.Pages.ListPages;
 
 namespace VeresiyeDefteri.Pages
 {
     public partial class LoginPageForm : Form
     {
+        #region Constants
         LoginController loginController = new LoginController();
         MessageBoxes messageBoxes = new MessageBoxes();
         bool initialUser = false;
+        #endregion
+
+        #region Constructors
         public LoginPageForm()
         {
             InitializeComponent();
             PrepareLoginPage();
         }
+        #endregion
 
+        #region Public Methods
         public void PrepareLoginPage()
         {
             if (loginController.GetUserCount() == 0)
@@ -44,7 +49,6 @@ namespace VeresiyeDefteri.Pages
             }
 
         }
-
         public void TryLogin()
         {
             if (loginController.CanLogin(UserNameTextBox.Text, UserPasswordTextBox.Text))
@@ -56,7 +60,6 @@ namespace VeresiyeDefteri.Pages
                 ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Giriş Reddedildi", "Kullanıcı adı veya şifre hatalı"));
             }
         }
-
         public void GoToHome()
         {
             HomePageForm homePageForm = new HomePageForm();
@@ -64,7 +67,9 @@ namespace VeresiyeDefteri.Pages
             Hide();
             homePageForm.ShowDialog();
         }
+        #endregion
 
+        #region Private Methods
         private void ShowInfoMessageBoxAndRefreshPage(bool res)
         {
             if (res)
@@ -72,7 +77,6 @@ namespace VeresiyeDefteri.Pages
                 PrepareLoginPage();
             }
         }
-
         private void UserLoginButton_Click(object sender, EventArgs e)
         {
             if (initialUser)
@@ -87,7 +91,6 @@ namespace VeresiyeDefteri.Pages
                 TryLogin();
             }
         }
-
         private bool ValidateNewUser()
         {
             if (string.IsNullOrEmpty(UserNameTextBox.Text) || string.IsNullOrEmpty(UserPasswordTextBox.Text) || string.IsNullOrEmpty(UserPasswordAgainTextBox.Text))
@@ -102,7 +105,6 @@ namespace VeresiyeDefteri.Pages
             }
             return true;
         }
-
         private void UserPasswordTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r')
@@ -110,5 +112,6 @@ namespace VeresiyeDefteri.Pages
                 UserLoginButton_Click(sender, e);
             }
         }
+        #endregion
     }
 }
