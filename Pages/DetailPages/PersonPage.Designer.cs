@@ -70,7 +70,10 @@
             SaveEditedReceiptItemButtonColumn = new DataGridViewButtonColumn();
             DeleteSelectedReceiptItemButtonColumn = new DataGridViewButtonColumn();
             AddReceiptItemButton = new Button();
+            PrintPersonReceiptsButton = new Button();
+            PersonReceiptsPrintDataGridView = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)PersonReceiptsDataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PersonReceiptsPrintDataGridView).BeginInit();
             SuspendLayout();
             // 
             // PersonNameLabel
@@ -404,19 +407,41 @@
             // 
             // AddReceiptItemButton
             // 
-            AddReceiptItemButton.Location = new Point(440, 142);
+            AddReceiptItemButton.Location = new Point(330, 142);
             AddReceiptItemButton.Name = "AddReceiptItemButton";
-            AddReceiptItemButton.Size = new Size(200, 56);
+            AddReceiptItemButton.Size = new Size(150, 56);
             AddReceiptItemButton.TabIndex = 10;
             AddReceiptItemButton.Text = "Yeni Fiş Ekle";
             AddReceiptItemButton.UseVisualStyleBackColor = true;
             AddReceiptItemButton.Click += AddReceiptItemButton_Click;
+            // 
+            // PrintPersonReceiptsButton
+            // 
+            PrintPersonReceiptsButton.Location = new Point(490, 142);
+            PrintPersonReceiptsButton.Name = "PrintPersonReceiptsButton";
+            PrintPersonReceiptsButton.Size = new Size(150, 56);
+            PrintPersonReceiptsButton.TabIndex = 26;
+            PrintPersonReceiptsButton.Text = "Yazdır";
+            PrintPersonReceiptsButton.UseVisualStyleBackColor = true;
+            PrintPersonReceiptsButton.Click += PrintPersonReceiptsButton_Click;
+            // 
+            // PersonReceiptsPrintDataGridView
+            // 
+            PersonReceiptsPrintDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            PersonReceiptsPrintDataGridView.Location = new Point(1075, 142);
+            PersonReceiptsPrintDataGridView.Name = "PersonReceiptsPrintDataGridView";
+            PersonReceiptsPrintDataGridView.RowTemplate.Height = 25;
+            PersonReceiptsPrintDataGridView.Size = new Size(100, 56);
+            PersonReceiptsPrintDataGridView.TabIndex = 27;
+            PersonReceiptsPrintDataGridView.Visible = false;
             // 
             // PersonPageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1184, 711);
+            Controls.Add(PersonReceiptsPrintDataGridView);
+            Controls.Add(PrintPersonReceiptsButton);
             Controls.Add(AddReceiptItemButton);
             Controls.Add(PersonReceiptsDataGridView);
             Controls.Add(PersonTotalBalanceTextBox);
@@ -447,6 +472,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Kişi Detayı";
             ((System.ComponentModel.ISupportInitialize)PersonReceiptsDataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PersonReceiptsPrintDataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -495,5 +521,7 @@
         private DataGridViewButtonColumn SaveEditedReceiptItemButtonColumn;
         private DataGridViewButtonColumn DeleteSelectedReceiptItemButtonColumn;
         private Button AddReceiptItemButton;
+        private Button PrintPersonReceiptsButton;
+        private DataGridView PersonReceiptsPrintDataGridView;
     }
 }

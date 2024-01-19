@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DGVPrinterHelper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,6 +23,7 @@ namespace VeresiyeDefteri
         MessageBoxes messageBoxes = new MessageBoxes();
         Person person = new Person();
         List<ReceiptItem> receiptItems = new List<ReceiptItem>();
+        List<ReceiptItem> receiptItemsForPrint = new List<ReceiptItem>();
         long selectedPersonId = 0;
         string? oldName;
         string? oldSurname;
@@ -60,6 +62,7 @@ namespace VeresiyeDefteri
         }
         private void PreparePersonInformation()
         {
+            // PrintPersonReceiptsButton.Visible = false;
             if (selectedPersonId != 0)
             {
                 person = personController.GetPerson(selectedPersonId);
@@ -68,6 +71,7 @@ namespace VeresiyeDefteri
             {
                 DeletePersonButton.Visible = false;
                 AddReceiptItemButton.Visible = false;
+                PrintPersonReceiptsButton.Visible = false;
             }
             if (person != null)
             {
@@ -222,9 +226,7 @@ namespace VeresiyeDefteri
                     receiptItem.PaymentDate = DateTime.Now;
                     receiptItem.ProductPriceOnPaymentDate = hasSpecialPrice
                                                                 ? inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2)
-                                                                : hasDiscountPrice
-                                                                    ? inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2)
-                                                                    : receiptItem.ProductPrice;
+                                                                : receiptItem.ProductPrice;
                 }
                 receiptItem.PaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2);
             }
@@ -506,6 +508,11 @@ namespace VeresiyeDefteri
             receiptPageForm.FormClosed += new FormClosedEventHandler(ReceiptPageForm_FormClosed);
             receiptPageForm.ShowDialog();
         }
+        private void PrintPersonReceiptsButton_Click(object sender, EventArgs e)
+        {
+            PrepagePersonReceiptPrintDataGridViewForPrint();
+            PrintPage();
+        }
         #endregion
 
         #region FormCloseCallBack
@@ -533,6 +540,86 @@ namespace VeresiyeDefteri
             {
                 PreparePersonReceiptItemInformation();
             }
+        }
+        #endregion
+
+        #region Print
+        private void PrepagePersonReceiptPrintDataGridViewForPrint()
+        {
+            receiptItemsForPrint = receiptItems;
+            foreach (ReceiptItem receiptItem in receiptItemsForPrint)
+            {
+                var hasPaymentDate = receiptItem.PaymentDate != null;
+                var hasSpecialPriceForPerson = receiptItem.SpecialPriceForPerson != null && receiptItem.SpecialPriceForPerson != 0;
+                var hasDiscountPrice = receiptItem.ProductDiscountPrice != null && receiptItem.ProductDiscountPrice != 0;
+                receiptItem.ProductPrice = hasPaymentDate
+                                            ? receiptItem.ProductPriceOnPaymentDate
+                                            : hasSpecialPriceForPerson
+                                                ? receiptItem.SpecialPriceForPerson
+                                                    : receiptItem.ProductPrice;
+
+            }
+            PersonReceiptsPrintDataGridView.DataSource = null;
+            PersonReceiptsPrintDataGridView.AutoGenerateColumns = false;
+            //PersonReceiptsPrintDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            PersonReceiptsPrintDataGridView.ColumnCount = 10;
+            PersonReceiptsPrintDataGridView.Columns[0].Name = "ReceiptDate";
+            PersonReceiptsPrintDataGridView.Columns[0].HeaderText = "Sipariş Tarihi";
+            PersonReceiptsPrintDataGridView.Columns[0].DataPropertyName = "ReceiptDate";
+            // set payment_date column
+            PersonReceiptsPrintDataGridView.Columns[1].Name = "PaymentDate";
+            PersonReceiptsPrintDataGridView.Columns[1].HeaderText = "Ödeme Tarihi";
+            PersonReceiptsPrintDataGridView.Columns[1].DataPropertyName = "PaymentDate";
+            // set product_stock_code column
+            PersonReceiptsPrintDataGridView.Columns[2].Name = "ProductStockCode";
+            PersonReceiptsPrintDataGridView.Columns[2].HeaderText = "Ürün Stok Kodu";
+            PersonReceiptsPrintDataGridView.Columns[2].DataPropertyName = "ProductStockCode";
+            // set product_name column
+            PersonReceiptsPrintDataGridView.Columns[3].Name = "ProductName";
+            PersonReceiptsPrintDataGridView.Columns[3].HeaderText = "Ürün Adı";
+            PersonReceiptsPrintDataGridView.Columns[3].DataPropertyName = "ProductName";
+            // set product_price column
+            PersonReceiptsPrintDataGridView.Columns[4].Name = "ProductPrice";
+            PersonReceiptsPrintDataGridView.Columns[4].HeaderText = "Ürün Fiyatı";
+            PersonReceiptsPrintDataGridView.Columns[4].DataPropertyName = "ProductPrice";
+            // set product_discount_price column
+            PersonReceiptsPrintDataGridView.Columns[5].Name = "ProductDiscountPrice";
+            PersonReceiptsPrintDataGridView.Columns[5].HeaderText = "İndirimli Fiyat";
+            PersonReceiptsPrintDataGridView.Columns[5].DataPropertyName = "ProductDiscountPrice";
+            // set product_discount_ratio column
+            PersonReceiptsPrintDataGridView.Columns[6].Name = "ProductDiscountRatio";
+            PersonReceiptsPrintDataGridView.Columns[6].HeaderText = "İndirim Oranı(%)";
+            PersonReceiptsPrintDataGridView.Columns[6].DataPropertyName = "ProductDiscountRatio";
+            // set product_quantity column
+            PersonReceiptsPrintDataGridView.Columns[7].Name = "ProductQuantity";
+            PersonReceiptsPrintDataGridView.Columns[7].HeaderText = "Ürün Adedi";
+            PersonReceiptsPrintDataGridView.Columns[7].DataPropertyName = "ProductQuantity";
+            // set product_total_price column
+            PersonReceiptsPrintDataGridView.Columns[8].Name = "ProductTotalPrice";
+            PersonReceiptsPrintDataGridView.Columns[8].HeaderText = "Ürün Toplam Fiyatı";
+            PersonReceiptsPrintDataGridView.Columns[8].DataPropertyName = "ProductTotalPrice";
+            // set payment_amount column
+            PersonReceiptsPrintDataGridView.Columns[9].Name = "PaymentAmount";
+            PersonReceiptsPrintDataGridView.Columns[9].HeaderText = "Ödeme Tutarı";
+            PersonReceiptsPrintDataGridView.Columns[9].DataPropertyName = "PaymentAmount";
+
+            PersonReceiptsPrintDataGridView.DataSource = receiptItemsForPrint;
+        }
+        private void PrintPage()
+        {
+            DGVPrinter printer = new DGVPrinter();
+            printer.Title = $"{person.Name} {person.Surname}";
+            printer.SubTitle = $"Toplam Alacak: {person.IncomingBalance} Toplam Verecek: {person.OutgoingBalance} TOPLAM: {person.TotalBalance}";
+            printer.SubTitleFormatFlags = StringFormatFlags.LineLimit | StringFormatFlags.NoClip;
+            printer.PageNumbers = true;
+            printer.PageNumberInHeader = false;
+            //printer.PorportionalColumns = true;
+            printer.HeaderCellAlignment = StringAlignment.Near;
+            printer.Footer = $"{DateTime.Now}";
+            printer.FooterSpacing = 15;
+            printer.ColumnWidth = DGVPrinter.ColumnWidthSetting.CellWidth;
+            printer.PageSettings.Landscape = true;
+            printer.PrintDataGridView(PersonReceiptsPrintDataGridView);
         }
         #endregion
 
