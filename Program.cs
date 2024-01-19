@@ -1,3 +1,5 @@
+using VeresiyeDefteri.Pages;
+
 namespace VeresiyeDefteri
 {
     internal static class Program
@@ -11,7 +13,7 @@ namespace VeresiyeDefteri
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new HomePageForm());
+            Application.Run(new LoginPageForm());
         }
     }
 }
