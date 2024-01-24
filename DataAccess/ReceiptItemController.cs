@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using VeresiyeDefteri.DataObjects;
@@ -15,6 +16,8 @@ namespace VeresiyeDefteri.DataAccess
         #region Constants
         DataAccessHelpers dataAccessHelper = new DataAccessHelpers();
         SQLiteConnection sqliteConnection = new SQLiteConnection(@"data source =|DataDirectory|\TrySQlite.db");
+        PersonController personController = new PersonController();
+        InputHelpers inputHelpers = new InputHelpers();
         #endregion
 
         #region Public Methods
@@ -138,6 +141,48 @@ namespace VeresiyeDefteri.DataAccess
             }
             return true;
         }
+        public bool FindAndUpdateShouldBeUpdatedReceiptItemsAndPersons()
+        {
+            var resInside = false;
+            var receiptItemsToUpdate = new List<ReceiptItem>();
+            string query = "select ri.*, p.person_id, pr.* from receipt_items ri " +
+                            "inner join persons p on ri.person_id = p.person_id " +
+                            "inner join products pr on ri.product_id = pr.product_id and pr.is_payment_type = 0 " +
+                            "where ri.payment_date is null and ri.special_price_for_person is null " +
+                            "and ri.product_discount_price is null and ri.product_total_price != (pr.price * ri.product_quantity)";
+
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        receiptItemsToUpdate.Add(ReadReceiptItemFromReader(reader));
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            for(int i = 0; i < receiptItemsToUpdate.Count; i++)
+            {
+                var receiptItem = receiptItemsToUpdate[i];
+                var person = personController.GetPerson(receiptItem.PersonId);
+                person.IncomingBalance -= receiptItem.ProductTotalPrice;
+                receiptItem.ProductTotalPrice = inputHelpers.RoundNullableTwoDigit(receiptItem.ProductPrice * receiptItem.ProductQuantity, 2);
+                person.IncomingBalance += receiptItem.ProductTotalPrice;
+                resInside = UpdateReceiptItem(receiptItem) && personController.UpdatePerson(person);
+                if (!resInside)
+                {
+                    return false;
+                }
+            }
+            return resInside;
+
+        }
         #endregion
 
         #region Private Methods
@@ -160,7 +205,8 @@ namespace VeresiyeDefteri.DataAccess
                 ProductDiscountRatio = dataAccessHelper.GetNullableDoubleFromReader(reader, "product_discount_ratio"),
                 ProductQuantity = dataAccessHelper.GetNullableDoubleFromReader(reader, "product_quantity"),
                 ProductTotalPrice = dataAccessHelper.GetNullableDoubleFromReader(reader, "product_total_price"),
-                PaymentAmount = dataAccessHelper.GetNullableDoubleFromReader(reader, "payment_amount")
+                PaymentAmount = dataAccessHelper.GetNullableDoubleFromReader(reader, "payment_amount"),
+                IsPaymentType = dataAccessHelper.GetBoolFromReader(reader, "is_payment_type")
             };
         }
         private void CheckConnectionState()

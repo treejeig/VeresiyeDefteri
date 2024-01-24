@@ -38,6 +38,7 @@
             SaveEditedProductButtonColumn = new DataGridViewButtonColumn();
             DeleteSelectedProductButtonColumn = new DataGridViewButtonColumn();
             AddProductButton = new Button();
+            GoToPaymentTypeItemsButton = new Button();
             ((System.ComponentModel.ISupportInitialize)ProductsDataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -110,11 +111,23 @@
             AddProductButton.UseVisualStyleBackColor = true;
             AddProductButton.Click += AddProductButton_Click;
             // 
+            // GoToPaymentTypeItemsButton
+            // 
+            GoToPaymentTypeItemsButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            GoToPaymentTypeItemsButton.Location = new Point(875, 76);
+            GoToPaymentTypeItemsButton.Name = "GoToPaymentTypeItemsButton";
+            GoToPaymentTypeItemsButton.Size = new Size(100, 56);
+            GoToPaymentTypeItemsButton.TabIndex = 2;
+            GoToPaymentTypeItemsButton.Text = "Ödeme Türlerine Git";
+            GoToPaymentTypeItemsButton.UseVisualStyleBackColor = true;
+            GoToPaymentTypeItemsButton.Click += GoToPaymentTypeItemsButton_Click;
+            // 
             // ProductsPageForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(984, 711);
+            Controls.Add(GoToPaymentTypeItemsButton);
             Controls.Add(AddProductButton);
             Controls.Add(ProductsDataGridView);
             Name = "ProductsPageForm";
@@ -136,5 +149,6 @@
         private DataGridViewButtonColumn GoToProductDetailButtonColumn;
         private DataGridViewButtonColumn SaveEditedProductButtonColumn;
         private DataGridViewButtonColumn DeleteSelectedProductButtonColumn;
+        private Button GoToPaymentTypeItemsButton;
     }
 }

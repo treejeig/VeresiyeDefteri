@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using VeresiyeDefteri.DataAccess;
 using VeresiyeDefteri.DataObjects;
 using VeresiyeDefteri.Helpers;
+using VeresiyeDefteri.Pages.DetailPages;
 
 namespace VeresiyeDefteri
 {
@@ -71,6 +72,7 @@ namespace VeresiyeDefteri
             {
                 DeletePersonButton.Visible = false;
                 AddReceiptItemButton.Visible = false;
+                AddPaymentItemButton.Visible = false;
                 PrintPersonReceiptsButton.Visible = false;
             }
             if (person != null)
@@ -202,6 +204,15 @@ namespace VeresiyeDefteri
 
                 PersonReceiptsDataGridView.DataSource = receiptItems;
 
+                for (int i = 0; i < receiptItems.Count; i++)
+                {
+                    if (receiptItems[i].IsPaymentType)
+                    {
+                        PersonReceiptsDataGridView.Rows[i].ReadOnly = true;
+                        PersonReceiptsDataGridView.Rows[i].Cells[paymentAmountColumnIndex].ReadOnly = false;
+                    }
+                }
+
             }
         }
         #endregion
@@ -209,32 +220,31 @@ namespace VeresiyeDefteri
         #region DataGridViewOperations
         private bool UpdateReceiptItem(ReceiptItem receiptItem, int rowIndex)
         {
-            var hasSpecialPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2) != null
+            if (!receiptItem.IsPaymentType)
+            {
+                var hasSpecialPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2) != null
                         && inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2) != 0;
 
-            var hasDiscountPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2) != null
-                        && inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2) != 0;
+                var hasDiscountPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2) != null
+                            && inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2) != 0;
 
-            var hasPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2) != null
-                                    && inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2) != 0;
+                var hasPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2) != null;
 
-            var isFirstPayment = receiptItem.PaymentDate == null;
-            if (hasPaymentAmount)
-            {
-                if (isFirstPayment)
+                var isFirstPayment = receiptItem.PaymentDate == null;
+                if (hasPaymentAmount && isFirstPayment)
                 {
                     receiptItem.PaymentDate = DateTime.Now;
                     receiptItem.ProductPriceOnPaymentDate = hasSpecialPrice
                                                                 ? inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2)
                                                                 : receiptItem.ProductPrice;
                 }
-                receiptItem.PaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2);
+                receiptItem.SpecialPriceForPerson = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2);
+                receiptItem.ProductDiscountPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2);
+                receiptItem.ProductDiscountRatio = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountRatioColumnIndex].Value, 2);
+                receiptItem.ProductQuantity = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productQuantityColumnIndex].Value, 2);
+                receiptItem.ProductTotalPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productTotalPriceColumnIndex].Value, 2);
             }
-            receiptItem.SpecialPriceForPerson = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2);
-            receiptItem.ProductDiscountPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountPriceColumnIndex].Value, 2);
-            receiptItem.ProductDiscountRatio = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productDiscountRatioColumnIndex].Value, 2);
-            receiptItem.ProductQuantity = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productQuantityColumnIndex].Value, 2);
-            receiptItem.ProductTotalPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[productTotalPriceColumnIndex].Value, 2);
+            receiptItem.PaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[rowIndex].Cells[paymentAmountColumnIndex].Value, 2);
             return receiptItemController.UpdateReceiptItem(receiptItem);
         }
         private void PersonReceiptsDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -243,48 +253,97 @@ namespace VeresiyeDefteri
             {
                 selectedReceiptItemId = (long)PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[0].Value;
                 ReceiptItem selectedReceiptItem = receiptItemController.GetReceiptItem(selectedReceiptItemId);
-                string yesNoMessageBoxTitle;
-                string yesNoMessageBoxMessage;
-                if (PersonReceiptsDataGridView.Columns[e.ColumnIndex].Name == "SaveEditedReceiptItem")
+                if (!selectedReceiptItem.IsPaymentType)
                 {
-                    double? oldTotalPrice = selectedReceiptItem.ProductTotalPrice;
-                    double? newTotalPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[productTotalPriceColumnIndex].Value, 2);
-                    double? oldPaymentAmount = selectedReceiptItem.PaymentAmount ?? 0;
-                    double? newPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[paymentAmountColumnIndex].Value, 2) ?? 0;
-                    yesNoMessageBoxTitle = "Fiş güncellensin mi?";
-                    yesNoMessageBoxMessage = $"Eski Toplam Alacak: {oldTotalPrice}\nYeni Toplam Alacak: {newTotalPrice}";
-                    if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
+                    string yesNoMessageBoxTitle;
+                    string yesNoMessageBoxMessage;
+                    if (PersonReceiptsDataGridView.Columns[e.ColumnIndex].Name == "SaveEditedReceiptItem")
                     {
-                        person.IncomingBalance += (newTotalPrice - oldTotalPrice);
-                        person.OutgoingBalance += (newPaymentAmount - oldPaymentAmount);
-                        if (UpdateReceiptItem(selectedReceiptItem, e.RowIndex) && personController.UpdatePerson(person))
+                        double? oldTotalPrice = selectedReceiptItem.ProductTotalPrice;
+                        double? newTotalPrice = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[productTotalPriceColumnIndex].Value, 2);
+                        double? oldPaymentAmount = selectedReceiptItem.PaymentAmount ?? 0;
+                        double? newPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[paymentAmountColumnIndex].Value, 2) ?? 0;
+                        yesNoMessageBoxTitle = "Fiş güncellensin mi?";
+                        yesNoMessageBoxMessage = $"Eski Toplam Alacak: {oldTotalPrice}\nYeni Toplam Alacak: {newTotalPrice}";
+                        if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                         {
-                            ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Fiş değişikleri kaydedildi."), true);
+                            person.IncomingBalance += (newTotalPrice - oldTotalPrice);
+                            person.OutgoingBalance += (newPaymentAmount - oldPaymentAmount);
+                            if (UpdateReceiptItem(selectedReceiptItem, e.RowIndex) && personController.UpdatePerson(person))
+                            {
+                                ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Fiş değişikleri kaydedildi."), true);
+                            }
+                            else
+                            {
+                                ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarısız", "Fiş değişiklikleri kaydedilemedi."));
+                            }
                         }
-                        else
+                    }
+
+                    if (PersonReceiptsDataGridView.Columns[e.ColumnIndex].Name == "DeleteSelectedReceiptItem")
+                    {
+                        var productTotalPrice = selectedReceiptItem.ProductTotalPrice ?? 0;
+                        var paymentAmount = selectedReceiptItem.PaymentAmount ?? 0;
+                        yesNoMessageBoxTitle = "Fiş silinsin mi?";
+                        yesNoMessageBoxMessage = $"Toplam Alacak: {productTotalPrice}\nToplam Alınan: {paymentAmount}";
+                        person.IncomingBalance -= productTotalPrice;
+                        person.OutgoingBalance -= paymentAmount;
+                        if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                         {
-                            ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarısız", "Fiş değişiklikleri kaydedilemedi."));
+                            if (receiptItemController.DeleteReceiptItem(selectedReceiptItemId) && personController.UpdatePerson(person))
+                            {
+                                ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Fiş silindi."), true);
+                            }
+                            else
+                            {
+                                ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarısız", "Fiş silinemedi."));
+                            }
                         }
                     }
                 }
 
-                if (PersonReceiptsDataGridView.Columns[e.ColumnIndex].Name == "DeleteSelectedReceiptItem")
+                else
                 {
-                    var productTotalPrice = selectedReceiptItem.ProductTotalPrice ?? 0;
-                    var paymentAmount = selectedReceiptItem.PaymentAmount ?? 0;
-                    yesNoMessageBoxTitle = "Fiş silinsin mi?";
-                    yesNoMessageBoxMessage = $"Toplam Alacak: {productTotalPrice}\nToplam Alınan: {paymentAmount}";
-                    person.IncomingBalance -= productTotalPrice;
-                    person.OutgoingBalance -= paymentAmount;
-                    if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
+                    string yesNoMessageBoxTitle;
+                    string yesNoMessageBoxMessage;
+                    if (PersonReceiptsDataGridView.Columns[e.ColumnIndex].Name == "SaveEditedReceiptItem")
                     {
-                        if (receiptItemController.DeleteReceiptItem(selectedReceiptItemId) && personController.UpdatePerson(person))
+                        double? oldPaymentAmount = selectedReceiptItem.PaymentAmount ?? 0;
+                        double? newPaymentAmount = inputHelper.RoundNullableTwoDigit(PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[paymentAmountColumnIndex].Value, 2) ?? 0;
+                        yesNoMessageBoxTitle = "Ödeme güncellensin mi?";
+                        yesNoMessageBoxMessage = $"Eski Toplam Alınan: {oldPaymentAmount}\nYeni Toplam Alınan: {newPaymentAmount}";
+                        if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                         {
-                            ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Fiş silindi."), true);
+                            person.OutgoingBalance += (newPaymentAmount - oldPaymentAmount);
+                            if (UpdateReceiptItem(selectedReceiptItem, e.RowIndex) && personController.UpdatePerson(person))
+                            {
+                                ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Fiş değişikleri kaydedildi."), true);
+                            }
+                            else
+                            {
+                                ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarısız", "Fiş değişiklikleri kaydedilemedi."));
+                            }
                         }
-                        else
+                    }
+
+                    if (PersonReceiptsDataGridView.Columns[e.ColumnIndex].Name == "DeleteSelectedReceiptItem")
+                    {
+                        var productTotalPrice = selectedReceiptItem.ProductTotalPrice ?? 0;
+                        var paymentAmount = selectedReceiptItem.PaymentAmount ?? 0;
+                        yesNoMessageBoxTitle = "Fiş silinsin mi?";
+                        yesNoMessageBoxMessage = $"Toplam Alacak: {productTotalPrice}\nToplam Alınan: {paymentAmount}";
+                        person.IncomingBalance -= productTotalPrice;
+                        person.OutgoingBalance -= paymentAmount;
+                        if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                         {
-                            ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarısız", "Fiş silinemedi."));
+                            if (receiptItemController.DeleteReceiptItem(selectedReceiptItemId) && personController.UpdatePerson(person))
+                            {
+                                ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarılı", "Fiş silindi."), true);
+                            }
+                            else
+                            {
+                                ShowInfoMessageBoxAndRefreshPage(messageBoxes.InformationMessageBox("Başarısız", "Fiş silinemedi."));
+                            }
                         }
                     }
                 }
@@ -312,110 +371,114 @@ namespace VeresiyeDefteri
             var selectedRowIndex = e.RowIndex;
             var selectedColumnIndex = e.ColumnIndex;
             ReceiptItem receiptItem = receiptItemController.GetReceiptItem((long)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[0].Value);
-            var hasPaymentDate = PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[2].Value != null;
 
-            var hasSpecialPriceForPerson = !(PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value == null
-                                                    || (double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value == 0);
-
-            var productCurrentPrice = hasPaymentDate
-                                    ? Math.Round((double)PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[productPriceOnPaymentDateColumnIndex].Value, 2)
-                                    : hasSpecialPriceForPerson
-                                        ? Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2)
-                                        : Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productPriceColumnIndex].Value, 2);
-
-            var productQuantity = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productQuantityColumnIndex].Value, 2);
-
-            if (selectedColumnIndex == productSpecialPriceForPersonColumnIndex)
+            if (!receiptItem.IsPaymentType)
             {
-                if (!hasSpecialPriceForPerson)
-                {
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value = null;
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = null;
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = null;
-                }
-                if (hasPaymentDate)
-                {
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value = receiptItem?.SpecialPriceForPerson;
-                }
-                var productTotalPrice = Math.Round(productCurrentPrice * productQuantity, 2);
-                PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = productTotalPrice;
-            }
+                var hasPaymentDate = PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[2].Value != null;
 
-            if (selectedColumnIndex == productDiscountPriceColumnIndex)
-            {
-                if (!hasPaymentDate)
+                var hasSpecialPriceForPerson = !(PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value == null
+                                                        || (double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value == 0);
+
+                var productCurrentPrice = hasPaymentDate
+                                        ? Math.Round((double)PersonReceiptsDataGridView.Rows[e.RowIndex].Cells[productPriceOnPaymentDateColumnIndex].Value, 2)
+                                        : hasSpecialPriceForPerson
+                                            ? Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value, 2)
+                                            : Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productPriceColumnIndex].Value, 2);
+
+                var productQuantity = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productQuantityColumnIndex].Value, 2);
+
+                if (selectedColumnIndex == productSpecialPriceForPersonColumnIndex)
                 {
-                    var productDiscountPrice = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[selectedColumnIndex].Value, 2);
-                    var productDiscountRatio = Math.Round((1 - (productDiscountPrice / productCurrentPrice)) * 100, 2);
-                    var productTotalPrice = Math.Round(productDiscountPrice * productQuantity, 2);
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = productDiscountRatio;
+                    if (!hasSpecialPriceForPerson)
+                    {
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value = null;
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = null;
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = null;
+                    }
+                    if (hasPaymentDate)
+                    {
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productSpecialPriceForPersonColumnIndex].Value = receiptItem?.SpecialPriceForPerson;
+                    }
+                    var productTotalPrice = Math.Round(productCurrentPrice * productQuantity, 2);
                     PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = productTotalPrice;
                 }
-                else
-                {
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = receiptItem?.ProductDiscountPrice;
-                }
 
-            }
-
-            if (selectedColumnIndex == productDiscountRatioColumnIndex)
-            {
-                var hasDiscountRatio = !(PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value == null
-                                                    || (double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value == 0);
-
-                var productCurrentPriceForDiscountRatioCalculation = productCurrentPrice;
-                if (hasDiscountRatio)
+                if (selectedColumnIndex == productDiscountPriceColumnIndex)
                 {
                     if (!hasPaymentDate)
                     {
-                        var productDiscountRatio = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[selectedColumnIndex].Value, 2);
-                        productCurrentPriceForDiscountRatioCalculation = Math.Round(productCurrentPrice * (1 - productDiscountRatio / 100), 2);
-                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = productCurrentPriceForDiscountRatioCalculation;
+                        var productDiscountPrice = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[selectedColumnIndex].Value, 2);
+                        var productDiscountRatio = Math.Round((1 - (productDiscountPrice / productCurrentPrice)) * 100, 2);
+                        var productTotalPrice = Math.Round(productDiscountPrice * productQuantity, 2);
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = productDiscountRatio;
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = productTotalPrice;
                     }
                     else
                     {
-                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = receiptItem.ProductDiscountRatio;
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = receiptItem?.ProductDiscountPrice;
                     }
-                }
-                else
-                {
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = null;
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = null;
-                }
-                var productTotalPrice = Math.Round(productCurrentPriceForDiscountRatioCalculation * productQuantity, 2);
-                PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = productTotalPrice;
-            }
 
-            if (selectedColumnIndex == productQuantityColumnIndex)
-            {
-                var discountPriceNullOrEmpty = PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value == null
-                                                    || (double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value == 0;
-
-                var productCurrentPriceForQuantityCalculation = discountPriceNullOrEmpty
-                                            ? productCurrentPrice
-                                            : Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value, 2);
-                if (discountPriceNullOrEmpty || hasPaymentDate)
-                {
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = null;
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = null;
                 }
-                var productTotalPrice = Math.Round((double)productCurrentPriceForQuantityCalculation * productQuantity, 2);
-                PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = productTotalPrice;
-            }
 
-            if (selectedColumnIndex == productTotalPriceColumnIndex)
-            {
-                if (!hasPaymentDate)
+                if (selectedColumnIndex == productDiscountRatioColumnIndex)
                 {
-                    var productTotalPrice = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[selectedColumnIndex].Value, 2);
-                    var productDiscountPrice = Math.Round((double)(productTotalPrice / productQuantity), 2);
-                    var productDiscountRatio = Math.Round((1 - (productDiscountPrice / productCurrentPrice)) * 100, 2);
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = productDiscountPrice;
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = productDiscountRatio;
+                    var hasDiscountRatio = !(PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value == null
+                                                        || (double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value == 0);
+
+                    var productCurrentPriceForDiscountRatioCalculation = productCurrentPrice;
+                    if (hasDiscountRatio)
+                    {
+                        if (!hasPaymentDate)
+                        {
+                            var productDiscountRatio = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[selectedColumnIndex].Value, 2);
+                            productCurrentPriceForDiscountRatioCalculation = Math.Round(productCurrentPrice * (1 - productDiscountRatio / 100), 2);
+                            PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = productCurrentPriceForDiscountRatioCalculation;
+                        }
+                        else
+                        {
+                            PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = receiptItem.ProductDiscountRatio;
+                        }
+                    }
+                    else
+                    {
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = null;
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = null;
+                    }
+                    var productTotalPrice = Math.Round(productCurrentPriceForDiscountRatioCalculation * productQuantity, 2);
+                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = productTotalPrice;
                 }
-                else
+
+                if (selectedColumnIndex == productQuantityColumnIndex)
                 {
-                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = Math.Round((double)(receiptItem.ProductPriceOnPaymentDate * productQuantity), 2);
+                    var discountPriceNullOrEmpty = PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value == null
+                                                        || (double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value == 0;
+
+                    var productCurrentPriceForQuantityCalculation = discountPriceNullOrEmpty
+                                                ? productCurrentPrice
+                                                : Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value, 2);
+                    if (discountPriceNullOrEmpty || hasPaymentDate)
+                    {
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = null;
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = null;
+                    }
+                    var productTotalPrice = Math.Round((double)productCurrentPriceForQuantityCalculation * productQuantity, 2);
+                    PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = productTotalPrice;
+                }
+
+                if (selectedColumnIndex == productTotalPriceColumnIndex)
+                {
+                    if (!hasPaymentDate)
+                    {
+                        var productTotalPrice = Math.Round((double)PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[selectedColumnIndex].Value, 2);
+                        var productDiscountPrice = Math.Round((double)(productTotalPrice / productQuantity), 2);
+                        var productDiscountRatio = Math.Round((1 - (productDiscountPrice / productCurrentPrice)) * 100, 2);
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountPriceColumnIndex].Value = productDiscountPrice;
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productDiscountRatioColumnIndex].Value = productDiscountRatio;
+                    }
+                    else
+                    {
+                        PersonReceiptsDataGridView.Rows[selectedRowIndex].Cells[productTotalPriceColumnIndex].Value = Math.Round((double)(receiptItem.ProductPriceOnPaymentDate * productQuantity), 2);
+                    }
                 }
             }
         }
@@ -507,6 +570,12 @@ namespace VeresiyeDefteri
             ReceiptItemAddingPageForm receiptPageForm = new ReceiptItemAddingPageForm(person);
             receiptPageForm.FormClosed += new FormClosedEventHandler(ReceiptPageForm_FormClosed);
             receiptPageForm.ShowDialog();
+        }
+        private void AddPaymentItemButton_Click(object sender, EventArgs e)
+        {
+            PaymentItemAddingPageForm paymentItemAddingPageForm = new PaymentItemAddingPageForm(person);
+            paymentItemAddingPageForm.FormClosed += new FormClosedEventHandler(ReceiptPageForm_FormClosed);
+            paymentItemAddingPageForm.ShowDialog();
         }
         private void PrintPersonReceiptsButton_Click(object sender, EventArgs e)
         {

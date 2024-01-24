@@ -15,13 +15,14 @@ namespace VeresiyeDefteri.DataAccess
         #region Constants
         DataAccessHelpers dataAccessHelper = new DataAccessHelpers();
         SQLiteConnection sqliteConnection = new SQLiteConnection(@"data source =|DataDirectory|\TrySQlite.db");
+        ReceiptItemController receiptItemController = new ReceiptItemController();
         #endregion
 
         #region Public Methods
         public List<Product> GetProducts()
         {
             var products = new List<Product>();
-            string query = "select * from products";
+            string query = "select * from products where is_payment_type = 0";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -40,7 +41,7 @@ namespace VeresiyeDefteri.DataAccess
         public Product GetProduct(long productId)
         {
             Product product = new Product();
-            string query = $"select * from products where product_id = $productId";
+            string query = $"select * from products where product_id = $productId and is_payment_type = 0";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -60,8 +61,8 @@ namespace VeresiyeDefteri.DataAccess
         public bool AddProduct(Product product)
         {
             string query = "insert into products " +
-                "(stock_code, product_name, price, product_description)" +
-                "values($stockCode, $productName, $price, $productDescription)";
+                "(stock_code, product_name, price, product_description, is_payment_type)" +
+                "values($stockCode, $productName, $price, $productDescription, $isPaymentType)";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -69,6 +70,7 @@ namespace VeresiyeDefteri.DataAccess
             cmd.Parameters.AddWithValue("$productName", product.ProductName);
             cmd.Parameters.AddWithValue("$price", product.Price);
             cmd.Parameters.AddWithValue("$productDescription", product.ProductDescription);
+            cmd.Parameters.AddWithValue("$isPaymentType", false);
             int result = cmd.ExecuteNonQuery();
             if (result == 0)
             {
@@ -94,7 +96,7 @@ namespace VeresiyeDefteri.DataAccess
             {
                 return false;
             }
-            return true;
+            return receiptItemController.FindAndUpdateShouldBeUpdatedReceiptItemsAndPersons();
         }
         public bool DeleteProduct(long productId)
         {
@@ -120,7 +122,7 @@ namespace VeresiyeDefteri.DataAccess
                 StockCode = dataAccessHelper.GetNullableStringFromReader(reader, "stock_code"),
                 ProductName = dataAccessHelper.GetStringFromReader(reader, "product_name"),
                 Price = dataAccessHelper.GetNullableDoubleFromReader(reader, "price"),
-                ProductDescription = dataAccessHelper.GetNullableStringFromReader(reader, "product_description"),
+                ProductDescription = dataAccessHelper.GetNullableStringFromReader(reader, "product_description")
             };
         }
         private void CheckConnectionState()

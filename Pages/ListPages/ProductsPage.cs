@@ -181,6 +181,11 @@ namespace VeresiyeDefteri.Pages.ListPages
             productPageForm.FormClosed += new FormClosedEventHandler(ProductPageForm_FormClosed);
             productPageForm.ShowDialog();
         }
+        private void GoToPaymentTypeItemsButton_Click(object sender, EventArgs e)
+        {
+            PaymentTypeItemsPageForm paymentTypeItemsPageForm = new PaymentTypeItemsPageForm();
+            paymentTypeItemsPageForm.ShowDialog();
+        }
         #endregion
 
         #region FormCloseCallBack

@@ -43,7 +43,7 @@ namespace VeresiyeDefteri.DataAccess
         }
         public long GetProductCount()
         {
-            return GetCount("products");
+            return GetCount("products", "where is_payment_type = 0");
         }
         #endregion
 
@@ -56,10 +56,10 @@ namespace VeresiyeDefteri.DataAccess
                 TotalOutgoingBalance = dataAccessHelper.GetNullableDoubleFromReader(reader, "total_outgoing_balance")
             };
         }
-        private long GetCount(string tableName)
+        private long GetCount(string tableName, string whereCondition = "")
         {
             long count = 0;
-            string query = $"select count(1) as count from {tableName}";
+            string query = $"select count(1) as count from {tableName} {whereCondition}";
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             using (var reader = cmd.ExecuteReader())

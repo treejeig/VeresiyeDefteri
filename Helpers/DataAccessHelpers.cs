@@ -24,6 +24,11 @@ namespace VeresiyeDefteri.Helpers
             var ordinal = reader.GetOrdinal(ordinalName);
             return reader.GetDouble(ordinal);
         }
+        public bool GetBoolFromReader(SQLiteDataReader reader, string ordinalName)
+        {
+            var ordinal = reader.GetOrdinal(ordinalName);
+            return reader.GetBoolean(ordinal);
+        }
         public string? GetNullableStringFromReader(SQLiteDataReader reader, string ordinalName)
         {
             var ordinal = reader.GetOrdinal(ordinalName);
