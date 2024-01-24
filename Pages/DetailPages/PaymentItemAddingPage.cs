@@ -69,29 +69,32 @@ namespace VeresiyeDefteri.Pages.DetailPages
         #region ButtonClick
         private void SavePaymentItemButton_Click(object sender, EventArgs e)
         {
-            double? paymentAmount = inputHelper.RoundNullableTwoDigit(double.Parse(PaymentAmountTextBox.Text), 2);
-
-            string yesNoMessageBoxTitle = "Ödeme eklensin mi?";
-            string yesNoMessageBoxMessage = $"Ödeme Türü: {selectedPaymentItem.PaymentTypeItemName}\nÖdeme Tutarı: {paymentAmount}\n";
-
-            if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
+            if(PaymentAmountTextBox.Text != "")
             {
-                ReceiptItem receiptItem = new ReceiptItem()
-                {
-                    PersonId = person.PersonId,
-                    ProductId = selectedPaymentItem.PaymentTypeItemId,
-                    PaymentDate = DateTime.Now,
-                    PaymentAmount = paymentAmount,
-                };
-                person.OutgoingBalance += paymentAmount;
+                double? paymentAmount = inputHelper.RoundNullableTwoDigit(double.Parse(PaymentAmountTextBox.Text), 2);
 
-                if (receiptItemController.AddReceiptItem(receiptItem) && personController.UpdatePerson(person))
+                string yesNoMessageBoxTitle = "Ödeme eklensin mi?";
+                string yesNoMessageBoxMessage = $"Ödeme Türü: {selectedPaymentItem.PaymentTypeItemName}\nÖdeme Tutarı: {paymentAmount}\n";
+
+                if (messageBoxes.YesNoMessageBox(yesNoMessageBoxTitle, yesNoMessageBoxMessage))
                 {
-                    ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Fiş kaydedildi."));
-                }
-                else
-                {
-                    ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Fiş kaydedilemedi."));
+                    ReceiptItem receiptItem = new ReceiptItem()
+                    {
+                        PersonId = person.PersonId,
+                        ProductId = selectedPaymentItem.PaymentTypeItemId,
+                        PaymentDate = DateTime.Now,
+                        PaymentAmount = paymentAmount,
+                    };
+                    person.OutgoingBalance += paymentAmount;
+
+                    if (receiptItemController.AddReceiptItem(receiptItem) && personController.UpdatePerson(person))
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarılı", "Fiş kaydedildi."));
+                    }
+                    else
+                    {
+                        ShowInfoMessageBoxAndClosePage(messageBoxes.InformationMessageBox("Başarısız", "Fiş kaydedilemedi."));
+                    }
                 }
             }
         }
