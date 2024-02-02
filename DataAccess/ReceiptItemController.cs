@@ -49,7 +49,7 @@ namespace VeresiyeDefteri.DataAccess
             ReceiptItem receiptItem = new ReceiptItem();
             string query = "select ri.*, p.person_id, pr.* from receipt_items ri " +
                 "inner join persons p on ri.person_id = p.person_id and p.is_active_person = 1 " +
-                "inner join products pr on ri.product_id = pr.product_id and pr.is_active_product = 1" +
+                "inner join products pr on ri.product_id = pr.product_id and pr.is_active_product = 1 " +
                 "where ri.receipt_item_id = $receiptItemId and ri.is_active_receipt_item = 1";
 
             CheckConnectionState();
@@ -142,13 +142,13 @@ namespace VeresiyeDefteri.DataAccess
             }
             return true;
         }
-        public bool FindAndUpdateShouldBeUpdatedReceiptItemsAndPersons()
+        public bool FindAndUpdateShouldBeUpdatedReceiptItemsAndPersonsByProductUpdate()
         {
             var resInside = false;
             var receiptItemsToUpdate = new List<ReceiptItem>();
             string query = "select ri.*, p.person_id, pr.* from receipt_items ri " +
-                            "inner join persons p on ri.person_id = p.person_id and p.is_active_person = 1" +
-                            "inner join products pr on ri.product_id = pr.product_id and pr.is_payment_type = 0 and pr.is_active_product = 1" +
+                            "inner join persons p on ri.person_id = p.person_id and p.is_active_person = 1 " +
+                            "inner join products pr on ri.product_id = pr.product_id and pr.is_payment_type = 0 and pr.is_active_product = 1 " +
                             "where ri.payment_date is null and ri.special_price_for_person is null " +
                             "and ri.product_discount_price is null and ri.product_total_price != (pr.price * ri.product_quantity) " +
                             "and ri.is_active_receipt_item = 1";
@@ -177,6 +177,46 @@ namespace VeresiyeDefteri.DataAccess
                 receiptItem.ProductTotalPrice = inputHelpers.RoundNullableTwoDigit(receiptItem.ProductPrice * receiptItem.ProductQuantity, 2);
                 person.IncomingBalance += receiptItem.ProductTotalPrice;
                 resInside = UpdateReceiptItem(receiptItem) && personController.UpdatePerson(person);
+                if (!resInside)
+                {
+                    return false;
+                }
+            }
+            return resInside;
+
+        }
+
+        public bool FindAndDeactivateShouldBeDeactivatedReceiptItemsAndPersonsByProductDelete()
+        {
+            var resInside = false;
+            var receiptItemsToDeactivate = new List<ReceiptItem>();
+            string query = "select ri.*, p.person_id, pr.* from receipt_items ri " +
+                            "inner join persons p on ri.person_id = p.person_id and p.is_active_person = 1 " +
+                            "inner join products pr on ri.product_id = pr.product_id and pr.is_payment_type = 0 and pr.is_active_product = 0 " +
+                            "where ri.is_active_receipt_item = 1";
+
+            CheckConnectionState();
+            SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        receiptItemsToDeactivate.Add(ReadReceiptItemFromReader(reader));
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            for (int i = 0; i < receiptItemsToDeactivate.Count; i++)
+            {
+                var receiptItem = receiptItemsToDeactivate[i];
+                var person = personController.GetPerson(receiptItem.PersonId);
+                person.IncomingBalance -= receiptItem.ProductTotalPrice;
+                resInside = DeleteReceiptItem(receiptItem.ReceiptItemId) && personController.UpdatePerson(person);
                 if (!resInside)
                 {
                     return false;

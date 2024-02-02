@@ -97,7 +97,7 @@ namespace VeresiyeDefteri.DataAccess
             {
                 return false;
             }
-            return receiptItemController.FindAndUpdateShouldBeUpdatedReceiptItemsAndPersons();
+            return receiptItemController.FindAndUpdateShouldBeUpdatedReceiptItemsAndPersonsByProductUpdate();
         }
         public bool DeleteProduct(long productId)
         {
@@ -110,7 +110,7 @@ namespace VeresiyeDefteri.DataAccess
             {
                 return false;
             }
-            return true;
+            return receiptItemController.FindAndDeactivateShouldBeDeactivatedReceiptItemsAndPersonsByProductDelete();
         }
         #endregion
 
