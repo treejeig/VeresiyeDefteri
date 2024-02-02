@@ -21,7 +21,7 @@ namespace VeresiyeDefteri.DataAccess
         public TotalBalanceItem GetTotalBalance()
         {
             TotalBalanceItem totalBalanceItem = new TotalBalanceItem();
-            string query = $"select sum(incoming_balance) as total_incoming_balance, sum(outgoing_balance) as total_outgoing_balance from persons";
+            string query = $"select sum(incoming_balance) as total_incoming_balance, sum(outgoing_balance) as total_outgoing_balance from persons where is_active_person = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -39,11 +39,11 @@ namespace VeresiyeDefteri.DataAccess
         }
         public long GetPersonCount()
         {
-            return GetCount("persons");
+            return GetCount("persons", "where is_active_person = 1");
         }
         public long GetProductCount()
         {
-            return GetCount("products", "where is_payment_type = 0");
+            return GetCount("products", "where is_payment_type = 0 and is_active_product = 1");
         }
         #endregion
 

@@ -21,7 +21,7 @@ namespace VeresiyeDefteri.DataAccess
         public List<PaymentTypeItem> GetPaymentTypeItems()
         {
             var paymentTypeItems = new List<PaymentTypeItem>();
-            string query = "select * from products where is_payment_type = 1";
+            string query = "select * from products where is_payment_type = 1 and is_active_product = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -40,7 +40,7 @@ namespace VeresiyeDefteri.DataAccess
         public PaymentTypeItem GetPaymentTypeItem(long paymentTypeItemId)
         {
             PaymentTypeItem paymentTypeItem = new PaymentTypeItem();
-            string query = $"select * from products where product_id = $paymentTypeItemId and is_payment_type = 1";
+            string query = $"select * from products where product_id = $paymentTypeItemId and is_payment_type = 1 and is_active_product = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -60,13 +60,14 @@ namespace VeresiyeDefteri.DataAccess
         public bool AddPaymentTypeItem(PaymentTypeItem paymentTypeItem)
         {
             string query = "insert into products " +
-                "(product_name, is_payment_type)" +
-                "values($paymentTypeItemName, $isPaymentType)";
+                "(product_name, is_payment_type, is_active_product)" +
+                "values($paymentTypeItemName, $isPaymentType, $isActiveProduct)";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             cmd.Parameters.AddWithValue("$paymentTypeItemName", paymentTypeItem.PaymentTypeItemName);
             cmd.Parameters.AddWithValue("$isPaymentType", true);
+            cmd.Parameters.AddWithValue("$isActiveProduct", true);
             int result = cmd.ExecuteNonQuery();
             if (result == 0)
             {
@@ -93,7 +94,7 @@ namespace VeresiyeDefteri.DataAccess
         }
         public bool DeletePaymentTypeItem(long paymentTypeItemId)
         {
-            string query = "delete from products where product_id = $paymentTypeItemId";
+            string query = "update products set is_active_product = 0 where product_id = $paymentTypeItemId";
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             cmd.Parameters.AddWithValue("$paymentTypeItemId", paymentTypeItemId);

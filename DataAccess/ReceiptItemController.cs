@@ -25,9 +25,9 @@ namespace VeresiyeDefteri.DataAccess
         {
             var receiptItems = new List<ReceiptItem>();
             string query = "select ri.*, p.person_id, pr.* from receipt_items ri " +
-                "inner join persons p on ri.person_id = p.person_id " +
-                "inner join products pr on ri.product_id = pr.product_id " +
-                "where ri.person_id = $personId";
+                "inner join persons p on ri.person_id = p.person_id and p.is_active_person = 1 " +
+                "inner join products pr on ri.product_id = pr.product_id and pr.is_active_product = 1 " +
+                "where ri.person_id = $personId and ri.is_active_receipt_item = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -48,9 +48,9 @@ namespace VeresiyeDefteri.DataAccess
         {
             ReceiptItem receiptItem = new ReceiptItem();
             string query = "select ri.*, p.person_id, pr.* from receipt_items ri " +
-                "inner join persons p on ri.person_id = p.person_id " +
-                "inner join products pr on ri.product_id = pr.product_id " +
-                "where ri.receipt_item_id = $receiptItemId";
+                "inner join persons p on ri.person_id = p.person_id and p.is_active_person = 1 " +
+                "inner join products pr on ri.product_id = pr.product_id and pr.is_active_product = 1" +
+                "where ri.receipt_item_id = $receiptItemId and ri.is_active_receipt_item = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -71,9 +71,9 @@ namespace VeresiyeDefteri.DataAccess
         {
             string query = "insert into receipt_items " +
                 "(person_id, product_id, receipt_date, payment_date, special_price_for_person, product_price_on_receipt_date, product_price_on_payment_date, " +
-                "product_discount_price, product_discount_ratio, product_quantity, product_total_price, payment_amount) " +
+                "product_discount_price, product_discount_ratio, product_quantity, product_total_price, payment_amount, is_active_receipt_item) " +
                 "values($personId, $productId, $receiptDate, $paymentDate, $specialPriceForPerson, $productPriceOnReceiptDate, $productPriceOnPaymentDate, " +
-                "$productDiscountPrice, $productDiscountRatio, $productQuantity, $productTotalPrice, $paymentAmount)";
+                "$productDiscountPrice, $productDiscountRatio, $productQuantity, $productTotalPrice, $paymentAmount, $isActiveReceiptItem)";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -89,6 +89,7 @@ namespace VeresiyeDefteri.DataAccess
             cmd.Parameters.AddWithValue("$productQuantity", receiptItem.ProductQuantity);
             cmd.Parameters.AddWithValue("$productTotalPrice", receiptItem.ProductTotalPrice);
             cmd.Parameters.AddWithValue("$paymentAmount", receiptItem.PaymentAmount);
+            cmd.Parameters.AddWithValue("$isActiveReceiptItem", true);
 
             int result = cmd.ExecuteNonQuery();
             if (result == 0)
@@ -130,7 +131,7 @@ namespace VeresiyeDefteri.DataAccess
         }
         public bool DeleteReceiptItem(long receiptItemId)
         {
-            string query = "delete from receipt_items where receipt_item_id = $receiptItemId";
+            string query = "update receipt_items set is_active_receipt_item = 0 where receipt_item_id = $receiptItemId";
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             cmd.Parameters.AddWithValue("$receiptItemId", receiptItemId);
@@ -146,10 +147,11 @@ namespace VeresiyeDefteri.DataAccess
             var resInside = false;
             var receiptItemsToUpdate = new List<ReceiptItem>();
             string query = "select ri.*, p.person_id, pr.* from receipt_items ri " +
-                            "inner join persons p on ri.person_id = p.person_id " +
-                            "inner join products pr on ri.product_id = pr.product_id and pr.is_payment_type = 0 " +
+                            "inner join persons p on ri.person_id = p.person_id and p.is_active_person = 1" +
+                            "inner join products pr on ri.product_id = pr.product_id and pr.is_payment_type = 0 and pr.is_active_product = 1" +
                             "where ri.payment_date is null and ri.special_price_for_person is null " +
-                            "and ri.product_discount_price is null and ri.product_total_price != (pr.price * ri.product_quantity)";
+                            "and ri.product_discount_price is null and ri.product_total_price != (pr.price * ri.product_quantity) " +
+                            "and ri.is_active_receipt_item = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);

@@ -13,6 +13,5 @@ namespace VeresiyeDefteri.DataObjects
         public string ProductName { get; set; }
         public double? Price { get; set; }
         public string? ProductDescription { get; set; }
-        public bool IsPaymentType { get => false; }
     }
 }

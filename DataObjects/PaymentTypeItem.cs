@@ -10,6 +10,5 @@ namespace VeresiyeDefteri.DataObjects
     {
         public long PaymentTypeItemId { get; set; }
         public string PaymentTypeItemName { get; set; }
-        public bool IsPaymentType { get => true; }
     }
 }

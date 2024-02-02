@@ -21,7 +21,7 @@ namespace VeresiyeDefteri.DataAccess
         public List<Person> GetPersons()
         {
             var persons = new List<Person>();
-            string query = "select * from persons";
+            string query = "select * from persons where is_active_person = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -40,7 +40,7 @@ namespace VeresiyeDefteri.DataAccess
         public Person GetPerson(long personId)
         {
             Person person = new Person();
-            string query = $"select * from persons where person_id = $personId";
+            string query = $"select * from persons where person_id = $personId and is_active_person = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -60,8 +60,8 @@ namespace VeresiyeDefteri.DataAccess
         public bool AddPerson(Person person)
         {
             string query = "insert into persons " +
-                "(name, surname, phone, mobile_phone, email, identity_number, address, description, incoming_balance, outgoing_balance)" +
-                "values($name, $surname, $phone, $mobilePhone, $email, $identityNumber, $address, $description, $incomingBalance, $outgoingBalance)";
+                "(name, surname, phone, mobile_phone, email, identity_number, address, description, incoming_balance, outgoing_balance, is_active_person)" +
+                "values($name, $surname, $phone, $mobilePhone, $email, $identityNumber, $address, $description, $incomingBalance, $outgoingBalance, $isActivePerson)";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -75,6 +75,7 @@ namespace VeresiyeDefteri.DataAccess
             cmd.Parameters.AddWithValue("$description", person.Description);
             cmd.Parameters.AddWithValue("$incomingBalance", person.IncomingBalance ?? 0);
             cmd.Parameters.AddWithValue("$outgoingBalance", person.OutgoingBalance ?? 0);
+            cmd.Parameters.AddWithValue("$isActivePerson", true);
             int result = cmd.ExecuteNonQuery();
             if (result == 0)
             {
@@ -111,7 +112,7 @@ namespace VeresiyeDefteri.DataAccess
         }
         public bool DeletePerson(long personId)
         {
-            string query = "delete from persons where person_id = $personId";
+            string query = "update persons set is_active_person = 0 where person_id = $personId";
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             cmd.Parameters.AddWithValue("$personId", personId);

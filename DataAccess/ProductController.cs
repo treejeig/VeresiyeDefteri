@@ -22,7 +22,7 @@ namespace VeresiyeDefteri.DataAccess
         public List<Product> GetProducts()
         {
             var products = new List<Product>();
-            string query = "select * from products where is_payment_type = 0";
+            string query = "select * from products where is_payment_type = 0 and is_active_product = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -41,7 +41,7 @@ namespace VeresiyeDefteri.DataAccess
         public Product GetProduct(long productId)
         {
             Product product = new Product();
-            string query = $"select * from products where product_id = $productId and is_payment_type = 0";
+            string query = $"select * from products where product_id = $productId and is_payment_type = 0 and is_active_product = 1";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -61,8 +61,8 @@ namespace VeresiyeDefteri.DataAccess
         public bool AddProduct(Product product)
         {
             string query = "insert into products " +
-                "(stock_code, product_name, price, product_description, is_payment_type)" +
-                "values($stockCode, $productName, $price, $productDescription, $isPaymentType)";
+                "(stock_code, product_name, price, product_description, is_payment_type, is_active_product)" +
+                "values($stockCode, $productName, $price, $productDescription, $isPaymentType, $isActiveProduct)";
 
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
@@ -71,6 +71,7 @@ namespace VeresiyeDefteri.DataAccess
             cmd.Parameters.AddWithValue("$price", product.Price);
             cmd.Parameters.AddWithValue("$productDescription", product.ProductDescription);
             cmd.Parameters.AddWithValue("$isPaymentType", false);
+            cmd.Parameters.AddWithValue("$isActiveProduct", true);
             int result = cmd.ExecuteNonQuery();
             if (result == 0)
             {
@@ -100,7 +101,7 @@ namespace VeresiyeDefteri.DataAccess
         }
         public bool DeleteProduct(long productId)
         {
-            string query = "delete from products where product_id = $productId";
+            string query = "update products set is_active_product = 0 where product_id = $productId";
             CheckConnectionState();
             SQLiteCommand cmd = new SQLiteCommand(query, sqliteConnection);
             cmd.Parameters.AddWithValue("$productId", productId);
